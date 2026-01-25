@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MongoDB - Python 入门教程</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>    <nav>
+        <div class="nav-category">
+            <h3>📚 当前分类</h3>
+            <ul>
+                <li><a href="sqlalchemy.html">SQLAlchemy</a></li>
+                <li><a href="mysql.html">MySQL</a></li>
+                <li><a href="mongodb.html" class="active">MongoDB</a></li>
+                <li><a href="redis.html">Redis</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="topic-nav">
+            <a href="mysql.html">← MySQL</a> | <a href="redis.html">Redis →</a>
+        </div>
+
+        <section id="mongodb" class="content-section">
+            <h2>MongoDB</h2>
+            <p>MongoDB 是一个流行的 NoSQL 文档数据库，PyMongo 是 Python 的 MongoDB 驱动程序。</p>
+
+            <h3>安装</h3>
+            <pre><code class="bash">pip install pymongo</code></pre>
+
+            <h3>连接数据库</h3>
+            <pre><code class="python">from pymongo import MongoClient
+
+# 连接到 MongoDB
+client = MongoClient('mongodb://localhost:27017/')
+
+# 或使用连接字符串
+# client = MongoClient('mongodb://username:password@localhost:27017/')
+
+# 获取数据库
+db = client['test_db']
+
+# 或使用属性访问
+# db = client.test_db
+
+print(f"数据库列表: {client.list_database_names()}")</code></pre>
+
+            <h3>创建集合和插入文档</h3>
+            <pre><code class="python">from pymongo import MongoClient
+
+client = MongoClient('mongodb://localhost:27017/')
+db = client['test_db']
+
+# 获取集合（表）
+collection = db['users']
+
+# 插入单个文档
+user = {
+    'name': '张三',
+    'age': 25,
+    'email': 'zhangsan@example.com',
+    'hobbies': ['阅读', '编程', '旅行']
+}
+result = collection.insert_one(user)
+print(f"插入的文档 ID: {result.inserted_id}")
+
+# 插入多个文档
+users = [
+    {'name': '李四', 'age': 30, 'email': 'lisi@example.com'},
+    {'name': '王五', 'age': 28, 'email': 'wangwu@example.com'},
+    {'name': '赵六', 'age': 32, 'email': 'zhaoliu@example.com'}
+]
+result = collection.insert_many(users)
+print(f"插入的文档 IDs: {result.inserted_ids}")</code></pre>
+
+            <h3>查询文档</h3>
+            <pre><code class="python">from pymongo import MongoClient
+
+client = MongoClient('mongodb://localhost:27017/')
+db = client['test_db']
+collection = db['users']
+
+# 查询所有文档
+for user in collection.find():
+    print(user)
+
+# 查询单个文档
+user = collection.find_one({'name': '张三'})
+print(f"找到用户: {user}")
+
+# 条件查询
+for user in collection.find({'age': {'$gt': 25}}):
+    print(f"年龄大于25的用户: {user}")
+
+# 投影（只返回特定字段）
+for user in collection.find({}, {'name': 1, 'age': 1}):
+    print(user)
+
+# 排序
+for user in collection.find().sort('age', -1):  # -1 降序，1 升序
+    print(user)
+
+# 限制数量
+for user in collection.find().limit(2):
+    print(user)</code></pre>
+
+            <h3>更新文档</h3>
+            <pre><code class="python">from pymongo import MongoClient
+
+client = MongoClient('mongodb://localhost:27017/')
+db = client['test_db']
+collection = db['users']
+
+# 更新单个文档
+result = collection.update_one(
+    {'name': '张三'},
+    {'$set': {'age': 26}}
+)
+print(f"匹配到 {result.matched_count} 个文档，修改了 {result.modified_count} 个")
+
+# 更新多个文档
+result = collection.update_many(
+    {'age': {'$lt': 30}},
+    {'$inc': {'age': 1}}  # 年龄加1
+)
+print(f"匹配到 {result.matched_count} 个文档，修改了 {result.modified_count} 个")
+
+# 添加字段
+result = collection.update_many(
+    {},
+    {'$set': {'status': 'active'}}
+)</code></pre>
+
+            <h3>删除文档</h3>
+            <pre><code class="python">from pymongo import MongoClient
+
+client = MongoClient('mongodb://localhost:27017/')
+db = client['test_db']
+collection = db['users']
+
+# 删除单个文档
+result = collection.delete_one({'name': '赵六'})
+print(f"删除了 {result.deleted_count} 个文档")
+
+# 删除多个文档
+result = collection.delete_many({'age': {'$gt': 30}})
+print(f"删除了 {result.deleted_count} 个文档")
+
+# 删除所有文档
+result = collection.delete_many({})
+print(f"删除了 {result.deleted_count} 个文档")</code></pre>
+
+            <h3>聚合操作</h3>
+            <pre><code class="python">from pymongo import MongoClient
+
+client = MongoClient('mongodb://localhost:27017/')
+db = client['test_db']
+collection = db['users']
+
+# 统计
+pipeline = [
+    {'$match': {'age': {'$gte': 20}}},
+    {'$group': {'_id': '$status', 'count': {'$sum': 1}}},
+    {'$sort': {'count': -1}}
+]
+
+for result in collection.aggregate(pipeline):
+    print(result)
+
+# 计算平均年龄
+pipeline = [
+    {'$group': {'_id': None, 'avg_age': {'$avg': '$age'}}}
+]
+
+for result in collection.aggregate(pipeline):
+    print(f"平均年龄: {result['avg_age']:.2f}")</code></pre>
+
+            <h3>索引</h3>
+            <pre><code class="python">from pymongo import MongoClient
+
+client = MongoClient('mongodb://localhost:27017/')
+db = client['test_db']
+collection = db['users']
+
+# 创建索引
+collection.create_index('name')
+collection.create_index([('name', 1), ('age', -1)])  # 复合索引
+
+# 创建唯一索引
+collection.create_index('email', unique=True)
+
+# 查看索引
+for index in collection.list_indexes():
+    print(index)
+
+# 删除索引
+collection.drop_index('name_1')</code></pre>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>MongoDB 适合存储非结构化数据，如日志、文档、社交网络数据等。
+            </div>
+        </section>
+
+        <div class="topic-nav">
+            <a href="mysql.html">← MySQL</a> | <a href="redis.html">Redis →</a>
+        </div>
+    </main>
+</body>
+</html>

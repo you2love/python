@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fabric - Python 入门教程</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>    <nav>
+        <div class="nav-category">
+            <h3>📚 当前分类</h3>
+            <ul>
+                <li><a href="advanced-features.html">高级特性</a></li>
+                <li><a href="fabric.html" class="active">Fabric</a></li>
+                <li><a href="psutil.html">psutil</a></li>
+                <li><a href="logging.html">logging</a></li>
+                <li><a href="ansible.html">Ansible</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="topic-nav">
+            <a href="advanced-features.html">← 高级特性</a> | <a href="psutil.html">psutil →</a>
+        </div>
+
+        <section id="fabric" class="content-section">
+            <h2>Fabric</h2>
+            <p>Fabric 是一个 Python 库和命令行工具，用于简化 SSH 远程执行和系统管理任务。</p>
+
+            <h3>安装</h3>
+            <pre><code class="bash">pip install fabric</code></pre>
+
+            <h3>基本使用</h3>
+            <pre><code class="python">from fabric import Connection
+
+# 创建连接
+conn = Connection('user@hostname')
+
+# 执行远程命令
+result = conn.run('ls -la', hide=True)
+print(result.stdout)
+
+# 上传文件
+conn.put('local_file.txt', '/remote/path/')
+
+# 下载文件
+conn.get('/remote/path/remote_file.txt', 'local_path/')
+
+# 关闭连接
+conn.close()</code></pre>
+
+            <h3>批量操作多台服务器</h3>
+            <pre><code class="python">from fabric import Connection
+
+# 服务器列表
+servers = [
+    {'host': 'server1.example.com', 'user': 'admin'},
+    {'host': 'server2.example.com', 'user': 'admin'},
+    {'host': 'server3.example.com', 'user': 'admin'}
+]
+
+# 批量执行命令
+for server in servers:
+    conn = Connection(f"{server['user']}@{server['host']}")
+    result = conn.run('uptime', hide=True)
+    print(f"{server['host']}: {result.stdout.strip()}")
+    conn.close()</code></pre>
+
+            <h3>Sudo 命令</h3>
+            <pre><code class="python">from fabric import Connection
+
+conn = Connection('user@hostname')
+
+# 使用 sudo 执行命令
+result = conn.sudo('apt-get update', hide=True)
+print(result.stdout)
+
+# sudo 带密码
+result = conn.sudo('systemctl restart nginx', password='your_password')
+
+conn.close()</code></pre>
+
+            <h3>上下文管理器</h3>
+            <pre><code class="python">from fabric import Connection
+
+conn = Connection('user@hostname')
+
+# 切换目录
+with conn.cd('/var/www'):
+    conn.run('ls -la')
+
+# 设置环境变量
+with conn.prefix('source /etc/profile'):
+    conn.run('echo $PATH')
+
+# 激活虚拟环境
+with conn.prefix('source /path/to/venv/bin/activate'):
+    conn.run('pip list')
+
+conn.close()</code></pre>
+
+            <h3>并行执行</h3>
+            <pre><code class="python">from fabric import ThreadingGroup
+
+# 创建连接组
+group = ThreadingGroup(
+    'user@server1',
+    'user@server2',
+    'user@server3'
+)
+
+# 并行执行命令
+results = group.run('hostname')
+for conn, result in results.items():
+    print(f"{conn.host}: {result.stdout.strip()}")
+
+# 并行上传
+group.put('config.txt', '/tmp/')</code></pre>
+
+            <h3>使用 Fabric 任务</h3>
+            <pre><code class="python">from fabric import task, Connection
+
+@task
+def deploy(c):
+    """部署应用"""
+    conn = Connection('user@hostname')
+    
+    # 拉取代码
+    conn.run('cd /var/www/app && git pull')
+    
+    # 安装依赖
+    with conn.prefix('source venv/bin/activate'):
+        conn.run('pip install -r requirements.txt')
+    
+    # 重启服务
+    conn.sudo('systemctl restart myapp')
+    
+    print("部署完成")
+
+@task
+def check_status(c):
+    """检查服务状态"""
+    conn = Connection('user@hostname')
+    result = conn.sudo('systemctl status myapp', hide=True)
+    print(result.stdout)</code></pre>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>Fabric 适合自动化运维、批量服务器管理等场景，可以大大简化 SSH 操作。
+            </div>
+        </section>
+
+        <div class="topic-nav">
+            <a href="advanced-features.html">← 高级特性</a> | <a href="psutil.html">psutil →</a>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>filecmp - Python 入门教程</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>    <nav>
+        <div class="nav-category">
+            <h3>📚 当前分类</h3>
+            <ul>
+                <li><a href="file-operations.html">文件操作</a></li>
+                <li><a href="directory-operations.html">目录操作</a></li>
+                <li><a href="exceptions.html">异常处理</a></li>
+                <li><a href="pypdf2.html">PyPDF2</a></li>
+                <li><a href="python-docx.html">python-docx</a></li>
+                <li><a href="docxtpl.html">docxtpl</a></li>
+                <li><a href="openpyxl.html">openpyxl</a></li>
+                <li><a href="python-pptx.html">python-pptx</a></li>
+                <li><a href="difflib.html">difflib</a></li>
+                <li><a href="filecmp.html" class="active">filecmp</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="topic-nav">
+            <a href="difflib.html">← difflib</a>
+        </div>
+
+        <section id="filecmp" class="content-section">
+            <h2>filecmp</h2>
+            <p>filecmp 是 Python 内置的模块，用于比较文件和目录。</p>
+
+            <h3>比较文件</h3>
+            <pre><code class="python">import filecmp
+
+# 比较两个文件
+result = filecmp.cmp('file1.txt', 'file2.txt')
+print(f"文件是否相同: {result}")
+
+# 浅比较（只比较文件属性）
+result = filecmp.cmp('file1.txt', 'file2.txt', shallow=True)
+print(f"文件属性是否相同: {result}")</code></pre>
+
+            <h3>比较目录</h3>
+            <pre><code class="python">import filecmp
+
+# 比较两个目录
+result = filecmp.cmpfiles('dir1', 'dir2', ['file1.txt', 'file2.txt'])
+print(f"匹配的文件: {result.match}")
+print(f"不匹配的文件: {result.mismatch}")
+print(f"错误的文件: {result.funny}")
+
+# 比较整个目录
+result = filecmp.dircmp('dir1', 'dir2')
+print(f"相同的文件: {result.same_files}")
+print(f"不同的文件: {result.diff_files}")
+print(f"独有的文件: {result.left_only}, {result.right_only}")</code></pre>
+
+            <h3>详细目录比较</h3>
+            <pre><code class="python">import filecmp
+
+# 比较目录并打印详细报告
+result = filecmp.dircmp('dir1', 'dir2')
+
+# 打印报告
+result.report()
+
+# 打印详细报告
+result.report_full_closure()
+
+# 打印部分报告
+result.report_partial_closure()</code></pre>
+
+            <h3>检查文件是否存在</h3>
+            <pre><code class="python">import filecmp
+import os
+
+# 检查文件是否存在
+if os.path.exists('file1.txt') and os.path.exists('file2.txt'):
+    result = filecmp.cmp('file1.txt', 'file2.txt')
+    print(f"文件是否相同: {result}")
+else:
+    print("文件不存在")</code></pre>
+
+            <h3>递归比较目录</h3>
+            <pre><code class="python">import filecmp
+import os
+
+def compare_dirs(dir1, dir2):
+    """递归比较两个目录"""
+    result = filecmp.dircmp(dir1, dir2)
+    
+    print(f"相同的文件: {result.same_files}")
+    print(f"不同的文件: {result.diff_files}")
+    print(f"dir1 独有: {result.left_only}")
+    print(f"dir2 独有: {result.right_only}")
+    
+    # 递归比较子目录
+    for common_dir in result.common_dirs:
+        subdir1 = os.path.join(dir1, common_dir)
+        subdir2 = os.path.join(dir2, common_dir)
+        print(f"\n比较子目录: {common_dir}")
+        compare_dirs(subdir1, subdir2)
+
+# 使用
+compare_dirs('dir1', 'dir2')</code></pre>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>filecmp 适合文件同步、备份验证、目录比较等场景。
+            </div>
+        </section>
+
+        <div class="topic-nav">
+            <a href="difflib.html">← difflib</a>
+        </div>
+    </main>
+</body>
+</html>

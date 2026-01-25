@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QRCode - Python 入门教程</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>    <nav>
+        <div class="nav-category">
+            <h3>📚 当前分类</h3>
+            <ul>
+                <li><a href="qrcode.html" class="active">QRCode</a></li>
+                <li><a href="resources.html">学习资源</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="topic-nav">
+            <a href="resources.html">学习资源 →</a>
+        </div>
+
+        <section id="qrcode" class="content-section">
+            <h2>QRCode</h2>
+            <p>qrcode 库可以轻松生成二维码图片，支持自定义颜色、大小和样式。</p>
+
+            <h3>安装</h3>
+            <pre><code class="bash">pip install qrcode pillow</code></pre>
+
+            <h3>生成基本二维码</h3>
+            <pre><code class="python">import qrcode
+
+# 创建二维码
+qr = qrcode.QRCode(
+    version=1,
+    error_correction=qrcode.constants.ERROR_CORRECT_L,
+    box_size=10,
+    border=4,
+)
+
+# 添加数据
+qr.add_data('https://www.example.com')
+qr.make(fit=True)
+
+# 生成图片
+img = qr.make_image(fill_color="black", back_color="white")
+
+# 保存图片
+img.save('qrcode.png')
+print("二维码已保存为 qrcode.png")</code></pre>
+
+            <h3>自定义二维码样式</h3>
+            <pre><code class="python">import qrcode
+
+# 创建二维码
+qr = qrcode.QRCode(
+    version=1,
+    error_correction=qrcode.constants.ERROR_CORRECT_H,
+    box_size=10,
+    border=4,
+)
+
+qr.add_data('Hello, QRCode!')
+qr.make(fit=True)
+
+# 自定义颜色
+img = qr.make_image(fill_color="blue", back_color="yellow")
+
+# 保存
+img.save('custom_qrcode.png')</code></pre>
+
+            <h3>生成带 Logo 的二维码</h3>
+            <pre><code class="python">import qrcode
+from PIL import Image
+
+# 生成二维码
+qr = qrcode.QRCode(
+    version=1,
+    error_correction=qrcode.constants.ERROR_CORRECT_H,
+    box_size=10,
+    border=4,
+)
+
+qr.add_data('https://www.example.com')
+qr.make(fit=True)
+
+# 创建二维码图片
+img = qr.make_image(fill_color="black", back_color="white").convert('RGB')
+
+# 打开 Logo
+logo = Image.open('logo.png')
+
+# 计算 Logo 大小（为二维码的 1/5）
+box_size = img.size[0] // len(qr.modules)
+logo_size = box_size * len(qr.modules) // 5
+
+# 调整 Logo 大小
+logo = logo.resize((logo_size, logo_size), Image.Resampling.LANCZOS)
+
+# 计算 Logo 位置
+pos = ((img.size[0] - logo_size) // 2, (img.size[1] - logo_size) // 2)
+
+# 粘贴 Logo
+img.paste(logo, pos)
+
+# 保存
+img.save('qrcode_with_logo.png')</code></pre>
+
+            <h3>批量生成二维码</h3>
+            <pre><code class="python">import qrcode
+import os
+
+# 数据列表
+data_list = [
+    ('https://www.example.com', 'example_qr.png'),
+    ('https://www.google.com', 'google_qr.png'),
+    ('https://www.github.com', 'github_qr.png'),
+]
+
+# 批量生成
+for data, filename in data_list:
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+
+    qr.add_data(data)
+    qr.make(fit=True)
+
+    img = qr.make_image(fill_color="black", back_color="white")
+    img.save(filename)
+    print(f"已生成: {filename}")</code></pre>
+
+            <h3>生成彩色二维码</h3>
+            <pre><code class="python">import qrcode
+from PIL import Image
+
+# 生成二维码
+qr = qrcode.QRCode(
+    version=1,
+    error_correction=qrcode.constants.ERROR_CORRECT_H,
+    box_size=10,
+    border=4,
+)
+
+qr.add_data('彩色二维码')
+qr.make(fit=True)
+
+# 创建二维码图片
+img = qr.make_image(fill_color="black", back_color="white").convert('RGB')
+
+# 获取像素数据
+pixels = img.load()
+
+# 自定义颜色（渐变效果）
+for y in range(img.size[1]):
+    for x in range(img.size[0]):
+        if pixels[x, y] == (0, 0, 0):  # 黑色像素
+            # 创建渐变色
+            r = int(255 * x / img.size[0])
+            g = int(255 * y / img.size[1])
+            b = 200
+            pixels[x, y] = (r, g, b)
+
+# 保存
+img.save('gradient_qrcode.png')</code></pre>
+
+            <h3>错误纠正级别</h3>
+            <pre><code class="python">import qrcode
+
+# ERROR_CORRECT_L: 约 7% 的错误可纠正
+# ERROR_CORRECT_M: 约 15% 的错误可纠正
+# ERROR_CORRECT_Q: 约 25% 的错误可纠正
+# ERROR_CORRECT_H: 约 30% 的错误可纠正
+
+qr = qrcode.QRCode(
+    version=1,
+    error_correction=qrcode.constants.ERROR_CORRECT_H,  # 最高级别
+    box_size=10,
+    border=4,
+)
+
+qr.add_data('高容错二维码')
+qr.make(fit=True)
+
+img = qr.make_image(fill_color="black", back_color="white")
+img.save('high_error_correction_qr.png')</code></pre>
+
+            <h3>读取二维码</h3>
+            <pre><code class="python">from PIL import Image
+import cv2
+
+# 方法1: 使用 OpenCV
+img = cv2.imread('qrcode.png')
+detector = cv2.QRCodeDetector()
+data, bbox, _ = detector.detectAndDecode(img)
+print(f"二维码内容: {data}")
+
+# 方法2: 使用 pyzbar
+# pip install pyzbar
+from pyzbar.pyzbar import decode
+
+img = Image.open('qrcode.png')
+result = decode(img)
+for obj in result:
+    print(f"二维码内容: {obj.data.decode('utf-8')}")</code></pre>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>二维码的错误纠正级别越高，可以容纳的数据越少，但抗损坏能力越强。
+            </div>
+        </section>
+
+        <div class="topic-nav">
+            <a href="resources.html">学习资源 →</a>
+        </div>
+    </main>
+</body>
+</html>

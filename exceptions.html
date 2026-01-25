@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>异常处理 - Python 入门教程</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>    <nav>
+        <div class="nav-category">
+            <h3>📚 当前分类</h3>
+            <ul>
+                <li><a href="file-operations.html">文件操作</a></li>
+                <li><a href="directory-operations.html">目录操作</a></li>
+                <li><a href="exceptions.html" class="active">异常处理</a></li>
+                <li><a href="pypdf2.html">PyPDF2</a></li>
+                <li><a href="python-docx.html">python-docx</a></li>
+                <li><a href="docxtpl.html">docxtpl</a></li>
+                <li><a href="openpyxl.html">openpyxl</a></li>
+                <li><a href="python-pptx.html">python-pptx</a></li>
+                <li><a href="difflib.html">difflib</a></li>
+                <li><a href="filecmp.html">filecmp</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="topic-nav">
+            <a href="directory-operations.html">← 目录操作</a> | <a href="pypdf2.html">PyPDF2 →</a>
+        </div>
+
+        <section id="exceptions" class="content-section">
+            <h2>异常处理</h2>
+            <p>异常处理可以让程序在遇到错误时优雅地处理，而不是直接崩溃。</p>
+
+            <h3>基本异常处理</h3>
+            <pre><code class="python">try:
+    result = 10 / 0
+except ZeroDivisionError:
+    print("错误：不能除以零")
+
+try:
+    number = int(input("请输入一个数字："))
+    print(f"你输入的数字是：{number}")
+except ValueError:
+    print("错误：请输入有效的数字")
+except Exception as e:
+    print(f"发生了未知错误：{e}")</code></pre>
+
+            <h3>else 和 finally</h3>
+            <pre><code class="python">try:
+    file = open('example.txt', 'r')
+    content = file.read()
+except FileNotFoundError:
+    print("文件不存在")
+else:
+    # 没有异常时执行
+    print(f"文件内容：{content}")
+finally:
+    # 无论是否有异常都会执行
+    print("操作完成")
+    if 'file' in locals():
+        file.close()</code></pre>
+
+            <h3>抛出异常</h3>
+            <pre><code class="python">def calculate_age(birth_year):
+    current_year = 2026
+    age = current_year - birth_year
+    
+    if age < 0:
+        raise ValueError("出生年份不能大于当前年份")
+    
+    return age
+
+try:
+    age = calculate_age(2030)
+except ValueError as e:
+    print(f"错误：{e}")</code></pre>
+
+            <h3>自定义异常</h3>
+            <pre><code class="python">class InvalidAgeError(Exception):
+    """自定义异常"""
+    pass
+
+def set_age(age):
+    if age < 0 or age > 150:
+        raise InvalidAgeError("年龄必须在 0 到 150 之间")
+    return age
+
+try:
+    set_age(200)
+except InvalidAgeError as e:
+    print(f"捕获到自定义异常：{e}")</code></pre>
+        </section>
+
+        <div class="topic-nav">
+            <a href="directory-operations.html">← 目录操作</a> | <a href="pypdf2.html">PyPDF2 →</a>
+        </div>
+    </main>
+</body>
+</html>

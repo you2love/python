@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python 入门教程</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .homepage-container {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .hero-section {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+        }
+
+        .hero-section h1 {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-section p {
+            font-size: 1.3em;
+            opacity: 0.95;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .category-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 2px solid transparent;
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .category-card .icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .category-card h3 {
+            color: #667eea;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .category-card p {
+            color: #666;
+            font-size: 0.95em;
+            margin-bottom: 20px;
+        }
+
+        .category-card a {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 35px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .category-card a:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .feature-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-section h3 {
+            color: #764ba2;
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea10 0%, #764ba210 100%);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateX(5px);
+            background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
+        }
+
+        .feature-item .emoji {
+            font-size: 1.5em;
+            margin-right: 15px;
+        }
+
+        .feature-item .content h4 {
+            color: #667eea;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .feature-item .content p {
+            color: #666;
+            font-size: 0.9em;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 2.5em;
+            }
+
+            .hero-section p {
+                font-size: 1.1em;
+            }
+
+            .categories-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="homepage-container">
+        <div class="hero-section">
+            <h1>🐍 Python 入门教程</h1>
+            <p>从零开始，系统学习 Python 编程</p>
+        </div>
+
+        <div class="categories-grid">
+            <div class="category-card">
+                <div class="icon">📚</div>
+                <h3>基础入门</h3>
+                <p>Python 基础语法、变量、函数、面向对象等核心概念</p>
+                <a href="basics.html">开始学习</a>
+            </div>
+
+            <div class="category-card">
+                <div class="icon">📁</div>
+                <h3>文件操作</h3>
+                <p>文件读写、目录操作、异常处理、Office 文档处理</p>
+                <a href="file-management.html">开始学习</a>
+            </div>
+
+            <div class="category-card">
+                <div class="icon">🌐</div>
+                <h3>网络编程</h3>
+                <p>网络编程、异步编程、Requests、FastAPI 等</p>
+                <a href="network-programming.html">开始学习</a>
+            </div>
+
+            <div class="category-card">
+                <div class="icon">🕷️</div>
+                <h3>爬虫技术</h3>
+                <p>BeautifulSoup、Selenium、Playwright、Scrapy 等</p>
+                <a href="web-scraping.html">开始学习</a>
+            </div>
+
+            <div class="category-card">
+                <div class="icon">📊</div>
+                <h3>数据分析</h3>
+                <p>NumPy、Pandas、Matplotlib、Keras 等数据科学工具</p>
+                <a href="data-analysis.html">开始学习</a>
+            </div>
+
+            <div class="category-card">
+                <div class="icon">💾</div>
+                <h3>数据存储</h3>
+                <p>SQLAlchemy、MySQL、MongoDB、Redis 等数据库技术</p>
+                <a href="databases.html">开始学习</a>
+            </div>
+
+            <div class="category-card">
+                <div class="icon">🔧</div>
+                <h3>系统运维</h3>
+                <p>高级特性、Fabric、psutil、logging、Ansible 等</p>
+                <a href="devops.html">开始学习</a>
+            </div>
+
+            <div class="category-card">
+                <div class="icon">🛠️</div>
+                <h3>实用工具</h3>
+                <p>QRCode、学习资源等实用工具和参考资料</p>
+                <a href="tools.html">开始学习</a>
+            </div>
+        </div>
+
+        <div class="feature-section">
+            <h3>✨ 教程特色</h3>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="emoji">🎯</div>
+                    <div class="content">
+                        <h4>系统完整</h4>
+                        <p>从基础到高级，涵盖 Python 开发的各个方面</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="emoji">💡</div>
+                    <div class="content">
+                        <h4>实用导向</h4>
+                        <p>大量实战案例，直接应用于实际项目</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="emoji">📖</div>
+                    <div class="content">
+                        <h4>易于理解</h4>
+                        <p>清晰的代码示例和详细的说明注释</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="emoji">🚀</div>
+                    <div class="content">
+                        <h4>持续更新</h4>
+                        <p>紧跟 Python 最新发展和最佳实践</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

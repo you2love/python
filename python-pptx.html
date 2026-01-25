@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>python-pptx - Python 入门教程</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>    <nav>
+        <div class="nav-category">
+            <h3>📚 当前分类</h3>
+            <ul>
+                <li><a href="file-operations.html">文件操作</a></li>
+                <li><a href="directory-operations.html">目录操作</a></li>
+                <li><a href="exceptions.html">异常处理</a></li>
+                <li><a href="pypdf2.html">PyPDF2</a></li>
+                <li><a href="python-docx.html">python-docx</a></li>
+                <li><a href="docxtpl.html">docxtpl</a></li>
+                <li><a href="openpyxl.html">openpyxl</a></li>
+                <li><a href="python-pptx.html" class="active">python-pptx</a></li>
+                <li><a href="difflib.html">difflib</a></li>
+                <li><a href="filecmp.html">filecmp</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="topic-nav">
+            <a href="openpyxl.html">← openpyxl</a> | <a href="difflib.html">difflib →</a>
+        </div>
+
+        <section id="pythonpptx" class="content-section">
+            <h2>python-pptx</h2>
+            <p>python-pptx 是一个用于创建和修改 Microsoft PowerPoint (.pptx) 文件的 Python 库。</p>
+
+            <h3>安装</h3>
+            <pre><code class="bash">pip install python-pptx</code></pre>
+
+            <h3>创建演示文稿</h3>
+            <pre><code class="python">from pptx import Presentation
+
+# 创建演示文稿
+prs = Presentation()
+
+# 添加标题幻灯片
+slide_layout = prs.slide_layouts[0]  # 标题幻灯片布局
+slide = prs.slides.add_slide(slide_layout)
+
+title = slide.shapes.title
+subtitle = slide.placeholders[1]
+
+title.text = "演示文稿标题"
+subtitle.text = "副标题"
+
+# 保存
+prs.save('presentation.pptx')
+print("演示文稿已保存")</code></pre>
+
+            <h3>添加内容幻灯片</h3>
+            <pre><code class="python">from pptx import Presentation
+
+prs = Presentation()
+
+# 添加内容幻灯片
+slide_layout = prs.slide_layouts[1]  # 标题和内容布局
+slide = prs.slides.add_slide(slide_layout)
+
+# 设置标题
+title = slide.shapes.title
+title.text = "内容标题"
+
+# 添加文本内容
+content = slide.placeholders[1]
+text_frame = content.text_frame
+text_frame.text = "第一段文本"
+
+# 添加更多段落
+p = text_frame.add_paragraph()
+p.text = "第二段文本"
+p.level = 1
+
+p = text_frame.add_paragraph()
+p.text = "第三段文本"
+p.level = 2
+
+prs.save('content_slide.pptx')</code></pre>
+
+            <h3>添加图片</h3>
+            <pre><code class="python">from pptx import Presentation
+from pptx.util import Inches
+
+prs = Presentation()
+
+# 添加空白幻灯片
+blank_slide_layout = prs.slide_layouts[6]
+slide = prs.slides.add_slide(blank_slide_layout)
+
+# 添加图片
+left = top = Inches(1)
+height = Inches(5)
+pic = slide.shapes.add_picture('image.png', left, top, height=height)
+
+# 调整图片大小
+pic = slide.shapes.add_picture('image2.png', Inches(5), Inches(1), width=Inches(3))
+
+prs.save('image_slide.pptx')</code></pre>
+
+            <h3>添加表格</h3>
+            <pre><code class="python">from pptx import Presentation
+from pptx.util import Inches
+
+prs = Presentation()
+
+# 添加空白幻灯片
+slide_layout = prs.slide_layouts[6]
+slide = prs.slides.add_slide(slide_layout)
+
+# 添加表格
+rows, cols = 4, 3
+left = top = Inches(1)
+width = Inches(8)
+height = Inches(3)
+
+table = slide.shapes.add_table(rows, cols, left, top, width, height).table
+
+# 设置表头
+table.cell(0, 0).text = '姓名'
+table.cell(0, 1).text = '年龄'
+table.cell(0, 2).text = '城市'
+
+# 填充数据
+data = [
+    ['张三', 25, '北京'],
+    ['李四', 30, '上海'],
+    ['王五', 28, '广州']
+]
+
+for i, row_data in enumerate(data, 1):
+    for j, value in enumerate(row_data):
+        table.cell(i, j).text = str(value)
+
+prs.save('table_slide.pptx')</code></pre>
+
+            <h3>添加形状</h3>
+            <pre><code class="python">from pptx import Presentation
+from pptx.util import Inches
+from pptx.enum.shapes import MSO_SHAPE
+
+prs = Presentation()
+
+# 添加空白幻灯片
+slide_layout = prs.slide_layouts[6]
+slide = prs.slides.add_slide(slide_layout)
+
+# 添加矩形
+left = Inches(1)
+top = Inches(1)
+width = Inches(2)
+height = Inches(1)
+shape = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, left, top, width, height)
+shape.fill.solid()
+shape.fill.fore_color.rgb = (0, 0, 255)  # 蓝色
+
+# 添加圆形
+left = Inches(4)
+shape = slide.shapes.add_shape(MSO_SHAPE.OVAL, left, top, width, height)
+shape.fill.solid()
+shape.fill.fore_color.rgb = (255, 0, 0)  # 红色
+
+# 添加文本框
+left = Inches(1)
+top = Inches(3)
+width = Inches(6)
+height = Inches(1)
+textbox = slide.shapes.add_textbox(left, top, width, height)
+text_frame = textbox.text_frame
+text_frame.text = "这是一个文本框"
+
+prs.save('shapes_slide.pptx')</code></pre>
+
+            <h3>设置幻灯片背景</h3>
+            <pre><code class="python">from pptx import Presentation
+from pptx.util import Inches
+
+prs = Presentation()
+
+# 添加幻灯片
+slide_layout = prs.slide_layouts[6]
+slide = prs.slides.add_slide(slide_layout)
+
+# 设置背景颜色
+background = slide.background
+fill = background.fill
+fill.solid()
+fill.fore_color.rgb = (200, 200, 255)  # 浅蓝色
+
+# 添加标题
+left = top = Inches(1)
+width = height = Inches(1)
+title_box = slide.shapes.add_textbox(left, top, width, height)
+title_frame = title_box.text_frame
+title_frame.text = "带背景的幻灯片"
+
+prs.save('background_slide.pptx')</code></pre>
+
+            <h3>修改现有演示文稿</h3>
+            <pre><code class="python">from pptx import Presentation
+
+# 打开现有演示文稿
+prs = Presentation('presentation.pptx')
+
+# 遍历所有幻灯片
+for slide in prs.slides:
+    # 遍历幻灯片中的所有形状
+    for shape in slide.shapes:
+        if hasattr(shape, "text"):
+            print(f"文本: {shape.text}")
+            # 修改文本
+            if "旧文本" in shape.text:
+                shape.text = shape.text.replace("旧文本", "新文本")
+
+# 保存修改后的演示文稿
+prs.save('modified_presentation.pptx')</code></pre>
+
+            <h3>批量生成幻灯片</h3>
+            <pre><code class="python">from pptx import Presentation
+from pptx.util import Inches
+
+# 创建演示文稿
+prs = Presentation()
+
+# 数据
+data = [
+    {'title': '产品A', 'content': '产品A的介绍'},
+    {'title': '产品B', 'content': '产品B的介绍'},
+    {'title': '产品C', 'content': '产品C的介绍'}
+]
+
+# 批量创建幻灯片
+for item in data:
+    slide_layout = prs.slide_layouts[1]
+    slide = prs.slides.add_slide(slide_layout)
+    
+    # 设置标题
+    title = slide.shapes.title
+    title.text = item['title']
+    
+    # 设置内容
+    content = slide.placeholders[1]
+    content.text = item['content']
+
+prs.save('batch_slides.pptx')
+print("批量幻灯片已生成")</code></pre>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>python-pptx 适合创建自动化报告、批量生成演示文稿等场景。
+            </div>
+        </section>
+
+        <div class="topic-nav">
+            <a href="openpyxl.html">← openpyxl</a> | <a href="difflib.html">difflib →</a>
+        </div>
+    </main>
+</body>
+</html>

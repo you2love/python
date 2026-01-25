@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>爬虫技术 - Python 入门教程</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>    <nav>
+        <div class="nav-category">
+            <h3>📚 基础入门</h3>
+            <ul>
+                <li><a href="basics.html">简介</a></li>
+                <li><a href="basics.html#installation">安装</a></li>
+                <li><a href="basics.html#basics">基础语法</a></li>
+                <li><a href="basics.html#variables">变量</a></li>
+                <li><a href="basics.html#datatypes">数据类型</a></li>
+                <li><a href="basics.html#controlflow">控制流</a></li>
+                <li><a href="basics.html#functions">函数</a></li>
+                <li><a href="basics.html#oop">面向对象</a></li>
+                <li><a href="basics.html#stringformat">字符串格式化</a></li>
+                <li><a href="basics.html#tips">常用技巧</a></li>
+            </ul>
+        </div>
+        <div class="nav-category">
+            <h3>📁 文件操作</h3>
+            <ul>
+                <li><a href="file-management.html">文件操作</a></li>
+                <li><a href="file-management.html#directory">目录操作</a></li>
+                <li><a href="file-management.html#exceptions">异常处理</a></li>
+                <li><a href="file-management.html#pypdf2">PyPDF2</a></li>
+                <li><a href="file-management.html#pythondocx">python-docx</a></li>
+                <li><a href="file-management.html#docxtpl">docxtpl</a></li>
+                <li><a href="file-management.html#openpyxl">openpyxl</a></li>
+                <li><a href="file-management.html#pythonpptx">python-pptx</a></li>
+                <li><a href="file-management.html#difflib">difflib</a></li>
+                <li><a href="file-management.html#filecmp">filecmp</a></li>
+            </ul>
+        </div>
+        <div class="nav-category">
+            <h3>🌐 网络编程</h3>
+            <ul>
+                <li><a href="network-programming.html">网络编程</a></li>
+                <li><a href="network-programming.html#asyncio">异步编程</a></li>
+                <li><a href="network-programming.html#requests">Requests</a></li>
+                <li><a href="network-programming.html#aiohttp">aiohttp</a></li>
+                <li><a href="network-programming.html#fastapi">FastAPI</a></li>
+                <li><a href="network-programming.html#scapy">Scapy</a></li>
+            </ul>
+        </div>
+        <div class="nav-category">
+            <h3>🕷️ 爬虫技术</h3>
+            <ul>
+                <li><a href="#beautifulsoup" class="active">BeautifulSoup</a></li>
+                <li><a href="#selenium">Selenium</a></li>
+                <li><a href="#playwright">Playwright</a></li>
+                <li><a href="#scrapy">Scrapy</a></li>
+                <li><a href="#regex">正则表达式</a></li>
+            </ul>
+        </div>
+        <div class="nav-category">
+            <h3>📊 数据分析</h3>
+            <ul>
+                <li><a href="data-analysis.html">NumPy</a></li>
+                <li><a href="data-analysis.html#pandas">Pandas</a></li>
+                <li><a href="data-analysis.html#matplotlib">Matplotlib</a></li>
+                <li><a href="data-analysis.html#keras">Keras</a></li>
+            </ul>
+        </div>
+        <div class="nav-category">
+            <h3>💾 数据存储</h3>
+            <ul>
+                <li><a href="databases.html">SQLAlchemy</a></li>
+                <li><a href="databases.html#mysql">MySQL</a></li>
+                <li><a href="databases.html#mongodb">MongoDB</a></li>
+                <li><a href="databases.html#redis">Redis</a></li>
+            </ul>
+        </div>
+        <div class="nav-category">
+            <h3>🔧 系统运维</h3>
+            <ul>
+                <li><a href="devops.html">高级特性</a></li>
+                <li><a href="devops.html#fabric">Fabric</a></li>
+                <li><a href="devops.html#psutil">psutil</a></li>
+                <li><a href="devops.html#logging">logging</a></li>
+                <li><a href="devops.html#ansible">Ansible</a></li>
+            </ul>
+        </div>
+        <div class="nav-category">
+            <h3>🛠️ 实用工具</h3>
+            <ul>
+                <li><a href="tools.html">QRCode</a></li>
+                <li><a href="tools.html#resources">学习资源</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <section id="beautifulsoup" class="content-section">
+            <h2>BeautifulSoup</h2>
+            <p>BeautifulSoup 是一个 Python 库，用于从 HTML 或 XML 文件中提取数据，非常适合网页爬虫。</p>
+
+            <h3>安装</h3>
+            <pre><code class="bash">pip install beautifulsoup4
+pip install lxml  # 推荐使用 lxml 解析器</code></pre>
+
+            <h3>基本使用</h3>
+            <pre><code class="python">from bs4 import BeautifulSoup
+
+html = """
+<html>
+    <head>
+        <title>测试页面</title>
+    </head>
+    <body>
+        <h1>欢迎来到我的网站</h1>
+        <div class="content">
+            <p id="intro">这是一个段落</p>
+            <p>这是另一个段落</p>
+            <a href="https://example.com" class="link">链接</a>
+            <ul>
+                <li>项目1</li>
+                <li>项目2</li>
+                <li>项目3</li>
+            </ul>
+        </div>
+    </body>
+</html>
+"""
+
+# 创建 BeautifulSoup 对象
+soup = BeautifulSoup(html, 'lxml')
+
+# 格式化输出
+print(soup.prettify())
+
+# 获取标题
+print(f"标题: {soup.title.string}")
+
+# 获取第一个段落
+print(f"第一个段落: {soup.p.string}")
+
+# 通过 ID 查找
+print(f"ID为intro的段落: {soup.find(id='intro').string}")</code></pre>
+
+            <h3>查找元素</h3>
+            <pre><code class="python">from bs4 import BeautifulSoup
+
+html = """
+<div class="container">
+    <h2>标题</h2>
+    <p class="text">段落1</p>
+    <p class="text">段落2</p>
+    <a href="https://example.com">链接1</a>
+    <a href="https://test.com">链接2</a>
+</div>
+"""
+
+soup = BeautifulSoup(html, 'lxml')
+
+# find() 查找第一个匹配的元素
+h2 = soup.find('h2')
+print(f"h2: {h2.string}")
+
+# find_all() 查找所有匹配的元素
+paragraphs = soup.find_all('p', class_='text')
+for p in paragraphs:
+    print(f"段落: {p.string}")
+
+# 查找所有链接
+links = soup.find_all('a')
+for link in links:
+    print(f"链接文本: {link.string}, URL: {link['href']}")
+
+# CSS 选择器
+container = soup.select_one('.container')
+texts = soup.select('.text')
+print(f"选择器结果: {len(texts)} 个段落")</code></pre>
+
+            <h3>获取属性和文本</h3>
+            <pre><code class="python">from bs4 import BeautifulSoup
+
+html = """
+<a href="https://example.com" class="link" id="mylink">点击这里</a>
+<div class="info">
+    <span>姓名: 张三</span>
+    <span>年龄: 25</span>
+</div>
+"""
+
+soup = BeautifulSoup(html, 'lxml')
+
+# 获取属性
+link = soup.find('a')
+print(f"href: {link['href']}")
+print(f"class: {link.get('class')}")
+print(f"id: {link.get('id')}")
+
+# 获取文本
+print(f"链接文本: {link.string}")
+print(f"链接文本: {link.get_text()}")
+
+# 获取所有文本
+div = soup.find('div', class_='info')
+print(f"所有文本: {div.get_text(strip=True)}")</code></pre>
+
+            <h3>遍历文档树</h3>
+            <pre><code class="python">from bs4 import BeautifulSoup
+
+html = """
+<div>
+    <p>段落1</p>
+    <p>段落2</p>
+    <div>
+        <span>嵌套内容</span>
+    </div>
+</div>
+"""
+
+soup = BeautifulSoup(html, 'lxml')
+
+# 父元素
+p = soup.find('p')
+print(f"父元素: {p.parent.name}")
+
+# 子元素
+div = soup.find('div')
+for child in div.children:
+    if child.name:
+        print(f"子元素: {child.name}")
+
+# 后兄弟元素
+first_p = soup.find('p')
+next_sibling = first_p.next_sibling
+print(f"下一个兄弟: {next_sibling}")
+
+# 所有兄弟元素
+for sibling in first_p.next_siblings:
+    if sibling.name:
+        print(f"兄弟元素: {sibling.name}")</code></pre>
+
+            <h3>实际爬虫示例</h3>
+            <pre><code class="python">import requests
+from bs4 import BeautifulSoup
+
+def scrape_quotes():
+    url = 'https://quotes.toscrape.com/'
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'lxml')
+
+    # 查找所有名言
+    quotes = soup.find_all('div', class_='quote')
+
+    for quote in quotes:
+        text = quote.find('span', class_='text').string
+        author = quote.find('small', class_='author').string
+        tags = [tag.string for tag in quote.find_all('a', class_='tag')]
+
+        print(f"名言: {text}")
+        print(f"作者: {author}")
+        print(f"标签: {', '.join(tags)}")
+        print("-" * 50)
+
+scrape_quotes()</code></pre>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>BeautifulSoup 适合解析静态网页，对于动态网页需要配合 Selenium 或 Playwright 使用。
+            </div>
+        </section>
+
+        <section id="selenium" class="content-section">
+            <h2>Selenium</h2>
+            <p>Selenium 是一个自动化测试工具，可以模拟浏览器操作，适合爬取动态网页。</p>
+
+            <h3>安装</h3>
+            <pre><code class="bash">pip install selenium</code></pre>
+
+            <h3>基本使用</h3>
+            <pre><code class="python">from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+import time
+
+# 创建浏览器驱动（需要先下载对应浏览器的驱动）
+driver = webdriver.Chrome()  # 或 webdriver.Firefox()
+
+try:
+    # 打开网页
+    driver.get('https://www.baidu.com')
+
+    # 查找元素
+    search_box = driver.find_element(By.ID, 'kw')
+
+    # 输入搜索内容
+    search_box.send_keys('Python 爬虫')
+
+    # 提交搜索
+    search_box.send_keys(Keys.RETURN)
+
+    # 等待页面加载
+    time.sleep(2)
+
+    # 获取搜索结果
+    results = driver.find_elements(By.CSS_SELECTOR, '.result')
+    for result in results[:5]:
+        print(result.text)
+
+finally:
+    # 关闭浏览器
+    driver.quit()</code></pre>
+
+            <h3>元素定位</h3>
+            <pre><code class="python">from selenium import webdriver
+from selenium.webdriver.common.by import By
+
+driver = webdriver.Chrome()
+driver.get('https://example.com')
+
+# 通过 ID
+element = driver.find_element(By.ID, 'element_id')
+
+# 通过 Name
+element = driver.find_element(By.NAME, 'element_name')
+
+# 通过 Class Name
+element = driver.find_element(By.CLASS_NAME, 'element_class')
+
+# 通过 Tag Name
+element = driver.find_element(By.TAG_NAME, 'div')
+
+# 通过 CSS Selector
+element = driver.find_element(By.CSS_SELECTOR, '.class > div')
+
+# 通过 XPath
+element = driver.find_element(By.XPATH, '//div[@class="example"]')
+
+# 通过 Link Text
+element = driver.find_element(By.LINK_TEXT, '点击这里')
+
+# 通过 Partial Link Text
+element = driver.find_element(By.PARTIAL_LINK_TEXT, '点击')
+
+driver.quit()</code></pre>
+
+            <h3>元素操作</h3>
+            <pre><code class="python">from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import Select
+
+driver = webdriver.Chrome()
+driver.get('https://example.com')
+
+# 点击按钮
+button = driver.find_element(By.ID, 'submit')
+button.click()
+
+# 输入文本
+input_field = driver.find_element(By.ID, 'username')
+input_field.send_keys('张三')
+
+# 清除输入
+input_field.clear()
+
+# 获取文本
+text = element.text
+
+# 获取属性
+href = element.get_attribute('href')
+
+# 下拉框选择
+select = Select(driver.find_element(By.ID, 'country'))
+select.select_by_visible_text('中国')
+select.select_by_value('CN')
+select.select_by_index(0)
+
+# 滚动页面
+driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+
+driver.quit()</code></pre>
+
+            <h3>等待机制</h3>
+            <pre><code class="python">from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+driver = webdriver.Chrome()
+driver.get('https://example.com')
+
+# 显式等待
+try:
+    element = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.ID, 'dynamic-element'))
+    )
+    print("元素已加载")
+except:
+    print("等待超时")
+
+# 等待元素可点击
+element = WebDriverWait(driver, 10).until(
+    EC.element_to_be_clickable((By.ID, 'button'))
+)
+
+# 等待文本出现
+WebDriverWait(driver, 10).until(
+    EC.text_to_be_present_in_element((By.ID, 'status'), '完成')
+)
+
+driver.quit()</code></pre>
+
+            <h3>处理弹窗和 iframe</h3>
+            <pre><code class="python">from selenium import webdriver
+from selenium.webdriver.common.by import By
+
+driver = webdriver.Chrome()
+driver.get('https://example.com')
+
+# 处理 Alert 弹窗
+driver.find_element(By.ID, 'show-alert').click()
+alert = driver.switch_to.alert
+print(f"弹窗文本: {alert.text}")
+alert.accept()  # 点击确定
+# alert.dismiss()  # 点击取消
+
+# 处理 Confirm 弹窗
+driver.find_element(By.ID, 'show-confirm').click()
+confirm = driver.switch_to.alert
+confirm.dismiss()
+
+# 处理 Prompt 弹窗
+driver.find_element(By.ID, 'show-prompt').click()
+prompt = driver.switch_to.alert
+prompt.send_keys('输入内容')
+prompt.accept()
+
+# 切换到 iframe
+driver.switch_to.frame('iframe_id')
+# 在 iframe 中操作
+driver.switch_to.default_content()  # 切换回主页面
+
+driver.quit()</code></pre>
+
+            <h3>无头模式</h3>
+            <pre><code class="python">from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+
+# 配置无头模式
+chrome_options = Options()
+chrome_options.add_argument('--headless')
+chrome_options.add_argument('--disable-gpu')
+
+driver = webdriver.Chrome(options=chrome_options)
+driver.get('https://example.com')
+print(driver.title)
+driver.quit()</code></pre>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>Selenium 适合需要 JavaScript 渲染的动态网页，但速度较慢，资源占用大。
+            </div>
+        </section>
+
+        <section id="playwright" class="content-section">
+            <h2>Playwright</h2>
+            <p>Playwright 是微软开发的现代浏览器自动化工具，比 Selenium 更快、更稳定、功能更强大。</p>
+
+            <h3>安装</h3>
+            <pre><code class="bash">pip install playwright
+playwright install  # 安装浏览器驱动</code></pre>
+
+            <h3>基本使用</h3>
+            <pre><code class="python">from playwright.sync_api import sync_playwright
+
+with sync_playwright() as p:
+    # 启动浏览器
+    browser = p.chromium.launch(headless=False)
+    page = browser.new_page()
+
+    # 访问网页
+    page.goto('https://example.com')
+
+    # 获取标题
+    print(f"标题: {page.title()}")
+
+    # 截图
+    page.screenshot(path='example.png')
+
+    # 关闭浏览器
+    browser.close()</code></pre>
+
+            <h3>元素定位和操作</h3>
+            <pre><code class="python">from playwright.sync_api import sync_playwright
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(headless=False)
+    page = browser.new_page()
+    page.goto('https://example.com')
+
+    # 点击元素
+    page.click('button#submit')
+
+    # 输入文本
+    page.fill('input#username', '张三')
+
+    # 获取文本
+    text = page.text_content('div.content')
+
+    # 获取属性
+    href = page.get_attribute('a.link', 'href')
+
+    # 等待元素
+    page.wait_for_selector('.dynamic-content')
+
+    # 等待导航
+    page.wait_for_load_state('networkidle')
+
+    # 执行 JavaScript
+    result = page.evaluate('() => document.title')
+
+    browser.close()</code></pre>
+
+            <h3>表单操作</h3>
+            <pre><code class="python">from playwright.sync_api import sync_playwright
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(headless=False)
+    page = browser.new_page()
+    page.goto('https://example.com/login')
+
+    # 填写表单
+    page.fill('input[name="username"]', 'admin')
+    page.fill('input[name="password"]', 'password123')
+
+    # 选择下拉框
+    page.select_option('select#country', 'China')
+
+    # 勾选复选框
+    page.check('input[type="checkbox"]')
+
+    # 点击单选按钮
+    page.click('input[type="radio"][value="male"]')
+
+    # 提交表单
+    page.click('button[type="submit"]')
+
+    # 等待跳转
+    page.wait_for_url('**/dashboard')
+
+    browser.close()</code></pre>
+
+            <h3>网络拦截</h3>
+            <pre><code class="python">from playwright.sync_api import sync_playwright
+
+def handle_route(route):
+    # 修改请求
+    headers = route.request.headers
+    headers['X-Custom-Header'] = 'test'
+    route.continue_(headers=headers)
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(headless=False)
+    page = browser.new_page()
+
+    # 拦截请求
+    page.route('**/*.{png,jpg,jpeg}', lambda route: route.abort())
+    page.route('**/api/**', handle_route)
+
+    # 监听响应
+    def handle_response(response):
+        if 'api' in response.url:
+            print(f"API 响应: {response.status}")
+
+    page.on('response', handle_response)
+
+    page.goto('https://example.com')
+    browser.close()</code></pre>
+
+            <h3>多页面和上下文</h3>
+            <pre><code class="python">from playwright.sync_api import sync_playwright
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(headless=False)
+
+    # 创建多个上下文（类似隐身模式）
+    context1 = browser.new_context()
+    context2 = browser.new_context()
+
+    # 在不同上下文中创建页面
+    page1 = context1.new_page()
+    page2 = context2.new_page()
+
+    page1.goto('https://example.com')
+    page2.goto('https://test.com')
+
+    # 处理新标签页
+    with page.expect_popup() as popup_info:
+        page.click('a[target="_blank"]')
+    new_page = popup_info.value
+
+    browser.close()</code></pre>
+
+            <h3>异步模式</h3>
+            <pre><code class="python">import asyncio
+from playwright.async_api import async_playwright
+
+async def main():
+    async with async_playwright() as p:
+        browser = await p.chromium.launch(headless=False)
+        page = await browser.new_page()
+
+        await page.goto('https://example.com')
+        print(f"标题: {await page.title()}")
+
+        await browser.close()
+
+asyncio.run(main())</code></pre>
+
+            <h3>爬虫示例</h3>
+            <pre><code class="python">from playwright.sync_api import sync_playwright
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(headless=True)
+    page = browser.new_page()
+
+    # 访问网页
+    page.goto('https://quotes.toscrape.com/js/')
+
+    # 等待内容加载
+    page.wait_for_selector('.quote')
+
+    # 获取所有名言
+    quotes = page.locator('.quote')
+    count = quotes.count()
+
+    for i in range(count):
+        text = quotes.nth(i).locator('.text').text_content()
+        author = quotes.nth(i).locator('.author').text_content()
+        print(f"{author}: {text}")
+
+    browser.close()</code></pre>
+
+            <div class="feature-box">
+                <h3>Playwright 优势：</h3>
+                <ul>
+                    <li>⚡ 更快：比 Selenium 速度快很多</li>
+                    <li>🎯 更稳定：内置智能等待机制</li>
+                    <li>🌐 多浏览器：支持 Chromium、Firefox、WebKit</li>
+                    <li>📱 移动端：支持移动设备模拟</li>
+                    <li>🔧 强大的 API：支持网络拦截、表单处理等</li>
+                </ul>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>Playwright 是现代 Web 自动化的最佳选择，推荐优先使用。
+            </div>
+        </section>
+
+        <section id="scrapy" class="content-section">
+            <h2>Scrapy</h2>
+            <p>Scrapy 是一个强大的 Python 爬虫框架，适合大规模数据抓取。</p>
+
+            <h3>安装</h3>
+            <pre><code class="bash">pip install scrapy</code></pre>
+
+            <h3>创建项目</h3>
+            <pre><code class="bash"># 创建新项目
+scrapy startproject myproject
+
+# 创建爬虫
+cd myproject
+scrapy genspider myspider example.com
+
+# 运行爬虫
+scrapy crawl myspider</code></pre>
+
+            <h3>基本爬虫</h3>
+            <pre><code class="python">import scrapy
+
+class MySpider(scrapy.Spider):
+    name = 'myspider'
+    start_urls = ['https://quotes.toscrape.com/']
+
+    def parse(self, response):
+        # 提取数据
+        for quote in response.css('.quote'):
+            yield {
+                'text': quote.css('.text::text').get(),
+                'author': quote.css('.author::text').get(),
+                'tags': quote.css('.tag::text').getall(),
+            }
+
+        # 跟踪下一页链接
+        next_page = response.css('li.next a::attr(href)').get()
+        if next_page:
+            yield response.follow(next_page, callback=self.parse)</code></pre>
+
+            <h3>Items 定义</h3>
+            <pre><code class="python">import scrapy
+
+class QuoteItem(scrapy.Item):
+    text = scrapy.Field()
+    author = scrapy.Field()
+    tags = scrapy.Field()</code></pre>
+
+            <h3>使用 Items</h3>
+            <pre><code class="python">import scrapy
+from myproject.items import QuoteItem
+
+class MySpider(scrapy.Spider):
+    name = 'myspider'
+    start_urls = ['https://quotes.toscrape.com/']
+
+    def parse(self, response):
+        for quote in response.css('.quote'):
+            item = QuoteItem()
+            item['text'] = quote.css('.text::text').get()
+            item['author'] = quote.css('.author::text').get()
+            item['tags'] = quote.css('.tag::text').getall()
+            yield item</code></pre>
+
+            <h3>Pipelines 处理</h3>
+            <pre><code class="python">import json
+
+class JsonPipeline:
+    def open_spider(self, spider):
+        self.file = open('output.json', 'w', encoding='utf-8')
+
+    def close_spider(self, spider):
+        self.file.close()
+
+    def process_item(self, item, spider):
+        line = json.dumps(dict(item), ensure_ascii=False) + '\n'
+        self.file.write(line)
+        return item</code></pre>
+
+            <h3>配置 Pipelines</h3>
+            <pre><code class="python"># settings.py
+ITEM_PIPELINES = {
+    'myproject.pipelines.JsonPipeline': 300,
+}</code></pre>
+
+            <h3>中间件</h3>
+            <pre><code class="python">class UserAgentMiddleware:
+    def process_request(self, request, spider):
+        request.headers['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
+
+class ProxyMiddleware:
+    def process_request(self, request, spider):
+        request.meta['proxy'] = 'http://proxy.example.com:8080'</code></pre>
+
+            <h3>配置中间件</h3>
+            <pre><code class="python"># settings.py
+DOWNLOADER_MIDDLEWARES = {
+    'myproject.middlewares.UserAgentMiddleware': 400,
+    'myproject.middlewares.ProxyMiddleware': 410,
+}</code></pre>
+
+            <h3>常用设置</h3>
+            <pre><code class="python"># settings.py
+
+# 遵守 robots.txt
+ROBOTSTXT_OBEY = False
+
+# 下载延迟
+DOWNLOAD_DELAY = 2
+
+# 并发请求数
+CONCURRENT_REQUESTS = 16
+
+# User-Agent
+USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
+
+# Cookies
+COOKIES_ENABLED = False
+
+# 重试次数
+RETRY_TIMES = 3
+
+# 超时时间
+DOWNLOAD_TIMEOUT = 30</code></pre>
+
+            <h3>导出数据</h3>
+            <pre><code class="bash"># 导出为 JSON
+scrapy crawl myspider -o output.json
+
+# 导出为 CSV
+scrapy crawl myspider -o output.csv
+
+# 导出为 XML
+scrapy crawl myspider -o output.xml</code></pre>
+
+            <h3>运行多个爬虫</h3>
+            <pre><code class="python">from scrapy.crawler import CrawlerProcess
+from myproject.spiders.myspider import MySpider
+
+process = CrawlerProcess({
+    'USER_AGENT': 'Mozilla/5.0',
+})
+
+process.crawl(MySpider)
+process.start()</code></pre>
+
+            <div class="feature-box">
+                <h3>Scrapy 特点：</h3>
+                <ul>
+                    <li>🚀 高性能：异步处理，支持高并发</li>
+                    <li>🔧 可扩展：支持中间件、管道等扩展</li>
+                    <li>📊 数据提取：支持 CSS 选择器、XPath</li>
+                    <li>💾 数据存储：支持多种格式导出</li>
+                    <li>🌐 分布式：支持分布式爬取</li>
+                </ul>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>Scrapy 适合大规模数据抓取，配合 Playwright 可以处理动态网页。
+            </div>
+        </section>
+
+        <section id="regex" class="content-section">
+            <h2>正则表达式</h2>
+            <p>正则表达式是一种强大的文本匹配工具，Python 通过 re 模块提供支持。</p>
+
+            <h3>基本匹配</h3>
+            <pre><code class="python">import re
+
+# 匹配字符串
+text = "Hello, Python 3.10!"
+
+# 查找第一个匹配
+match = re.search(r'Python', text)
+if match:
+    print(f"找到匹配: {match.group()}")  # Python
+
+# 查找所有匹配
+matches = re.findall(r'\d+', text)
+print(f"所有数字: {matches}")  # ['3', '10']
+
+# 替换
+new_text = re.sub(r'Python', 'Java', text)
+print(f"替换后: {new_text}")  # Hello, Java 3.10!
+
+# 分割
+parts = re.split(r'[,\s]+', text)
+print(f"分割结果: {parts}")  # ['Hello', 'Python', '3.10!']</code></pre>
+
+            <h3>常用模式</h3>
+            <pre><code class="python">import re
+
+# 匹配邮箱
+email = "user@example.com"
+pattern = r'[\w\.-]+@[\w\.-]+\.\w+'
+if re.match(pattern, email):
+    print("有效的邮箱地址")
+
+# 匹配手机号
+phone = "13812345678"
+pattern = r'1[3-9]\d{9}'
+if re.match(pattern, phone):
+    print("有效的手机号")
+
+# 匹配 URL
+url = "https://www.example.com/path"
+pattern = r'https?://[\w\.-]+/\S*'
+if re.match(pattern, url):
+    print("有效的 URL")
+
+# 匹配日期
+date = "2026-01-25"
+pattern = r'\d{4}-\d{2}-\d{2}'
+if re.match(pattern, date):
+    print("有效的日期格式")</code></pre>
+
+            <h3>分组和捕获</h3>
+            <pre><code class="python">import re
+
+# 分组匹配
+text = "张三: 25岁, 李四: 30岁"
+pattern = r'(\w+): (\d+)岁'
+matches = re.findall(pattern, text)
+print(matches)  # [('张三', '25'), ('李四', '30')]
+
+# 命名分组
+text = "2026-01-25"
+pattern = r'(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2})'
+match = re.match(pattern, text)
+if match:
+    print(f"年份: {match.group('year')}")
+    print(f"月份: {match.group('month')}")
+    print(f"日期: {match.group('day')}")
+
+# 非捕获分组
+text = "apple, banana, orange"
+pattern = r'(?:apple|banana), (\w+)'
+match = re.search(pattern, text)
+if match:
+    print(f"捕获: {match.group(1)}")  # orange</code></pre>
+
+            <h3>预编译正则表达式</h3>
+            <pre><code class="python">import re
+
+# 预编译（性能更好）
+pattern = re.compile(r'\d+')
+
+# 使用预编译的模式
+text = "Python 3.10 is awesome"
+matches = pattern.findall(text)
+print(matches)  # ['3', '10']
+
+# 多次使用
+for text in ["Python 3.8", "Python 3.9", "Python 3.10"]:
+    version = pattern.findall(text)
+    print(f"{text}: {version}")</code></pre>
+
+            <h3>常用正则表达式符号</h3>
+            <pre><code class="python"># . 匹配任意字符（除换行符）
+re.search(r'P.y', 'Pay')  # 匹配
+
+# ^ 匹配字符串开头
+re.search(r'^Hello', 'Hello World')  # 匹配
+
+# $ 匹配字符串结尾
+re.search(r'World, 'Hello World')  # 匹配
+
+# * 匹配 0 次或多次
+re.search(r'Py*', 'Pyyyyython')  # 匹配
+
+# + 匹配 1 次或多次
+re.search(r'Py+', 'Pyyyyython')  # 匹配
+
+# ? 匹配 0 次或 1 次
+re.search(r'Py?', 'Pthon')  # 匹配
+
+# {n} 匹配 n 次
+re.search(r'\d{3}', '12345')  # 匹配 '123'
+
+# {n,m} 匹配 n 到 m 次
+re.search(r'\d{1,3}', '12345')  # 匹配 '123'
+
+# [] 字符集
+re.search(r'[Pp]ython', 'Python')  # 匹配
+
+# | 或
+re.search(r'Python|Java', 'Python')  # 匹配
+
+# \d 数字, \w 单词字符, \s 空白字符
+re.search(r'\d+', 'abc123')  # 匹配 '123'</code></pre>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>在正则表达式前加 r 前缀（原始字符串）可以避免转义字符的问题。
+            </div>
+        </section>
+    </main>
+</body>
+</html>

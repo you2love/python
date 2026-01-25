@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQLAlchemy - Python 入门教程</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>    <nav>
+        <div class="nav-category">
+            <h3>📚 当前分类</h3>
+            <ul>
+                <li><a href="sqlalchemy.html" class="active">SQLAlchemy</a></li>
+                <li><a href="mysql.html">MySQL</a></li>
+                <li><a href="mongodb.html">MongoDB</a></li>
+                <li><a href="redis.html">Redis</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="topic-nav">
+            <a href="mysql.html">MySQL →</a>
+        </div>
+
+        <section id="sqlalchemy" class="content-section">
+            <h2>SQLAlchemy</h2>
+            <p>SQLAlchemy 是 Python 中最流行的 SQL 工具包和 ORM（对象关系映射）库，提供了强大的数据库操作功能。</p>
+
+            <h3>安装</h3>
+            <pre><code class="bash">pip install sqlalchemy</code></pre>
+
+            <h3>Core 模式（SQL 表达式语言）</h3>
+            <pre><code class="python">from sqlalchemy import create_engine, text
+
+# 创建数据库引擎
+engine = create_engine('sqlite:///example.db')
+
+# 执行原生 SQL
+with engine.connect() as conn:
+    result = conn.execute(text("SELECT 'Hello, SQLAlchemy!'"))
+    print(result.fetchone())
+
+# 创建表
+with engine.connect() as conn:
+    conn.execute(text("""
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            age INTEGER
+        )
+    """))
+    conn.commit()
+
+# 插入数据
+with engine.connect() as conn:
+    conn.execute(text("INSERT INTO users (name, age) VALUES ('张三', 25)"))
+    conn.execute(text("INSERT INTO users (name, age) VALUES ('李四', 30)"))
+    conn.commit()
+
+# 查询数据
+with engine.connect() as conn:
+    result = conn.execute(text("SELECT * FROM users"))
+    for row in result:
+        print(row)</code></pre>
+
+            <h3>ORM 模式（对象关系映射）</h3>
+            <pre><code class="python">from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy.orm import declarative_base, sessionmaker
+
+# 创建基类
+Base = declarative_base()
+
+# 定义模型
+class User(Base):
+    __tablename__ = 'users'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(50), nullable=False)
+    age = Column(Integer)
+
+    def __repr__(self):
+        return f"<User(name='{self.name}', age={self.age})>"
+
+# 创建引擎和会话
+engine = create_engine('sqlite:///example.db')
+Base.metadata.create_all(engine)
+Session = sessionmaker(bind=engine)
+session = Session()
+
+# 创建（插入）
+user1 = User(name='王五', age=28)
+user2 = User(name='赵六', age=32)
+session.add(user1)
+session.add(user2)
+session.commit()
+
+# 读取（查询）
+all_users = session.query(User).all()
+for user in all_users:
+    print(user)
+
+# 条件查询
+user = session.query(User).filter_by(name='王五').first()
+print(f"找到用户: {user}")
+
+# 更新
+user = session.query(User).filter_by(name='王五').first()
+user.age = 29
+session.commit()
+
+# 删除
+user = session.query(User).filter_by(name='赵六').first()
+session.delete(user)
+session.commit()
+
+# 关闭会话
+session.close()</code></pre>
+
+            <h3>关系映射</h3>
+            <pre><code class="python">from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
+from sqlalchemy.orm import declarative_base, sessionmaker, relationship
+
+Base = declarative_base()
+
+class Author(Base):
+    __tablename__ = 'authors'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(50))
+
+    # 一对多关系
+    books = relationship("Book", back_populates="author")
+
+class Book(Base):
+    __tablename__ = 'books'
+
+    id = Column(Integer, primary_key=True)
+    title = Column(String(100))
+    author_id = Column(Integer, ForeignKey('authors.id'))
+
+    # 多对一关系
+    author = relationship("Author", back_populates="books")
+
+# 创建表
+engine = create_engine('sqlite:///library.db')
+Base.metadata.create_all(engine)
+Session = sessionmaker(bind=engine)
+session = Session()
+
+# 创建作者和书籍
+author = Author(name='鲁迅')
+book1 = Book(title='狂人日记', author=author)
+book2 = Book(title='阿Q正传', author=author)
+
+session.add(author)
+session.commit()
+
+# 查询作者及其书籍
+author = session.query(Author).filter_by(name='鲁迅').first()
+print(f"作者: {author.name}")
+print(f"书籍: {[book.title for book in author.books]}")
+
+session.close()</code></pre>
+
+            <h3>连接 MySQL 数据库</h3>
+            <pre><code class="python">from sqlalchemy import create_engine
+
+# MySQL 连接字符串
+engine = create_engine('mysql+pymysql://username:password@localhost:3306/database_name')
+
+# 或者使用 mysql-connector-python
+engine = create_engine('mysql+mysqlconnector://username:password@localhost:3306/database_name')</code></pre>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>ORM 模式更适合复杂应用，Core 模式更适合简单查询或需要精细控制的场景。
+            </div>
+        </section>
+
+        <div class="topic-nav">
+            <a href="mysql.html">MySQL →</a>
+        </div>
+    </main>
+</body>
+</html>

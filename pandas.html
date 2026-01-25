@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pandas - Python 入门教程</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>    <nav>
+        <div class="nav-category">
+            <h3>📚 当前分类</h3>
+            <ul>
+                <li><a href="numpy.html">NumPy</a></li>
+                <li><a href="pandas.html" class="active">Pandas</a></li>
+                <li><a href="matplotlib.html">Matplotlib</a></li>
+                <li><a href="keras.html">Keras</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="topic-nav">
+            <a href="numpy.html">← NumPy</a> | <a href="matplotlib.html">Matplotlib →</a>
+        </div>
+
+        <section id="pandas" class="content-section">
+            <h2>Pandas</h2>
+            <p>Pandas 是 Python 中数据分析的核心库，提供了 DataFrame 和 Series 数据结构，让数据处理变得简单高效。</p>
+
+            <h3>安装</h3>
+            <pre><code class="bash">pip install pandas</code></pre>
+
+            <h3>创建 DataFrame</h3>
+            <pre><code class="python">import pandas as pd
+
+# 从字典创建
+data = {
+    '姓名': ['张三', '李四', '王五'],
+    '年龄': [25, 30, 35],
+    '城市': ['北京', '上海', '广州']
+}
+df = pd.DataFrame(data)
+print(df)
+
+# 从列表创建
+data = [
+    ['张三', 25, '北京'],
+    ['李四', 30, '上海'],
+    ['王五', 35, '广州']
+]
+df = pd.DataFrame(data, columns=['姓名', '年龄', '城市'])
+print(df)
+
+# 从 NumPy 数组创建
+import numpy as np
+arr = np.random.rand(5, 3)
+df = pd.DataFrame(arr, columns=['A', 'B', 'C'])
+print(df)</code></pre>
+
+            <h3>读取和写入数据</h3>
+            <pre><code class="python">import pandas as pd
+
+# 读取 CSV 文件
+df = pd.read_csv('data.csv')
+
+# 读取 Excel 文件
+df = pd.read_excel('data.xlsx')
+
+# 读取 JSON 文件
+df = pd.read_json('data.json')
+
+# 写入 CSV 文件
+df.to_csv('output.csv', index=False, encoding='utf-8')
+
+# 写入 Excel 文件
+df.to_excel('output.xlsx', index=False)
+
+# 写入 JSON 文件
+df.to_json('output.json', force_ascii=False, indent=2)</code></pre>
+
+            <h3>数据查看</h3>
+            <pre><code class="python">import pandas as pd
+
+# 假设 df 是一个 DataFrame
+print(f"前5行:\n{df.head()}")
+print(f"后5行:\n{df.tail()}")
+print(f"基本信息:\n{df.info()}")
+print(f"统计信息:\n{df.describe()}")
+print(f"列名: {df.columns.tolist()}")
+print(f"形状: {df.shape}")
+print(f"数据类型:\n{df.dtypes}")</code></pre>
+
+            <h3>数据选择</h3>
+            <pre><code class="python">import pandas as pd
+
+# 选择列
+print(df['姓名'])        # 单列
+print(df[['姓名', '年龄']])  # 多列
+
+# 选择行（位置索引）
+print(df.iloc[0])       # 第一行
+print(df.iloc[0:3])     # 前三行
+
+# 选择行（标签索引）
+print(df.loc[0])        # 第一行
+print(df.loc[0:2])      # 前三行
+
+# 条件选择
+print(df[df['年龄'] > 25])      # 年龄大于25的行
+print(df[df['城市'] == '北京']) # 城市为北京的行
+
+# 组合条件
+print(df[(df['年龄'] > 25) & (df['城市'] == '上海')])</code></pre>
+
+            <h3>数据操作</h3>
+            <pre><code class="python">import pandas as pd
+
+# 添加列
+df['工资'] = [8000, 10000, 12000]
+
+# 删除列
+df = df.drop('工资', axis=1)
+
+# 重命名列
+df = df.rename(columns={'姓名': 'name', '年龄': 'age'})
+
+# 排序
+df_sorted = df.sort_values('年龄', ascending=False)
+
+# 去重
+df_unique = df.drop_duplicates()
+
+# 填充缺失值
+df_filled = df.fillna(0)
+
+# 删除缺失值
+df_clean = df.dropna()</code></pre>
+
+            <h3>数据聚合</h3>
+            <pre><code class="python">import pandas as pd
+
+# 按列分组
+grouped = df.groupby('城市')
+print(f"各城市平均年龄:\n{grouped['年龄'].mean()}")
+
+# 多种聚合
+result = df.groupby('城市').agg({
+    '年龄': ['mean', 'max', 'min'],
+    '工资': 'sum'
+})
+print(result)
+
+# 计数
+count = df['城市'].value_counts()
+print(f"城市人数:\n{count}")</code></pre>
+
+            <h3>数据合并</h3>
+            <pre><code class="python">import pandas as pd
+
+df1 = pd.DataFrame({'姓名': ['张三', '李四'], '年龄': [25, 30]})
+df2 = pd.DataFrame({'姓名': ['张三', '李四'], '工资': [8000, 10000]})
+
+# 内连接
+merged = pd.merge(df1, df2, on='姓名')
+print(merged)
+
+# 左连接
+left_join = pd.merge(df1, df2, on='姓名', how='left')
+print(left_join)
+
+# 拼接
+concatenated = pd.concat([df1, df2], axis=0)  # 纵向拼接
+print(concatenated)</code></pre>
+
+            <h3>时间序列</h3>
+            <pre><code class="python">import pandas as pd
+
+# 创建时间序列
+dates = pd.date_range('2026-01-01', periods=7, freq='D')
+df = pd.DataFrame({'日期': dates, '值': range(7)})
+print(df)
+
+# 设置索引
+df = df.set_index('日期')
+
+# 按时间选择
+print(df['2026-01-01':'2026-01-03'])
+
+# 重采样
+monthly = df.resample('M').sum()
+print(monthly)</code></pre>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>Pandas 是数据分析和数据科学的基础库，建议深入学习。
+            </div>
+        </section>
+
+        <div class="topic-nav">
+            <a href="numpy.html">← NumPy</a> | <a href="matplotlib.html">Matplotlib →</a>
+        </div>
+    </main>
+</body>
+</html>

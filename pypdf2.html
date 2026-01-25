@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyPDF2 - Python 入门教程</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>    <nav>
+        <div class="nav-category">
+            <h3>📚 当前分类</h3>
+            <ul>
+                <li><a href="file-operations.html">文件操作</a></li>
+                <li><a href="directory-operations.html">目录操作</a></li>
+                <li><a href="exceptions.html">异常处理</a></li>
+                <li><a href="pypdf2.html" class="active">PyPDF2</a></li>
+                <li><a href="python-docx.html">python-docx</a></li>
+                <li><a href="docxtpl.html">docxtpl</a></li>
+                <li><a href="openpyxl.html">openpyxl</a></li>
+                <li><a href="python-pptx.html">python-pptx</a></li>
+                <li><a href="difflib.html">difflib</a></li>
+                <li><a href="filecmp.html">filecmp</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="topic-nav">
+            <a href="exceptions.html">← 异常处理</a> | <a href="python-docx.html">python-docx →</a>
+        </div>
+
+        <section id="pypdf2" class="content-section">
+            <h2>PyPDF2</h2>
+            <p>PyPDF2 是一个纯 Python 编写的 PDF 工具库，可以读取、分割、合并和转换 PDF 文件。</p>
+
+            <h3>安装</h3>
+            <pre><code class="bash">pip install PyPDF2</code></pre>
+
+            <h3>读取 PDF 信息</h3>
+            <pre><code class="python">from PyPDF2 import PdfReader
+
+# 读取 PDF 文件
+reader = PdfReader('example.pdf')
+
+# 获取页数
+print(f"总页数: {len(reader.pages)}")
+
+# 获取 PDF 信息
+info = reader.metadata
+print(f"标题: {info.get('/Title', '未知')}")
+print(f"作者: {info.get('/Author', '未知')}")
+print(f"创建者: {info.get('/Creator', '未知')}")
+
+# 读取第一页
+page = reader.pages[0]
+print(f"第一页内容: {page.extract_text()}")</code></pre>
+
+            <h3>提取所有文本</h3>
+            <pre><code class="python">from PyPDF2 import PdfReader
+
+def extract_text_from_pdf(pdf_path):
+    reader = PdfReader(pdf_path)
+    text = ""
+
+    for page in reader.pages:
+        text += page.extract_text() + "\n"
+
+    return text
+
+# 提取文本
+text = extract_text_from_pdf('example.pdf')
+print(text)
+
+# 保存到文本文件
+with open('output.txt', 'w', encoding='utf-8') as f:
+    f.write(text)</code></pre>
+
+            <h3>合并 PDF 文件</h3>
+            <pre><code class="python">from PyPDF2 import PdfMerger
+
+# 创建合并器
+merger = PdfMerger()
+
+# 添加 PDF 文件
+merger.append('file1.pdf')
+merger.append('file2.pdf')
+merger.append('file3.pdf')
+
+# 或者使用文件对象
+with open('file4.pdf', 'rb') as f:
+    merger.append(f)
+
+# 保存合并后的 PDF
+merger.write('merged.pdf')
+merger.close()</code></pre>
+
+            <h3>分割 PDF 文件</h3>
+            <pre><code class="python">from PyPDF2 import PdfReader, PdfWriter
+
+# 读取 PDF
+reader = PdfReader('example.pdf')
+
+# 分割：提取前 3 页
+writer = PdfWriter()
+for i in range(3):
+    writer.add_page(reader.pages[i])
+
+# 保存
+with open('first_3_pages.pdf', 'wb') as f:
+    writer.write(f)
+
+# 分割：提取特定页面
+writer = PdfWriter()
+writer.add_page(reader.pages[0])  # 第1页
+writer.add_page(reader.pages[2])  # 第3页
+writer.add_page(reader.pages[4])  # 第5页
+
+with open('selected_pages.pdf', 'wb') as f:
+    writer.write(f)</code></pre>
+
+            <h3>旋转 PDF 页面</h3>
+            <pre><code class="python">from PyPDF2 import PdfReader, PdfWriter
+
+# 读取 PDF
+reader = PdfReader('example.pdf')
+writer = PdfWriter()
+
+# 旋转所有页面 90 度
+for page in reader.pages:
+    page.rotate(90)
+    writer.add_page(page)
+
+# 保存
+with open('rotated.pdf', 'wb') as f:
+    writer.write(f)
+
+# 旋转特定页面
+writer = PdfWriter()
+for i, page in enumerate(reader.pages):
+    if i == 0:  # 第一页旋转 180 度
+        page.rotate(180)
+    writer.add_page(page)
+
+with open('rotated_first_page.pdf', 'wb') as f:
+    writer.write(f)</code></pre>
+
+            <h3>加密和解密 PDF</h3>
+            <pre><code class="python">from PyPDF2 import PdfReader, PdfWriter
+
+# 加密 PDF
+reader = PdfReader('example.pdf')
+writer = PdfWriter()
+
+for page in reader.pages:
+    writer.add_page(page)
+
+# 添加密码
+writer.encrypt('user_password', owner_password='owner_password')
+
+# 保存加密的 PDF
+with open('encrypted.pdf', 'wb') as f:
+    writer.write(f)
+
+# 解密 PDF
+reader = PdfReader('encrypted.pdf')
+if reader.is_encrypted:
+    reader.decrypt('user_password')
+
+# 提取解密后的内容
+page = reader.pages[0]
+print(page.extract_text())</code></pre>
+
+            <h3>添加水印</h3>
+            <pre><code class="python">from PyPDF2 import PdfReader, PdfWriter
+
+# 读取 PDF 和水印
+pdf_reader = PdfReader('example.pdf')
+watermark_reader = PdfReader('watermark.pdf')
+
+writer = PdfWriter()
+
+# 为每一页添加水印
+watermark_page = watermark_reader.pages[0]
+for page in pdf_reader.pages:
+    page.merge_page(watermark_page)
+    writer.add_page(page)
+
+# 保存
+with open('watermarked.pdf', 'wb') as f:
+    writer.write(f)</code></pre>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>PyPDF2 适合处理简单的 PDF 操作，如合并、分割、提取文本等。对于复杂的 PDF 操作，可以考虑使用 pdfplumber 或 PyMuPDF。
+            </div>
+        </section>
+
+        <div class="topic-nav">
+            <a href="exceptions.html">← 异常处理</a> | <a href="python-docx.html">python-docx →</a>
+        </div>
+    </main>
+</body>
+</html>

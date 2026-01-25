@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基础入门 - Python 入门教程</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>    <nav>
+        <div class="nav-category">
+            <h3>📚 基础入门</h3>
+            <ul>
+                <li><a href="#intro" class="active">简介</a></li>
+                <li><a href="#installation">安装</a></li>
+                <li><a href="#basics">基础语法</a></li>
+                <li><a href="#variables">变量</a></li>
+                <li><a href="#datatypes">数据类型</a></li>
+                <li><a href="#controlflow">控制流</a></li>
+                <li><a href="#functions">函数</a></li>
+                <li><a href="#oop">面向对象</a></li>
+                <li><a href="#stringformat">字符串格式化</a></li>
+                <li><a href="#tips">常用技巧</a></li>
+            </ul>
+        </div>
+        <div class="nav-category">
+            <h3>📁 文件操作</h3>
+            <ul>
+                <li><a href="file-management.html">文件操作</a></li>
+                <li><a href="file-management.html#directory">目录操作</a></li>
+                <li><a href="file-management.html#exceptions">异常处理</a></li>
+                <li><a href="file-management.html#pypdf2">PyPDF2</a></li>
+                <li><a href="file-management.html#pythondocx">python-docx</a></li>
+                <li><a href="file-management.html#docxtpl">docxtpl</a></li>
+                <li><a href="file-management.html#openpyxl">openpyxl</a></li>
+                <li><a href="file-management.html#pythonpptx">python-pptx</a></li>
+                <li><a href="file-management.html#difflib">difflib</a></li>
+                <li><a href="file-management.html#filecmp">filecmp</a></li>
+            </ul>
+        </div>
+        <div class="nav-category">
+            <h3>🌐 网络编程</h3>
+            <ul>
+                <li><a href="network-programming.html">网络编程</a></li>
+                <li><a href="network-programming.html#asyncio">异步编程</a></li>
+                <li><a href="network-programming.html#requests">Requests</a></li>
+                <li><a href="network-programming.html#aiohttp">aiohttp</a></li>
+                <li><a href="network-programming.html#fastapi">FastAPI</a></li>
+                <li><a href="network-programming.html#scapy">Scapy</a></li>
+            </ul>
+        </div>
+        <div class="nav-category">
+            <h3>🕷️ 爬虫技术</h3>
+            <ul>
+                <li><a href="web-scraping.html">BeautifulSoup</a></li>
+                <li><a href="web-scraping.html#selenium">Selenium</a></li>
+                <li><a href="web-scraping.html#playwright">Playwright</a></li>
+                <li><a href="web-scraping.html#scrapy">Scrapy</a></li>
+                <li><a href="web-scraping.html#regex">正则表达式</a></li>
+            </ul>
+        </div>
+        <div class="nav-category">
+            <h3>📊 数据分析</h3>
+            <ul>
+                <li><a href="data-analysis.html">NumPy</a></li>
+                <li><a href="data-analysis.html#pandas">Pandas</a></li>
+                <li><a href="data-analysis.html#matplotlib">Matplotlib</a></li>
+                <li><a href="data-analysis.html#keras">Keras</a></li>
+            </ul>
+        </div>
+        <div class="nav-category">
+            <h3>💾 数据存储</h3>
+            <ul>
+                <li><a href="databases.html">SQLAlchemy</a></li>
+                <li><a href="databases.html#mysql">MySQL</a></li>
+                <li><a href="databases.html#mongodb">MongoDB</a></li>
+                <li><a href="databases.html#redis">Redis</a></li>
+            </ul>
+        </div>
+        <div class="nav-category">
+            <h3>🔧 系统运维</h3>
+            <ul>
+                <li><a href="devops.html">高级特性</a></li>
+                <li><a href="devops.html#fabric">Fabric</a></li>
+                <li><a href="devops.html#psutil">psutil</a></li>
+                <li><a href="devops.html#logging">logging</a></li>
+                <li><a href="devops.html#ansible">Ansible</a></li>
+            </ul>
+        </div>
+        <div class="nav-category">
+            <h3>🛠️ 实用工具</h3>
+            <ul>
+                <li><a href="tools.html">QRCode</a></li>
+                <li><a href="tools.html#resources">学习资源</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <section id="intro" class="content-section">
+            <h2>什么是 Python？</h2>
+            <p>Python 是一种高级编程语言，由 Guido van Rossum 于 1991 年创建。它以其简洁、易读的语法而闻名，非常适合初学者学习编程。</p>
+            <div class="feature-box">
+                <h3>Python 的特点：</h3>
+                <ul>
+                    <li>✅ 简单易学，语法清晰</li>
+                    <li>✅ 功能强大，应用广泛</li>
+                    <li>✅ 跨平台，可在 Windows、Mac、Linux 上运行</li>
+                    <li>✅ 拥有丰富的第三方库</li>
+                    <li>✅ 免费开源</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="installation" class="content-section">
+            <h2>安装 Python</h2>
+            <h3>Windows 系统</h3>
+            <ol>
+                <li>访问 <a href="https://www.python.org/downloads/" target="_blank">Python 官网</a></li>
+                <li>下载最新版本的 Python 安装包</li>
+                <li>运行安装程序，勾选 "Add Python to PATH"</li>
+                <li>点击 "Install Now" 完成安装</li>
+            </ol>
+
+            <h3>macOS 系统</h3>
+            <ol>
+                <li>使用 Homebrew 安装：<code>brew install python</code></li>
+                <li>或从 Python 官网下载安装包</li>
+            </ol>
+
+            <h3>Linux 系统</h3>
+            <p>大多数 Linux 系统已预装 Python。如需安装：</p>
+            <pre><code>sudo apt-get install python3  # Ubuntu/Debian
+sudo yum install python3      # CentOS/RHEL</code></pre>
+
+            <h3>验证安装</h3>
+            <p>在终端或命令提示符中输入：</p>
+            <pre><code>python --version
+# 或
+python3 --version</code></pre>
+        </section>
+
+        <section id="basics" class="content-section">
+            <h2>基础语法</h2>
+            <h3>Hello World</h3>
+            <p>第一个 Python 程序：</p>
+            <pre><code class="python">print("Hello, World!")</code></pre>
+
+            <h3>注释</h3>
+            <p>Python 使用 # 符号表示单行注释：</p>
+            <pre><code class="python"># 这是一个注释
+print("Hello")  # 这也是注释
+
+"""
+这是多行注释
+可以跨越多行
+"""</code></pre>
+
+            <h3>缩进</h3>
+            <p>Python 使用缩进来表示代码块，通常使用 4 个空格：</p>
+            <pre><code class="python">if True:
+    print("这是缩进的代码块")
+    print("同样缩进")
+print("这是外层代码")</code></pre>
+        </section>
+
+        <section id="variables" class="content-section">
+            <h2>变量</h2>
+            <p>变量是存储数据的容器。在 Python 中，不需要声明变量类型：</p>
+            <pre><code class="python"># 变量赋值
+name = "张三"
+age = 25
+height = 1.75
+is_student = True
+
+# 打印变量
+print(name)      # 输出: 张三
+print(age)       # 输出: 25
+print(height)    # 输出: 1.75
+print(is_student) # 输出: True</code></pre>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>变量名可以包含字母、数字和下划线，但不能以数字开头。
+            </div>
+        </section>
+
+        <section id="datatypes" class="content-section">
+            <h2>数据类型</h2>
+            <h3>基本数据类型</h3>
+            <pre><code class="python"># 整数
+x = 10
+y = -5
+
+# 浮点数
+pi = 3.14159
+price = 19.99
+
+# 字符串
+message = "Hello"
+name = 'Python'
+
+# 布尔值
+is_valid = True
+is_empty = False
+
+# 列表
+fruits = ["苹果", "香蕉", "橙子"]
+numbers = [1, 2, 3, 4, 5]
+
+# 字典
+person = {
+    "name": "张三",
+    "age": 25,
+    "city": "北京"
+}
+
+# 元组
+coordinates = (10, 20)
+
+# 集合
+unique_numbers = {1, 2, 3, 3, 2, 1}  # {1, 2, 3}</code></pre>
+
+            <h3>类型转换</h3>
+            <pre><code class="python"># 转换为整数
+x = int("42")        # 42
+y = int(3.14)        # 3
+
+# 转换为浮点数
+a = float("3.14")    # 3.14
+b = float(5)         # 5.0
+
+# 转换为字符串
+s = str(42)          # "42"
+t = str(3.14)        # "3.14"</code></pre>
+        </section>
+
+        <section id="controlflow" class="content-section">
+            <h2>控制流</h2>
+            <h3>条件语句</h3>
+            <pre><code class="python">age = 18
+
+if age >= 18:
+    print("成年人")
+elif age >= 13:
+    print("青少年")
+else:
+    print("儿童")</code></pre>
+
+            <h3>循环</h3>
+            <h4>for 循环</h4>
+            <pre><code class="python"># 遍历列表
+fruits = ["苹果", "香蕉", "橙子"]
+for fruit in fruits:
+    print(fruit)
+
+# 使用 range()
+for i in range(5):
+    print(i)  # 输出: 0, 1, 2, 3, 4</code></pre>
+
+            <h4>while 循环</h4>
+            <pre><code class="python">count = 0
+while count < 5:
+    print(count)
+    count += 1</code></pre>
+
+            <h3>break 和 continue</h3>
+            <pre><code class="python"># break - 跳出循环
+for i in range(10):
+    if i == 5:
+        break
+    print(i)  # 输出: 0, 1, 2, 3, 4
+
+# continue - 跳过当前迭代
+for i in range(5):
+    if i == 2:
+        continue
+    print(i)  # 输出: 0, 1, 3, 4</code></pre>
+        </section>
+
+        <section id="functions" class="content-section">
+            <h2>函数</h2>
+            <p>函数是可重复使用的代码块，使用 def 关键字定义：</p>
+            <pre><code class="python"># 定义函数
+def greet(name):
+    """向用户打招呼"""
+    return f"你好, {name}!"
+
+# 调用函数
+message = greet("Python")
+print(message)  # 输出: 你好, Python!
+
+# 带默认参数的函数
+def introduce(name, age=18):
+    print(f"我是 {name}，今年 {age} 岁")
+
+introduce("小明")           # 我是小明，今年 18 岁
+introduce("小红", 20)      # 我是小红，今年 20 岁
+
+# 返回多个值
+def calculate(a, b):
+    return a + b, a - b
+
+sum_result, diff_result = calculate(10, 5)
+print(sum_result)   # 15
+print(diff_result)  # 5</code></pre>
+
+            <h3>内置函数</h3>
+            <pre><code class="python"># 常用内置函数
+print(len("Hello"))      # 5 - 字符串长度
+print(max([1, 5, 3]))    # 5 - 最大值
+print(min([1, 5, 3]))    # 1 - 最小值
+print(sum([1, 2, 3]))    # 6 - 求和
+print(abs(-5))           # 5 - 绝对值
+print(round(3.14159, 2)) # 3.14 - 四舍五入</code></pre>
+        </section>
+
+        <section id="oop" class="content-section">
+            <h2>面向对象编程</h2>
+            <p>Python 是一门面向对象的编程语言。类（Class）是对象的蓝图，对象（Object）是类的实例。</p>
+
+            <h3>定义类和创建对象</h3>
+            <pre><code class="python">class Person:
+    """人类"""
+    
+    def __init__(self, name, age):
+        """构造函数"""
+        self.name = name
+        self.age = age
+    
+    def say_hello(self):
+        """实例方法"""
+        return f"你好，我是 {self.name}"
+    
+    def introduce(self):
+        return f"我叫 {self.name}，今年 {self.age} 岁"
+
+# 创建对象
+person1 = Person("张三", 25)
+person2 = Person("李四", 30)
+
+print(person1.say_hello())  # 输出: 你好，我是 张三
+print(person2.introduce())  # 输出: 我叫 李四，今年 30 岁</code></pre>
+
+            <h3>继承</h3>
+            <pre><code class="python">class Student(Person):
+    """学生类，继承自 Person"""
+    
+    def __init__(self, name, age, school):
+        super().__init__(name, age)  # 调用父类构造函数
+        self.school = school
+    
+    def study(self):
+        return f"{self.name} 正在 {self.school} 学习"
+    
+    def introduce(self):
+        """重写父类方法"""
+        return f"我是学生 {self.name}，在 {self.school} 上学"
+
+student = Student("王五", 20, "清华大学")
+print(student.say_hello())  # 继承的方法
+print(student.study())      # 自己的方法
+print(student.introduce())  # 重写的方法</code></pre>
+
+            <h3>类方法和静态方法</h3>
+            <pre><code class="python">class Math:
+    pi = 3.14159
+    
+    @classmethod
+    def circle_area(cls, radius):
+        """类方法"""
+        return cls.pi * radius ** 2
+    
+    @staticmethod
+    def add(a, b):
+        """静态方法"""
+        return a + b
+
+print(Math.circle_area(5))  # 使用类方法
+print(Math.add(3, 4))       # 使用静态方法</code></pre>
+        </section>
+
+        <section id="stringformat" class="content-section">
+            <h2>字符串格式化</h2>
+            <p>Python 提供了多种字符串格式化方法，让字符串拼接更加灵活和易读。</p>
+
+            <h3>f-string（推荐，Python 3.6+）</h3>
+            <pre><code class="python"># 基本使用
+name = "张三"
+age = 25
+print(f"姓名: {name}, 年龄: {age}")
+
+# 表达式
+print(f"明年年龄: {age + 1}")
+
+# 格式化数字
+price = 1234.5678
+print(f"价格: {price:.2f}")  # 保留两位小数
+print(f"百分比: {0.1234:.2%}")  # 百分比
+
+# 对齐和填充
+print(f"{'左对齐':<20}")  # 左对齐，宽度20
+print(f"{'右对齐':>20}")  # 右对齐，宽度20
+print(f"{'居中':^20}")    # 居中，宽度20
+
+# 数字格式化
+number = 1234567
+print(f"千分位: {number:,}")  # 1,234,567
+print(f"科学计数: {number:e}")  # 1.234567e+06
+
+# 填充0
+print(f"编号: {5:03d}")  # 005
+
+# 调用方法
+text = "hello world"
+print(f"大写: {text.upper()}")
+
+# 字典访问
+person = {"name": "李四", "age": 30}
+print(f"姓名: {person['name']}, 年龄: {person['age']}")
+
+# 列表访问
+items = ["apple", "banana", "orange"]
+print(f"第一个: {items[0]}")
+
+# 格式化日期
+from datetime import datetime
+now = datetime.now()
+print(f"当前时间: {now:%Y-%m-%d %H:%M:%S}")</code></pre>
+
+            <h3>format() 方法</h3>
+            <pre><code class="python"># 基本使用
+print("姓名: {}, 年龄: {}".format("张三", 25))
+
+# 位置参数
+print("{0} 和 {1}".format("苹果", "香蕉"))
+print("{1} 和 {0}".format("苹果", "香蕉"))
+
+# 关键字参数
+print("姓名: {name}, 年龄: {age}".format(name="李四", age=30))
+
+# 混合使用
+print("{0} 和 {name}".format("王五", name="赵六"))
+
+# 格式化数字
+print("价格: {:.2f}".format(1234.5678))
+print("百分比: {:.2%}".format(0.1234))
+
+# 对齐
+print("{:<20}".format("左对齐"))
+print("{:>20}".format("右对齐"))
+print("{:^20}".format("居中"))
+
+# 填充
+print("{:*>20}".format("填充*"))
+print("{:0>5}".format(42))  # 00042
+
+# 千分位
+print("{:,}".format(1234567))</code></pre>
+
+            <h3>% 格式化（旧式）</h3>
+            <pre><code class="python"># 基本使用
+name = "张三"
+age = 25
+print("姓名: %s, 年龄: %d" % (name, age))
+
+# 格式化数字
+print("价格: %.2f" % 1234.5678)
+print("百分比: %.2f%%" % 0.1234)
+
+# 字典
+person = {"name": "李四", "age": 30}
+print("姓名: %(name)s, 年龄: %(age)d" % person)</code></pre>
+
+            <h3>字符串模板</h3>
+            <pre><code class="python">from string import Template
+
+# 创建模板
+template = Template("姓名: $name, 年龄: $age")
+
+# 替换
+result = template.substitute(name="张三", age=25)
+print(result)
+
+# 使用字典
+person = {"name": "李四", "age": 30}
+result = template.substitute(person)
+print(result)</code></pre>
+
+            <h3>常用格式化示例</h3>
+            <pre><code class="python"># 进制转换
+num = 255
+print(f"二进制: {num:b}")   # 11111111
+print(f"八进制: {num:o}")   # 377
+print(f"十六进制: {num:x}")  # ff
+print(f"十六进制(大写): {num:X}")  # FF
+
+# 科学计数
+print(f"科学计数: {123456789:.2e}")  # 1.23e+08
+
+# 货币格式
+amount = 1234.567
+print(f"金额: ¥{amount:,.2f}")  # ¥1,234.57
+
+# 时间格式化
+seconds = 3661
+hours = seconds // 3600
+minutes = (seconds % 3600) // 60
+secs = seconds % 60
+print(f"时间: {hours:02d}:{minutes:02d}:{secs:02d}")  # 01:01:01
+
+# 表格格式化
+data = [
+    ("张三", 25, "北京"),
+    ("李四", 30, "上海"),
+    ("王五", 28, "广州")
+]
+print(f"{'姓名':<10}{'年龄':<10}{'城市':<10}")
+print("-" * 30)
+for name, age, city in data:
+    print(f"{name:<10}{age:<10}{city:<10}")</code></pre>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>f-string 是 Python 3.6+ 引入的，性能最好，代码最简洁，推荐优先使用。
+            </div>
+        </section>
+
+        <section id="tips" class="content-section">
+            <h2>Python 常用技巧</h2>
+            <p>掌握这些 Python 技巧可以让你的代码更简洁、更高效、更 Pythonic。</p>
+
+            <h3>列表技巧</h3>
+            <pre><code class="python"># 列表解包
+a, b, c = [1, 2, 3]
+print(a, b, c)  # 1 2 3
+
+# 交换变量
+a, b = b, a
+
+# 使用 * 解包
+first, *rest = [1, 2, 3, 4, 5]
+print(first, rest)  # 1 [2, 3, 4, 5]
+
+# 列表扁平化
+nested = [[1, 2], [3, 4], [5, 6]]
+flattened = [item for sublist in nested for item in sublist]
+print(flattened)  # [1, 2, 3, 4, 5, 6]
+
+# 列表去重（保持顺序）
+items = [1, 2, 2, 3, 4, 4, 5]
+unique = list(dict.fromkeys(items))
+print(unique)  # [1, 2, 3, 4, 5]
+
+# 列表分块
+def chunk(lst, size):
+    return [lst[i:i + size] for i in range(0, len(lst), size)]
+
+print(chunk([1, 2, 3, 4, 5, 6, 7], 3))  # [[1, 2, 3], [4, 5, 6], [7]]</code></pre>
+
+            <h3>字典技巧</h3>
+            <pre><code class="python"># 字典合并
+dict1 = {'a': 1, 'b': 2}
+dict2 = {'c': 3, 'd': 4}
+merged = {**dict1, **dict2}
+print(merged)  # {'a': 1, 'b': 2, 'c': 3, 'd': 4}
+
+# 字典排序
+d = {'a': 3, 'b': 1, 'c': 2}
+sorted_by_key = dict(sorted(d.items()))
+sorted_by_value = dict(sorted(d.items(), key=lambda x: x[1]))
+print(sorted_by_key)   # {'a': 3, 'b': 1, 'c': 2}
+print(sorted_by_value) # {'b': 1, 'c': 2, 'a': 3}
+
+# 字典默认值
+d = {'a': 1, 'b': 2}
+print(d.get('c', 0))  # 0
+
+# 字典计数
+from collections import Counter
+words = ['apple', 'banana', 'apple', 'orange', 'banana', 'apple']
+count = Counter(words)
+print(count)  # Counter({'apple': 3, 'banana': 2, 'orange': 1})
+
+# 字典推导式
+squares = {x: x**2 for x in range(5)}
+print(squares)  # {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}</code></pre>
+
+            <h3>字符串技巧</h3>
+            <pre><code class="python"># 字符串反转
+text = "Hello"
+reversed_text = text[::-1]
+print(reversed_text)  # olleH
+
+# 检查回文
+def is_palindrome(s):
+    return s == s[::-1]
+
+print(is_palindrome("racecar"))  # True
+
+# 字符串连接
+words = ['Hello', 'World', 'Python']
+sentence = ' '.join(words)
+print(sentence)  # Hello World Python
+
+# 去除字符串首尾字符
+text = "  Hello World  "
+print(text.strip())  # "Hello World"
+
+# 统计字符频率
+from collections import Counter
+text = "hello world"
+count = Counter(text)
+print(count)  # Counter({'l': 3, 'o': 2, 'h': 1, 'e': 1, ' ': 1, 'w': 1, 'r': 1, 'd': 1})
+
+# 首字母大写
+text = "hello world"
+print(text.title())  # Hello World
+
+# 检查字符串类型
+text = "12345"
+print(text.isdigit())  # True
+print(text.isalpha())  # False
+print(text.isalnum())  # True</code></pre>
+
+            <h3>数值技巧</h3>
+            <pre><code class="python"># 判断奇偶
+num = 5
+is_even = num % 2 == 0
+is_odd = num % 2 != 0
+
+# 绝对值
+abs_num = abs(-5)  # 5
+
+# 四舍五入
+rounded = round(3.14159, 2)  # 3.14
+
+# 幂运算
+power = 2 ** 10  # 1024
+
+# 整除
+quotient = 10 // 3  # 3
+
+# 最大最小值
+numbers = [1, 5, 3, 9, 2]
+print(max(numbers))  # 9
+print(min(numbers))  # 1
+
+# 求和
+total = sum(numbers)  # 20
+
+# 平均值
+average = sum(numbers) / len(numbers)  # 4.0
+
+# 生成随机数
+import random
+print(random.randint(1, 10))  # 1-10 之间的随机整数
+print(random.choice(['a', 'b', 'c']))  # 随机选择一个</code></pre>
+
+            <h3>集合技巧</h3>
+            <pre><code class="python"># 集合去重
+items = [1, 2, 2, 3, 4, 4, 5]
+unique = set(items)
+print(unique)  # {1, 2, 3, 4, 5}
+
+# 集合运算
+set1 = {1, 2, 3, 4}
+set2 = {3, 4, 5, 6}
+
+print(set1 & set2)  # 交集 {3, 4}
+print(set1 | set2)  # 并集 {1, 2, 3, 4, 5, 6}
+print(set1 - set2)  # 差集 {1, 2}
+print(set1 ^ set2)  # 对称差集 {1, 2, 5, 6}
+
+# 检查子集
+set1 = {1, 2}
+set2 = {1, 2, 3, 4}
+print(set1.issubset(set2))  # True</code></pre>
+
+            <h3>函数技巧</h3>
+            <pre><code class="python"># 函数默认参数陷阱
+def append_to_list(item, lst=None):
+    if lst is None:
+        lst = []
+    lst.append(item)
+    return lst
+
+# 可变参数
+def sum_all(*args):
+    return sum(args)
+
+print(sum_all(1, 2, 3, 4))  # 10
+
+# 关键字参数
+def print_info(**kwargs):
+    for key, value in kwargs.items():
+        print(f"{key}: {value}")
+
+print_info(name="张三", age=25)
+
+# 函数作为参数
+def apply_operation(x, operation):
+    return operation(x)
+
+print(apply_operation(5, lambda x: x ** 2))  # 25
+
+# 装饰器
+def timer(func):
+    import time
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        end = time.time()
+        print(f"{func.__name__} 执行时间: {end - start:.4f} 秒")
+        return result
+    return wrapper
+
+@timer
+def slow_function():
+    import time
+    time.sleep(1)
+    return "完成"</code></pre>
+
+            <h3>类技巧</h3>
+            <pre><code class="python"># __slots__ 节省内存
+class Person:
+    __slots__ = ['name', 'age']
+
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+# @property 装饰器
+class Circle:
+    def __init__(self, radius):
+        self._radius = radius
+
+    @property
+    def radius(self):
+        return self._radius
+
+    @radius.setter
+    def radius(self, value):
+        if value < 0:
+            raise ValueError("半径不能为负数")
+        self._radius = value
+
+    @property
+    def area(self):
+        return 3.14159 * self._radius ** 2
+
+# __str__ 和 __repr__
+class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __str__(self):
+        return f"Point({self.x}, {self.y})"
+
+    def __repr__(self):
+        return f"Point(x={self.x}, y={self.y})"
+
+# 上下文管理器
+class FileManager:
+    def __init__(self, filename, mode):
+        self.filename = filename
+        self.mode = mode
+        self.file = None
+
+    def __enter__(self):
+        self.file = open(self.filename, self.mode)
+        return self.file
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if self.file:
+            self.file.close()
+
+with FileManager('example.txt', 'w') as f:
+    f.write('Hello')</code></pre>
+
+            <h3>文件技巧</h3>
+            <pre><code class="python"># 读取文件所有行
+with open('file.txt', 'r') as f:
+    lines = f.readlines()
+
+# 读取文件到字符串
+with open('file.txt', 'r') as f:
+    content = f.read()
+
+# 逐行读取（内存高效）
+with open('file.txt', 'r') as f:
+    for line in f:
+        print(line.strip())
+
+# 写入文件
+with open('file.txt', 'w') as f:
+    f.write('Hello, World!')
+
+# 追加到文件
+with open('file.txt', 'a') as f:
+    f.write('\nNew line')
+
+# 检查文件是否存在
+import os
+if os.path.exists('file.txt'):
+    print("文件存在")
+
+# 获取文件大小
+size = os.path.getsize('file.txt')
+print(f"文件大小: {size} 字节")</code></pre>
+
+            <h3>日期时间技巧</h3>
+            <pre><code class="python">from datetime import datetime, timedelta
+
+# 获取当前时间
+now = datetime.now()
+print(now)
+
+# 格式化时间
+formatted = now.strftime('%Y-%m-%d %H:%M:%S')
+print(formatted)
+
+# 解析时间字符串
+parsed = datetime.strptime('2026-01-25', '%Y-%m-%d')
+print(parsed)
+
+# 时间计算
+tomorrow = now + timedelta(days=1)
+yesterday = now - timedelta(days=1)
+print(f"明天: {tomorrow}")
+print(f"昨天: {yesterday}")
+
+# 时间差
+date1 = datetime(2026, 1, 1)
+date2 = datetime(2026, 1, 25)
+diff = date2 - date1
+print(f"相差天数: {diff.days}")</code></pre>
+
+            <h3>枚举技巧</h3>
+            <pre><code class="python">from enum import Enum, auto
+
+class Color(Enum):
+    RED = auto()
+    GREEN = auto()
+    BLUE = auto()
+
+print(Color.RED)        # Color.RED
+print(Color.RED.value)  # 1
+print(Color.RED.name)   # 'RED'
+
+# 字符串枚举
+class Status(str, Enum):
+    PENDING = "pending"
+    APPROVED = "approved"
+    REJECTED = "rejected"
+
+print(Status.PENDING)  # Status.PENDING
+print(Status.PENDING.value)  # 'pending'</code></pre>
+
+            <h3>数据类</h3>
+            <pre><code class="python">from dataclasses import dataclass
+from typing import List
+
+@dataclass
+class Person:
+    name: str
+    age: int
+    hobbies: List[str] = None
+
+    def __post_init__(self):
+        if self.hobbies is None:
+            self.hobbies = []
+
+# 创建实例
+person = Person("张三", 25, ["阅读", "编程"])
+print(person)  # Person(name='张三', age=25, hobbies=['阅读', '编程'])
+
+# 访问属性
+print(person.name)  # 张三
+print(person.age)   # 25
+
+# 转换为字典
+print(person.__dict__)  # {'name': '张三', 'age': 25, 'hobbies': ['阅读', '编程']}</code></pre>
+
+            <h3>类型提示</h3>
+            <pre><code class="python">from typing import List, Dict, Optional, Union
+
+# 基本类型提示
+def greet(name: str) -> str:
+    return f"Hello, {name}!"
+
+# 列表类型提示
+def process_numbers(numbers: List[int]) -> List[int]:
+    return [x * 2 for x in numbers]
+
+# 字典类型提示
+def get_user_info(user_id: int) -> Dict[str, Union[str, int]]:
+    return {"name": "张三", "age": 25}
+
+# 可选类型提示
+def find_user(user_id: int) -> Optional[str]:
+    if user_id == 1:
+        return "张三"
+    return None
+
+# 联合类型提示
+def process_value(value: Union[int, str]) -> str:
+    return str(value)</code></pre>
+
+            <h3>性能优化技巧</h3>
+            <pre><code class="python"># 使用生成器节省内存
+def generate_numbers(n):
+    for i in range(n):
+        yield i
+
+# 使用集合进行快速查找
+items = [1, 2, 3, 4, 5]
+item_set = set(items)
+print(3 in item_set)  # O(1) 时间复杂度
+
+# 使用 map 代替循环
+numbers = [1, 2, 3, 4, 5]
+squared = list(map(lambda x: x ** 2, numbers))
+
+# 使用 filter 过滤
+even_numbers = list(filter(lambda x: x % 2 == 0, numbers))
+
+# 使用 any/all
+numbers = [1, 3, 5, 7, 9]
+has_even = any(x % 2 == 0 for x in numbers)  # False
+all_odd = all(x % 2 != 0 for x in numbers)  # True
+
+# 使用 zip 组合列表
+names = ['张三', '李四', '王五']
+ages = [25, 30, 28]
+for name, age in zip(names, ages):
+    print(f"{name}: {age}")</code></pre>
+
+            <h3>调试技巧</h3>
+            <pre><code class="python"># 使用 print 调试
+x = 10
+print(f"x = {x}")  # x = 10
+
+# 使用 assert
+assert x > 0, "x 必须大于 0"
+
+# 使用 pdb 调试
+import pdb; pdb.set_trace()
+
+# 使用 logging
+import logging
+logging.basicConfig(level=logging.INFO)
+logging.info("这是一条信息")
+logging.warning("这是一条警告")
+logging.error("这是一条错误")
+
+# 使用 type 检查类型
+print(type(x))  # <class 'int'>
+print(isinstance(x, int))  # True
+
+# 使用 dir 查看对象属性
+print(dir(x))</code></pre>
+
+            <h3>代码简洁技巧</h3>
+            <pre><code class="python"># 三元运算符
+age = 25
+status = "成年" if age >= 18 else "未成年"
+
+# 多条件判断
+if x > 0 and y > 0 and z > 0:
+    print("都大于0")
+
+# 简化为
+if all([x > 0, y > 0, z > 0]):
+    print("都大于0")
+
+# 使用 enumerate 获取索引
+for i, item in enumerate(['a', 'b', 'c']):
+    print(f"{i}: {item}")
+
+# 使用 zip 同时遍历多个列表
+names = ['张三', '李四', '王五']
+ages = [25, 30, 28]
+for name, age in zip(names, ages):
+    print(f"{name}: {age}")</code></pre>
+
+            <div class="feature-box">
+                <h3>Python 编码最佳实践：</h3>
+                <ul>
+                    <li>✅ 使用有意义的变量名</li>
+                    <li>✅ 遵循 PEP 8 编码规范</li>
+                    <li>✅ 添加适当的注释和文档字符串</li>
+                    <li>✅ 使用类型提示提高代码可读性</li>
+                    <li>✅ 优先使用列表推导式而非循环</li>
+                    <li>✅ 使用上下文管理器管理资源</li>
+                    <li>✅ 异常处理要具体</li>
+                    <li>✅ 编写单元测试</li>
+                </ul>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>Python 的哲学是"优雅胜于丑陋，明了胜于晦涩"，编写 Pythonic 的代码会让代码更易读、更易维护。
+            </div>
+        </section>
+    </main>
+
+</body>
+</html>

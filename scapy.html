@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scapy - Python 入门教程</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>    <nav>
+        <div class="nav-category">
+            <h3>📚 当前分类</h3>
+            <ul>
+                <li><a href="network-programming.html">网络编程</a></li>
+                <li><a href="asyncio.html">异步编程</a></li>
+                <li><a href="requests.html">Requests</a></li>
+                <li><a href="aiohttp.html">aiohttp</a></li>
+                <li><a href="fastapi.html">FastAPI</a></li>
+                <li><a href="scapy.html" class="active">Scapy</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="topic-nav">
+            <a href="fastapi.html">← FastAPI</a>
+            <a href="beautifulsoup.html">BeautifulSoup →</a>
+        </div>
+
+        <section id="scapy" class="content-section">
+            <h2>Scapy</h2>
+            <p>Scapy 是一个强大的 Python 交互式数据包操作程序，能够发送、嗅探、解析和伪造网络数据包。</p>
+
+            <h3>安装</h3>
+            <pre><code class="bash">pip install scapy</code></pre>
+
+            <h3>创建数据包</h3>
+            <pre><code class="python">from scapy.all import IP, TCP, UDP, ICMP, Ether
+
+# 创建 IP 数据包
+packet = IP(dst="192.168.1.1")/TCP(dport=80, flags="S")
+print(packet.summary())
+
+# 创建 UDP 数据包
+packet = IP(dst="192.168.1.1")/UDP(dport=53)
+print(packet.summary())
+
+# 创建 ICMP 数据包
+packet = IP(dst="192.168.1.1")/ICMP()
+print(packet.summary())
+
+# 创建以太网帧
+packet = Ether(dst="ff:ff:ff:ff:ff:ff")/IP(dst="192.168.1.1")/ICMP()
+print(packet.summary())</code></pre>
+
+            <h3>发送数据包</h3>
+            <pre><code class="python">from scapy.all import IP, ICMP, sr, sr1
+
+# 发送 ICMP 请求（ping）
+packet = IP(dst="www.google.com")/ICMP()
+response = sr1(packet, timeout=2)
+print(response.summary())
+
+# 发送 TCP SYN 包
+packet = IP(dst="192.168.1.1")/TCP(dport=80, flags="S")
+response = sr1(packet, timeout=2)
+print(response.summary())
+
+# 发送多个包并接收响应
+packets = [IP(dst=f"192.168.1.{i}")/ICMP() for i in range(1, 5)]
+responses, unanswered = sr(packets, timeout=2)
+for response in responses:
+    print(response[0].summary())</code></pre>
+
+            <h3>数据包嗅探</h3>
+            <pre><code class="python">from scapy.all import sniff
+
+# 嗅探数据包
+def packet_callback(packet):
+    if IP in packet:
+        print(f"源 IP: {packet[IP].src}, 目的 IP: {packet[IP].dst}")
+
+# 嗅探 10 个包
+sniff(prn=packet_callback, count=10)
+
+# 嗅探特定端口
+def packet_callback(packet):
+    if TCP in packet and packet[TCP].dport == 80:
+        print(f"HTTP 流量: {packet[IP].src} -> {packet[IP].dst}")
+
+sniff(prn=packet_callback, filter="tcp port 80", count=10)</code></pre>
+
+            <h3>数据包解析</h3>
+            <pre><code class="python">from scapy.all import rdpcap
+
+# 读取 pcap 文件
+packets = rdpcap('capture.pcap')
+
+# 解析数据包
+for packet in packets:
+    if IP in packet:
+        print(f"IP 层: {packet[IP].src} -> {packet[IP].dst}")
+        if TCP in packet:
+            print(f"  TCP 层: {packet[TCP].sport} -> {packet[TCP].dport}")
+        if UDP in packet:
+            print(f"  UDP 层: {packet[UDP].sport} -> {packet[UDP].dport}")</code></pre>
+
+            <h3>SYN 扫描</h3>
+            <pre><code class="python">from scapy.all import IP, TCP, sr
+
+# SYN 扫描
+target = "192.168.1.1"
+ports = [22, 80, 443, 8080]
+
+results = []
+for port in ports:
+    packet = IP(dst=target)/TCP(dport=port, flags="S")
+    response = sr1(packet, timeout=1, verbose=0)
+    
+    if response and response.haslayer(TCP):
+        if response[TCP].flags == 0x12:  # SYN-ACK
+            results.append(f"端口 {port} 开放")
+        elif response[TCP].flags == 0x14:  # RST
+            results.append(f"端口 {port} 关闭")
+    else:
+        results.append(f"端口 {port} 无响应")
+
+for result in results:
+    print(result)</code></pre>
+
+            <h3>ARP 扫描</h3>
+            <pre><code class="python">from scapy.all import Ether, ARP, srp
+
+# ARP 扫描
+target_ip = "192.168.1.0/24"
+
+arp_packet = Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst=target_ip)
+result = srp(arp_packet, timeout=2, verbose=0)[0]
+
+for sent, received in result:
+    print(f"IP: {received.psrc}, MAC: {received.hwsrc}")</code></pre>
+
+            <h3>保存和加载数据包</h3>
+            <pre><code class="python">from scapy.all import wrpcap, rdpcap, IP, ICMP
+
+# 创建数据包
+packets = [IP(dst="192.168.1.1")/ICMP() for _ in range(5)]
+
+# 保存到 pcap 文件
+wrpcap('capture.pcap', packets)
+
+# 从 pcap 文件读取
+loaded_packets = rdpcap('capture.pcap')
+print(f"加载了 {len(loaded_packets)} 个数据包")</code></pre>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>Scapy 适合网络测试、协议分析、安全研究等场景，需要管理员权限。
+            </div>
+        </section>
+
+        <div class="topic-nav">
+            <a href="fastapi.html">← FastAPI</a>
+            <a href="beautifulsoup.html">BeautifulSoup →</a>
+        </div>
+    </main>
+</body>
+</html>

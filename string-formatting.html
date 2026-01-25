@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>字符串格式化 - Python 入门教程</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>    <nav>
+        <div class="nav-category">
+            <h3>📚 当前分类</h3>
+            <ul>
+                <li><a href="introduction.html">简介</a></li>
+                <li><a href="installation.html">安装</a></li>
+                <li><a href="basics.html">基础语法</a></li>
+                <li><a href="variables.html">变量</a></li>
+                <li><a href="datatypes.html">数据类型</a></li>
+                <li><a href="control-flow.html">控制流</a></li>
+                <li><a href="functions.html">函数</a></li>
+                <li><a href="oop.html">面向对象</a></li>
+                <li><a href="string-formatting.html" class="active">字符串格式化</a></li>
+                <li><a href="python-tips.html">常用技巧</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="topic-nav">
+            <a href="oop.html">← 面向对象</a> | <a href="python-tips.html">常用技巧 →</a>
+        </div>
+
+        <section id="stringformat" class="content-section">
+            <h2>字符串格式化</h2>
+            <p>Python 提供了多种字符串格式化方法，让字符串拼接更加灵活和易读。</p>
+
+            <h3>f-string（推荐，Python 3.6+）</h3>
+            <pre><code class="python"># 基本使用
+name = "张三"
+age = 25
+print(f"姓名: {name}, 年龄: {age}")
+
+# 表达式
+print(f"明年年龄: {age + 1}")
+
+# 格式化数字
+price = 1234.5678
+print(f"价格: {price:.2f}")  # 保留两位小数
+print(f"百分比: {0.1234:.2%}")  # 百分比
+
+# 对齐和填充
+print(f"{'左对齐':<20}")  # 左对齐，宽度20
+print(f"{'右对齐':>20}")  # 右对齐，宽度20
+print(f"{'居中':^20}")    # 居中，宽度20
+
+# 数字格式化
+number = 1234567
+print(f"千分位: {number:,}")  # 1,234,567
+print(f"科学计数: {number:e}")  # 1.234567e+06
+
+# 填充0
+print(f"编号: {5:03d}")  # 005
+
+# 调用方法
+text = "hello world"
+print(f"大写: {text.upper()}")
+
+# 字典访问
+person = {"name": "李四", "age": 30}
+print(f"姓名: {person['name']}, 年龄: {person['age']}")
+
+# 列表访问
+items = ["apple", "banana", "orange"]
+print(f"第一个: {items[0]}")
+
+# 格式化日期
+from datetime import datetime
+now = datetime.now()
+print(f"当前时间: {now:%Y-%m-%d %H:%M:%S}")</code></pre>
+
+            <h3>format() 方法</h3>
+            <pre><code class="python"># 基本使用
+print("姓名: {}, 年龄: {}".format("张三", 25))
+
+# 位置参数
+print("{0} 和 {1}".format("苹果", "香蕉"))
+print("{1} 和 {0}".format("苹果", "香蕉"))
+
+# 关键字参数
+print("姓名: {name}, 年龄: {age}".format(name="李四", age=30))
+
+# 混合使用
+print("{0} 和 {name}".format("王五", name="赵六"))
+
+# 格式化数字
+print("价格: {:.2f}".format(1234.5678))
+print("百分比: {:.2%}".format(0.1234))
+
+# 对齐
+print("{:<20}".format("左对齐"))
+print("{:>20}".format("右对齐"))
+print("{:^20}".format("居中"))
+
+# 填充
+print("{:*>20}".format("填充*"))
+print("{:0>5}".format(42))  # 00042
+
+# 千分位
+print("{:,}".format(1234567))</code></pre>
+
+            <h3>% 格式化（旧式）</h3>
+            <pre><code class="python"># 基本使用
+name = "张三"
+age = 25
+print("姓名: %s, 年龄: %d" % (name, age))
+
+# 格式化数字
+print("价格: %.2f" % 1234.5678)
+print("百分比: %.2f%%" % 0.1234)
+
+# 字典
+person = {"name": "李四", "age": 30}
+print("姓名: %(name)s, 年龄: %(age)d" % person)</code></pre>
+
+            <h3>字符串模板</h3>
+            <pre><code class="python">from string import Template
+
+# 创建模板
+template = Template("姓名: $name, 年龄: $age")
+
+# 替换
+result = template.substitute(name="张三", age=25)
+print(result)
+
+# 使用字典
+person = {"name": "李四", "age": 30}
+result = template.substitute(person)
+print(result)</code></pre>
+
+            <h3>常用格式化示例</h3>
+            <pre><code class="python"># 进制转换
+num = 255
+print(f"二进制: {num:b}")   # 11111111
+print(f"八进制: {num:o}")   # 377
+print(f"十六进制: {num:x}")  # ff
+print(f"十六进制(大写): {num:X}")  # FF
+
+# 科学计数
+print(f"科学计数: {123456789:.2e}")  # 1.23e+08
+
+# 货币格式
+amount = 1234.567
+print(f"金额: ¥{amount:,.2f}")  # ¥1,234.57
+
+# 时间格式化
+seconds = 3661
+hours = seconds // 3600
+minutes = (seconds % 3600) // 60
+secs = seconds % 60
+print(f"时间: {hours:02d}:{minutes:02d}:{secs:02d}")  # 01:01:01
+
+# 表格格式化
+data = [
+    ("张三", 25, "北京"),
+    ("李四", 30, "上海"),
+    ("王五", 28, "广州")
+]
+print(f"{'姓名':<10}{'年龄':<10}{'城市':<10}")
+print("-" * 30)
+for name, age, city in data:
+    print(f"{name:<10}{age:<10}{city:<10}")</code></pre>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>f-string 是 Python 3.6+ 引入的，性能最好，代码最简洁，推荐优先使用。
+            </div>
+        </section>
+
+        <div class="topic-nav">
+            <a href="oop.html">← 面向对象</a> | <a href="python-tips.html">常用技巧 →</a>
+        </div>
+    </main>
+</body>
+</html>

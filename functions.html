@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>函数 - Python 入门教程</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>    <nav>
+        <div class="nav-category">
+            <h3>📚 当前分类</h3>
+            <ul>
+                <li><a href="introduction.html">简介</a></li>
+                <li><a href="installation.html">安装</a></li>
+                <li><a href="basics.html">基础语法</a></li>
+                <li><a href="variables.html">变量</a></li>
+                <li><a href="datatypes.html">数据类型</a></li>
+                <li><a href="control-flow.html">控制流</a></li>
+                <li><a href="functions.html" class="active">函数</a></li>
+                <li><a href="oop.html">面向对象</a></li>
+                <li><a href="string-formatting.html">字符串格式化</a></li>
+                <li><a href="python-tips.html">常用技巧</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="topic-nav">
+            <a href="control-flow.html">← 控制流</a> | <a href="oop.html">面向对象 →</a>
+        </div>
+
+        <section id="functions" class="content-section">
+            <h2>函数</h2>
+            <p>函数是可重复使用的代码块，使用 def 关键字定义：</p>
+            <pre><code class="python"># 定义函数
+def greet(name):
+    """向用户打招呼"""
+    return f"你好, {name}!"
+
+# 调用函数
+message = greet("Python")
+print(message)  # 输出: 你好, Python!
+
+# 带默认参数的函数
+def introduce(name, age=18):
+    print(f"我是 {name}，今年 {age} 岁")
+
+introduce("小明")           # 我是小明，今年 18 岁
+introduce("小红", 20)      # 我是小红，今年 20 岁
+
+# 返回多个值
+def calculate(a, b):
+    return a + b, a - b
+
+sum_result, diff_result = calculate(10, 5)
+print(sum_result)   # 15
+print(diff_result)  # 5</code></pre>
+
+            <h3>内置函数</h3>
+            <pre><code class="python"># 常用内置函数
+print(len("Hello"))      # 5 - 字符串长度
+print(max([1, 5, 3]))    # 5 - 最大值
+print(min([1, 5, 3]))    # 1 - 最小值
+print(sum([1, 2, 3]))    # 6 - 求和
+print(abs(-5))           # 5 - 绝对值
+print(round(3.14159, 2)) # 3.14 - 四舍五入</code></pre>
+        </section>
+
+        <div class="topic-nav">
+            <a href="control-flow.html">← 控制流</a> | <a href="oop.html">面向对象 →</a>
+        </div>
+    </main>
+</body>
+</html>

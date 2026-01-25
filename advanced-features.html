@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高级特性 - Python 入门教程</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>    <nav>
+        <div class="nav-category">
+            <h3>📚 当前分类</h3>
+            <ul>
+                <li><a href="advanced-features.html" class="active">高级特性</a></li>
+                <li><a href="fabric.html">Fabric</a></li>
+                <li><a href="psutil.html">psutil</a></li>
+                <li><a href="logging.html">logging</a></li>
+                <li><a href="ansible.html">Ansible</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="topic-nav">
+            <a href="fabric.html">Fabric →</a>
+        </div>
+
+        <section id="advanced" class="content-section">
+            <h2>高级特性</h2>
+            <p>Python 提供了许多强大的高级特性，可以让代码更简洁、更优雅。</p>
+
+            <h3>列表推导式</h3>
+            <pre><code class="python"># 传统方式
+squares = []
+for i in range(10):
+    squares.append(i ** 2)
+
+# 列表推导式
+squares = [i ** 2 for i in range(10)]
+print(squares)  # [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+
+# 带条件的列表推导式
+even_numbers = [i for i in range(20) if i % 2 == 0]
+print(even_numbers)  # [0, 2, 4, 6, 8, 10, 12, 14, 16, 18]
+
+# 嵌套列表推导式
+matrix = [[i * j for j in range(3)] for i in range(3)]
+print(matrix)  # [[0, 0, 0], [0, 1, 2], [0, 2, 4]]</code></pre>
+
+            <h3>字典推导式</h3>
+            <pre><code class="python"># 创建字典
+squares_dict = {i: i ** 2 for i in range(5)}
+print(squares_dict)  # {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}
+
+# 字典转换
+prices = {'apple': 5, 'banana': 3, 'orange': 4}
+discounted = {k: v * 0.9 for k, v in prices.items()}
+print(discounted)  # {'apple': 4.5, 'banana': 2.7, 'orange': 3.6}</code></pre>
+
+            <h3>生成器</h3>
+            <pre><code class="python"># 生成器函数
+def fibonacci(n):
+    """生成斐波那契数列"""
+    a, b = 0, 1
+    for _ in range(n):
+        yield a
+        a, b = b, a + b
+
+# 使用生成器
+for num in fibonacci(10):
+    print(num, end=' ')  # 0 1 1 2 3 5 8 13 21 34
+
+# 生成器表达式
+squares_gen = (i ** 2 for i in range(5))
+print(list(squares_gen))  # [0, 1, 4, 9, 16]</code></pre>
+
+            <h3>装饰器</h3>
+            <pre><code class="python">def timer(func):
+    """计时装饰器"""
+    import time
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        end = time.time()
+        print(f"{func.__name__} 执行时间: {end - start:.4f} 秒")
+        return result
+    return wrapper
+
+@timer
+def slow_function():
+    import time
+    time.sleep(1)
+    return "完成"
+
+slow_function()  # 输出执行时间</code></pre>
+
+            <h3>lambda 函数</h3>
+            <pre><code class="python"># lambda 函数（匿名函数）
+add = lambda x, y: x + y
+print(add(3, 5))  # 8
+
+# 与内置函数结合使用
+numbers = [1, 2, 3, 4, 5]
+squared = list(map(lambda x: x ** 2, numbers))
+print(squared)  # [1, 4, 9, 16, 25]
+
+# 过滤
+even = list(filter(lambda x: x % 2 == 0, numbers))
+print(even)  # [2, 4]</code></pre>
+
+            <h3>上下文管理器</h3>
+            <pre><code class="python">class Timer:
+    """自定义上下文管理器"""
+    import time
+    
+    def __enter__(self):
+        self.start = time.time()
+        return self
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.end = time.time()
+        print(f"代码块执行时间: {self.end - self.start:.4f} 秒")
+
+with Timer():
+    import time
+    time.sleep(0.5)
+    print("执行一些操作...")</code></pre>
+
+            <div class="feature-box">
+                <h3>Python 特性总结：</h3>
+                <ul>
+                    <li>🎯 列表推导式：简洁地创建列表</li>
+                    <li>⚡ 生成器：惰性求值，节省内存</li>
+                    <li>🎨 装饰器：优雅地扩展函数功能</li>
+                    <li>🔧 上下文管理器：自动管理资源</li>
+                    <li>📝 lambda 函数：简洁的匿名函数</li>
+                </ul>
+            </div>
+        </section>
+
+        <div class="topic-nav">
+            <a href="fabric.html">Fabric →</a>
+        </div>
+    </main>
+</body>
+</html>

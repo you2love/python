@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>面向对象 - Python 入门教程</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>    <nav>
+        <div class="nav-category">
+            <h3>📚 当前分类</h3>
+            <ul>
+                <li><a href="introduction.html">简介</a></li>
+                <li><a href="installation.html">安装</a></li>
+                <li><a href="basics.html">基础语法</a></li>
+                <li><a href="variables.html">变量</a></li>
+                <li><a href="datatypes.html">数据类型</a></li>
+                <li><a href="control-flow.html">控制流</a></li>
+                <li><a href="functions.html">函数</a></li>
+                <li><a href="oop.html" class="active">面向对象</a></li>
+                <li><a href="string-formatting.html">字符串格式化</a></li>
+                <li><a href="python-tips.html">常用技巧</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="topic-nav">
+            <a href="functions.html">← 函数</a> | <a href="string-formatting.html">字符串格式化 →</a>
+        </div>
+
+        <section id="oop" class="content-section">
+            <h2>面向对象编程</h2>
+            <p>Python 是一门面向对象的编程语言。类（Class）是对象的蓝图，对象（Object）是类的实例。</p>
+
+            <h3>定义类和创建对象</h3>
+            <pre><code class="python">class Person:
+    """人类"""
+    
+    def __init__(self, name, age):
+        """构造函数"""
+        self.name = name
+        self.age = age
+    
+    def say_hello(self):
+        """实例方法"""
+        return f"你好，我是 {self.name}"
+    
+    def introduce(self):
+        return f"我叫 {self.name}，今年 {self.age} 岁"
+
+# 创建对象
+person1 = Person("张三", 25)
+person2 = Person("李四", 30)
+
+print(person1.say_hello())  # 输出: 你好，我是 张三
+print(person2.introduce())  # 输出: 我叫 李四，今年 30 岁</code></pre>
+
+            <h3>继承</h3>
+            <pre><code class="python">class Student(Person):
+    """学生类，继承自 Person"""
+    
+    def __init__(self, name, age, school):
+        super().__init__(name, age)  # 调用父类构造函数
+        self.school = school
+    
+    def study(self):
+        return f"{self.name} 正在 {self.school} 学习"
+    
+    def introduce(self):
+        """重写父类方法"""
+        return f"我是学生 {self.name}，在 {self.school} 上学"
+
+student = Student("王五", 20, "清华大学")
+print(student.say_hello())  # 继承的方法
+print(student.study())      # 自己的方法
+print(student.introduce())  # 重写的方法</code></pre>
+
+            <h3>类方法和静态方法</h3>
+            <pre><code class="python">class Math:
+    pi = 3.14159
+    
+    @classmethod
+    def circle_area(cls, radius):
+        """类方法"""
+        return cls.pi * radius ** 2
+    
+    @staticmethod
+    def add(a, b):
+        """静态方法"""
+        return a + b
+
+print(Math.circle_area(5))  # 使用类方法
+print(Math.add(3, 4))       # 使用静态方法</code></pre>
+        </section>
+
+        <div class="topic-nav">
+            <a href="functions.html">← 函数</a> | <a href="string-formatting.html">字符串格式化 →</a>
+        </div>
+    </main>
+</body>
+</html>

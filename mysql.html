@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MySQL - Python 入门教程</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>    <nav>
+        <div class="nav-category">
+            <h3>📚 当前分类</h3>
+            <ul>
+                <li><a href="sqlalchemy.html">SQLAlchemy</a></li>
+                <li><a href="mysql.html" class="active">MySQL</a></li>
+                <li><a href="mongodb.html">MongoDB</a></li>
+                <li><a href="redis.html">Redis</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="topic-nav">
+            <a href="sqlalchemy.html">← SQLAlchemy</a> | <a href="mongodb.html">MongoDB →</a>
+        </div>
+
+        <section id="mysql" class="content-section">
+            <h2>MySQL</h2>
+            <p>MySQL 是最流行的开源关系型数据库管理系统之一。Python 提供了多种方式连接和操作 MySQL。</p>
+
+            <h3>安装驱动</h3>
+            <pre><code class="bash"># 方法1：使用 PyMySQL
+pip install pymysql
+
+# 方法2：使用 mysql-connector-python（官方驱动）
+pip install mysql-connector-python
+
+# 方法3：使用 MySQLdb
+pip install mysqlclient</code></pre>
+
+            <h3>使用 PyMySQL</h3>
+            <pre><code class="python">import pymysql
+
+# 创建连接
+connection = pymysql.connect(
+    host='localhost',
+    user='root',
+    password='your_password',
+    database='test_db',
+    charset='utf8mb4',
+    cursorclass=pymysql.cursors.DictCursor
+)
+
+try:
+    with connection.cursor() as cursor:
+        # 创建表
+        sql = """
+        CREATE TABLE IF NOT EXISTS users (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(50) NOT NULL,
+            email VARCHAR(100) UNIQUE,
+            age INT
+        )
+        """
+        cursor.execute(sql)
+        connection.commit()
+
+        # 插入数据
+        sql = "INSERT INTO users (name, email, age) VALUES (%s, %s, %s)"
+        cursor.execute(sql, ('张三', 'zhangsan@example.com', 25))
+        cursor.execute(sql, ('李四', 'lisi@example.com', 30))
+        connection.commit()
+
+        # 查询数据
+        sql = "SELECT * FROM users"
+        cursor.execute(sql)
+        results = cursor.fetchall()
+        for row in results:
+            print(row)
+
+        # 更新数据
+        sql = "UPDATE users SET age = %s WHERE name = %s"
+        cursor.execute(sql, (26, '张三'))
+        connection.commit()
+
+        # 删除数据
+        sql = "DELETE FROM users WHERE name = %s"
+        cursor.execute(sql, ('李四',))
+        connection.commit()
+
+finally:
+    connection.close()</code></pre>
+
+            <h3>使用 mysql-connector-python</h3>
+            <pre><code class="python">import mysql.connector
+
+# 创建连接
+connection = mysql.connector.connect(
+    host='localhost',
+    user='root',
+    password='your_password',
+    database='test_db'
+)
+
+cursor = connection.cursor()
+
+# 执行 SQL 查询
+cursor.execute("SELECT VERSION()")
+version = cursor.fetchone()
+print(f"MySQL 版本: {version[0]}")
+
+# 创建表
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS products (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(100),
+        price DECIMAL(10, 2)
+    )
+""")
+
+# 插入数据
+sql = "INSERT INTO products (name, price) VALUES (%s, %s)"
+val = ("Python 书籍", 59.99)
+cursor.execute(sql, val)
+connection.commit()
+
+# 批量插入
+sql = "INSERT INTO products (name, price) VALUES (%s, %s)"
+vals = [
+    ("Java 书籍", 49.99),
+    ("Go 书籍", 45.99),
+    ("Rust 书籍", 55.99)
+]
+cursor.executemany(sql, vals)
+connection.commit()
+
+# 查询数据
+cursor.execute("SELECT * FROM products")
+results = cursor.fetchall()
+for row in results:
+    print(row)
+
+connection.close()</code></pre>
+
+            <h3>事务处理</h3>
+            <pre><code class="python">import pymysql
+
+connection = pymysql.connect(
+    host='localhost',
+    user='root',
+    password='your_password',
+    database='test_db'
+)
+
+try:
+    with connection.cursor() as cursor:
+        # 开始事务
+        connection.begin()
+
+        # 多个操作
+        cursor.execute("UPDATE account SET balance = balance - 100 WHERE id = 1")
+        cursor.execute("UPDATE account SET balance = balance + 100 WHERE id = 2")
+
+        # 提交事务
+        connection.commit()
+        print("事务成功")
+
+except Exception as e:
+    # 回滚事务
+    connection.rollback()
+    print(f"事务失败: {e}")
+
+finally:
+    connection.close()</code></pre>
+
+            <h3>连接池</h3>
+            <pre><code class="python">from dbutils.pooled_db import PooledDB
+import pymysql
+
+# 创建连接池
+pool = PooledDB(
+    creator=pymysql,
+    maxconnections=6,
+    mincached=2,
+    maxcached=4,
+    host='localhost',
+    user='root',
+    password='your_password',
+    database='test_db'
+)
+
+# 从连接池获取连接
+connection = pool.connection()
+try:
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM users")
+        results = cursor.fetchall()
+        print(results)
+finally:
+    connection.close()  # 连接会返回到连接池</code></pre>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>在生产环境中，建议使用连接池来提高性能和资源利用率。
+            </div>
+        </section>
+
+        <div class="topic-nav">
+            <a href="sqlalchemy.html">← SQLAlchemy</a> | <a href="mongodb.html">MongoDB →</a>
+        </div>
+    </main>
+</body>
+</html>

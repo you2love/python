@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playwright - Python 入门教程</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>    <nav>
+        <div class="nav-category">
+            <h3>📚 当前分类</h3>
+            <ul>
+                <li><a href="beautifulsoup.html">BeautifulSoup</a></li>
+                <li><a href="selenium.html">Selenium</a></li>
+                <li><a href="playwright.html" class="active">Playwright</a></li>
+                <li><a href="scrapy.html">Scrapy</a></li>
+                <li><a href="regex.html">正则表达式</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="topic-nav">
+            <a href="selenium.html">← Selenium</a> | <a href="scrapy.html">Scrapy →</a>
+        </div>
+
+        <section id="playwright" class="content-section">
+            <h2>Playwright</h2>
+            <p>Playwright 是微软开发的现代浏览器自动化工具，比 Selenium 更快、更稳定、功能更强大。</p>
+
+            <h3>安装</h3>
+            <pre><code class="bash">pip install playwright
+playwright install  # 安装浏览器驱动</code></pre>
+
+            <h3>基本使用</h3>
+            <pre><code class="python">from playwright.sync_api import sync_playwright
+
+with sync_playwright() as p:
+    # 启动浏览器
+    browser = p.chromium.launch(headless=False)
+    page = browser.new_page()
+
+    # 访问网页
+    page.goto('https://example.com')
+
+    # 获取标题
+    print(f"标题: {page.title()}")
+
+    # 截图
+    page.screenshot(path='example.png')
+
+    # 关闭浏览器
+    browser.close()</code></pre>
+
+            <h3>元素定位和操作</h3>
+            <pre><code class="python">from playwright.sync_api import sync_playwright
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(headless=False)
+    page = browser.new_page()
+    page.goto('https://example.com')
+
+    # 点击元素
+    page.click('button#submit')
+
+    # 输入文本
+    page.fill('input#username', '张三')
+
+    # 获取文本
+    text = page.text_content('div.content')
+
+    # 获取属性
+    href = page.get_attribute('a.link', 'href')
+
+    # 等待元素
+    page.wait_for_selector('.dynamic-content')
+
+    # 等待导航
+    page.wait_for_load_state('networkidle')
+
+    # 执行 JavaScript
+    result = page.evaluate('() => document.title')
+
+    browser.close()</code></pre>
+
+            <h3>表单操作</h3>
+            <pre><code class="python">from playwright.sync_api import sync_playwright
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(headless=False)
+    page = browser.new_page()
+    page.goto('https://example.com/login')
+
+    # 填写表单
+    page.fill('input[name="username"]', 'admin')
+    page.fill('input[name="password"]', 'password123')
+
+    # 选择下拉框
+    page.select_option('select#country', 'China')
+
+    # 勾选复选框
+    page.check('input[type="checkbox"]')
+
+    # 点击单选按钮
+    page.click('input[type="radio"][value="male"]')
+
+    # 提交表单
+    page.click('button[type="submit"]')
+
+    # 等待跳转
+    page.wait_for_url('**/dashboard')
+
+    browser.close()</code></pre>
+
+            <h3>网络拦截</h3>
+            <pre><code class="python">from playwright.sync_api import sync_playwright
+
+def handle_route(route):
+    # 修改请求
+    headers = route.request.headers
+    headers['X-Custom-Header'] = 'test'
+    route.continue_(headers=headers)
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(headless=False)
+    page = browser.new_page()
+
+    # 拦截请求
+    page.route('**/*.{png,jpg,jpeg}', lambda route: route.abort())
+    page.route('**/api/**', handle_route)
+
+    # 监听响应
+    def handle_response(response):
+        if 'api' in response.url:
+            print(f"API 响应: {response.status}")
+
+    page.on('response', handle_response)
+
+    page.goto('https://example.com')
+    browser.close()</code></pre>
+
+            <h3>多页面和上下文</h3>
+            <pre><code class="python">from playwright.sync_api import sync_playwright
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(headless=False)
+
+    # 创建多个上下文（类似隐身模式）
+    context1 = browser.new_context()
+    context2 = browser.new_context()
+
+    # 在不同上下文中创建页面
+    page1 = context1.new_page()
+    page2 = context2.new_page()
+
+    page1.goto('https://example.com')
+    page2.goto('https://test.com')
+
+    # 处理新标签页
+    with page.expect_popup() as popup_info:
+        page.click('a[target="_blank"]')
+    new_page = popup_info.value
+
+    browser.close()</code></pre>
+
+            <h3>异步模式</h3>
+            <pre><code class="python">import asyncio
+from playwright.async_api import async_playwright
+
+async def main():
+    async with async_playwright() as p:
+        browser = await p.chromium.launch(headless=False)
+        page = await browser.new_page()
+
+        await page.goto('https://example.com')
+        print(f"标题: {await page.title()}")
+
+        await browser.close()
+
+asyncio.run(main())</code></pre>
+
+            <h3>爬虫示例</h3>
+            <pre><code class="python">from playwright.sync_api import sync_playwright
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(headless=True)
+    page = browser.new_page()
+
+    # 访问网页
+    page.goto('https://quotes.toscrape.com/js/')
+
+    # 等待内容加载
+    page.wait_for_selector('.quote')
+
+    # 获取所有名言
+    quotes = page.locator('.quote')
+    count = quotes.count()
+
+    for i in range(count):
+        text = quotes.nth(i).locator('.text').text_content()
+        author = quotes.nth(i).locator('.author').text_content()
+        print(f"{author}: {text}")
+
+    browser.close()</code></pre>
+
+            <div class="feature-box">
+                <h3>Playwright 优势：</h3>
+                <ul>
+                    <li>⚡ 更快：比 Selenium 速度快很多</li>
+                    <li>🎯 更稳定：内置智能等待机制</li>
+                    <li>🌐 多浏览器：支持 Chromium、Firefox、WebKit</li>
+                    <li>📱 移动端：支持移动设备模拟</li>
+                    <li>🔧 强大的 API：支持网络拦截、表单处理等</li>
+                </ul>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>Playwright 是现代 Web 自动化的最佳选择，推荐优先使用。
+            </div>
+        </section>
+
+        <div class="topic-nav">
+            <a href="selenium.html">← Selenium</a> | <a href="scrapy.html">Scrapy →</a>
+        </div>
+    </main>
+</body>
+</html>

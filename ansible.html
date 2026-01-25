@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ansible - Python 入门教程</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>    <nav>
+        <div class="nav-category">
+            <h3>📚 当前分类</h3>
+            <ul>
+                <li><a href="advanced-features.html">高级特性</a></li>
+                <li><a href="fabric.html">Fabric</a></li>
+                <li><a href="psutil.html">psutil</a></li>
+                <li><a href="logging.html">logging</a></li>
+                <li><a href="ansible.html" class="active">Ansible</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="topic-nav">
+            <a href="logging.html">← logging</a>
+        </div>
+
+        <section id="ansible" class="content-section">
+            <h2>Ansible</h2>
+            <p>Ansible 是一个自动化配置管理工具，Python 可以通过 ansible-runner 或 ansible-runner 接口调用 Ansible。</p>
+
+            <h3>安装</h3>
+            <pre><code class="bash">pip install ansible-runner</code></pre>
+
+            <h3>使用 ansible-runner</h3>
+            <pre><code class="python">import ansible_runner
+
+# 执行 Ad-hoc 命令
+r = ansible_runner.run(
+    private_data_dir='/tmp/ansible',
+    module='shell',
+    module_args='ls -la',
+    inventory='localhost,',
+    pattern='all'
+)
+
+print(f"状态: {r.status}")
+print(f"输出: {r.stdout}")
+print(f"错误: {r.stderr}")</code></pre>
+
+            <h3>执行 Playbook</h3>
+            <pre><code class="python">import ansible_runner
+
+# 执行 Playbook
+r = ansible_runner.run(
+    private_data_dir='/tmp/ansible',
+    playbook='site.yml'
+)
+
+print(f"状态: {r.status}")
+print(f"输出: {r.stdout}")
+
+# 获取事件
+for event in r.events:
+    print(event)</code></pre>
+
+            <h3>动态 Inventory</h3>
+            <pre><code class="python">import ansible_runner
+
+# 动态 inventory
+inventory = {
+    'all': {
+        'hosts': {
+            'server1': {'ansible_host': '192.168.1.1'},
+            'server2': {'ansible_host': '192.168.1.2'}
+        }
+    }
+}
+
+r = ansible_runner.run(
+    private_data_dir='/tmp/ansible',
+    module='ping',
+    inventory=inventory
+)
+
+print(f"输出: {r.stdout}")</code></pre>
+
+            <h3>异步执行</h3>
+            <pre><code class="python">import ansible_runner
+
+# 异步执行
+r = ansible_runner.run_async(
+    private_data_dir='/tmp/ansible',
+    playbook='site.yml'
+)
+
+# 检查状态
+while not r.rc:
+    print("正在执行...")
+    time.sleep(1)
+
+print(f"完成: {r.rc}")</code></pre>
+
+            <h3>使用 Ansible Python API</h3>
+            <pre><code class="python">from ansible.executor.playbook_executor import PlaybookExecutor
+from ansible.inventory.manager import InventoryManager
+from ansible.vars.manager import VariableManager
+from ansible.parsing.dataloader import DataLoader
+from ansible.playbook.play import Play
+
+# 加载 inventory
+loader = DataLoader()
+inventory = InventoryManager(loader=loader, sources='inventory')
+
+variable_manager = VariableManager(loader=loader, inventory=inventory)
+
+# 创建 PlaybookExecutor
+playbook_path = 'site.yml'
+executor = PlaybookExecutor(
+    playbooks=[playbook_path],
+    inventory=inventory,
+    variable_manager=variable_manager,
+    loader=loader
+)
+
+# 执行
+executor.run()</code></pre>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>Ansible 适合自动化配置管理、应用部署、任务编排等场景。
+            </div>
+        </section>
+
+        <div class="topic-nav">
+            <a href="logging.html">← logging</a>
+        </div>
+    </main>
+</body>
+</html>

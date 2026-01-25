@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据分析 - Python 入门教程</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>    <nav>
+        <div class="nav-category">
+            <h3>📚 基础入门</h3>
+            <ul>
+                <li><a href="basics.html">简介</a></li>
+                <li><a href="basics.html#installation">安装</a></li>
+                <li><a href="basics.html#basics">基础语法</a></li>
+                <li><a href="basics.html#variables">变量</a></li>
+                <li><a href="basics.html#datatypes">数据类型</a></li>
+                <li><a href="basics.html#controlflow">控制流</a></li>
+                <li><a href="basics.html#functions">函数</a></li>
+                <li><a href="basics.html#oop">面向对象</a></li>
+                <li><a href="basics.html#stringformat">字符串格式化</a></li>
+                <li><a href="basics.html#tips">常用技巧</a></li>
+            </ul>
+        </div>
+        <div class="nav-category">
+            <h3>📁 文件操作</h3>
+            <ul>
+                <li><a href="file-management.html">文件操作</a></li>
+                <li><a href="file-management.html#directory">目录操作</a></li>
+                <li><a href="file-management.html#exceptions">异常处理</a></li>
+                <li><a href="file-management.html#pypdf2">PyPDF2</a></li>
+                <li><a href="file-management.html#pythondocx">python-docx</a></li>
+                <li><a href="file-management.html#docxtpl">docxtpl</a></li>
+                <li><a href="file-management.html#openpyxl">openpyxl</a></li>
+                <li><a href="file-management.html#pythonpptx">python-pptx</a></li>
+                <li><a href="file-management.html#difflib">difflib</a></li>
+                <li><a href="file-management.html#filecmp">filecmp</a></li>
+            </ul>
+        </div>
+        <div class="nav-category">
+            <h3>🌐 网络编程</h3>
+            <ul>
+                <li><a href="network-programming.html">网络编程</a></li>
+                <li><a href="network-programming.html#asyncio">异步编程</a></li>
+                <li><a href="network-programming.html#requests">Requests</a></li>
+                <li><a href="network-programming.html#aiohttp">aiohttp</a></li>
+                <li><a href="network-programming.html#fastapi">FastAPI</a></li>
+                <li><a href="network-programming.html#scapy">Scapy</a></li>
+            </ul>
+        </div>
+        <div class="nav-category">
+            <h3>🕷️ 爬虫技术</h3>
+            <ul>
+                <li><a href="web-scraping.html">BeautifulSoup</a></li>
+                <li><a href="web-scraping.html#selenium">Selenium</a></li>
+                <li><a href="web-scraping.html#playwright">Playwright</a></li>
+                <li><a href="web-scraping.html#scrapy">Scrapy</a></li>
+                <li><a href="web-scraping.html#regex">正则表达式</a></li>
+            </ul>
+        </div>
+        <div class="nav-category">
+            <h3>📊 数据分析</h3>
+            <ul>
+                <li><a href="#numpy" class="active">NumPy</a></li>
+                <li><a href="#pandas">Pandas</a></li>
+                <li><a href="#matplotlib">Matplotlib</a></li>
+                <li><a href="#keras">Keras</a></li>
+            </ul>
+        </div>
+        <div class="nav-category">
+            <h3>💾 数据存储</h3>
+            <ul>
+                <li><a href="databases.html">SQLAlchemy</a></li>
+                <li><a href="databases.html#mysql">MySQL</a></li>
+                <li><a href="databases.html#mongodb">MongoDB</a></li>
+                <li><a href="databases.html#redis">Redis</a></li>
+            </ul>
+        </div>
+        <div class="nav-category">
+            <h3>🔧 系统运维</h3>
+            <ul>
+                <li><a href="devops.html">高级特性</a></li>
+                <li><a href="devops.html#fabric">Fabric</a></li>
+                <li><a href="devops.html#psutil">psutil</a></li>
+                <li><a href="devops.html#logging">logging</a></li>
+                <li><a href="devops.html#ansible">Ansible</a></li>
+            </ul>
+        </div>
+        <div class="nav-category">
+            <h3>🛠️ 实用工具</h3>
+            <ul>
+                <li><a href="tools.html">QRCode</a></li>
+                <li><a href="tools.html#resources">学习资源</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <section id="numpy" class="content-section">
+            <h2>NumPy</h2>
+            <p>NumPy 是 Python 中科学计算的基础库，提供了高性能的多维数组和数学运算功能。</p>
+
+            <h3>安装</h3>
+            <pre><code class="bash">pip install numpy</code></pre>
+
+            <h3>创建数组</h3>
+            <pre><code class="python">import numpy as np
+
+# 从列表创建数组
+arr = np.array([1, 2, 3, 4, 5])
+print(f"一维数组: {arr}")
+
+# 创建二维数组
+matrix = np.array([[1, 2, 3], [4, 5, 6]])
+print(f"二维数组:\n{matrix}")
+
+# 创建特定数组
+zeros = np.zeros((3, 3))      # 全零数组
+ones = np.ones((2, 4))        # 全一数组
+random = np.random.rand(3, 3) # 随机数组
+range_arr = np.arange(0, 10, 2)  # [0, 2, 4, 6, 8]
+
+print(f"全零数组:\n{zeros}")
+print(f"全一数组:\n{ones}")
+print(f"随机数组:\n{random}")
+print(f"范围数组: {range_arr}")</code></pre>
+
+            <h3>数组属性</h3>
+            <pre><code class="python">import numpy as np
+
+arr = np.array([[1, 2, 3], [4, 5, 6]])
+
+print(f"形状: {arr.shape}")      # (2, 3)
+print(f"维度: {arr.ndim}")       # 2
+print(f"大小: {arr.size}")       # 6
+print(f"数据类型: {arr.dtype}")  # int64
+print(f"元素大小: {arr.itemsize} 字节")</code></pre>
+
+            <h3>数组索引和切片</h3>
+            <pre><code class="python">import numpy as np
+
+arr = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+
+# 基本索引
+print(f"第一个元素: {arr[0]}")      # 0
+print(f"最后一个元素: {arr[-1]}")   # 9
+
+# 切片
+print(f"前5个元素: {arr[:5]}")      # [0 1 2 3 4]
+print(f"后5个元素: {arr[-5:]}")     # [5 6 7 8 9]
+print(f"偶数索引: {arr[::2]}")      # [0 2 4 6 8]
+
+# 二维数组索引
+matrix = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+print(f"第一行: {matrix[0, :]}")    # [1 2 3]
+print(f"第一列: {matrix[:, 0]}")    # [1 4 7]
+print(f"子数组:\n{matrix[0:2, 1:3]}")</code></pre>
+
+            <h3>数组运算</h3>
+            <pre><code class="python">import numpy as np
+
+arr1 = np.array([1, 2, 3, 4])
+arr2 = np.array([5, 6, 7, 8])
+
+# 基本运算
+print(f"加法: {arr1 + arr2}")      # [ 6  8 10 12]
+print(f"减法: {arr1 - arr2}")      # [-4 -4 -4 -4]
+print(f"乘法: {arr1 * arr2}")      # [ 5 12 21 32]
+print(f"除法: {arr1 / arr2}")      # [0.2 0.333 0.428 0.5]
+
+# 标量运算
+print(f"乘以2: {arr1 * 2}")        # [2 4 6 8]
+print(f"加10: {arr1 + 10}")        # [11 12 13 14]
+
+# 数学函数
+print(f"平方: {np.square(arr1)}")  # [ 1  4  9 16]
+print(f"平方根: {np.sqrt(arr1)}")  # [1. 1.414 1.732 2.]
+print(f"指数: {np.exp(arr1)}")     # [ 2.718  7.389 20.085 54.598]
+
+# 统计函数
+print(f"求和: {np.sum(arr1)}")     # 10
+print(f"平均值: {np.mean(arr1)}")  # 2.5
+print(f"最大值: {np.max(arr1)}")   # 4
+print(f"最小值: {np.min(arr1)}")   # 1
+print(f"标准差: {np.std(arr1)}")   # 1.118</code></pre>
+
+            <h3>数组操作</h3>
+            <pre><code class="python">import numpy as np
+
+arr = np.array([1, 2, 3, 4, 5])
+
+# 改变形状
+matrix = arr.reshape(5, 1)
+print(f"重塑后:\n{matrix}")
+
+# 转置
+matrix = np.array([[1, 2, 3], [4, 5, 6]])
+print(f"转置:\n{matrix.T}")
+
+# 拼接
+arr1 = np.array([1, 2, 3])
+arr2 = np.array([4, 5, 6])
+concatenated = np.concatenate([arr1, arr2])
+print(f"拼接: {concatenated}")  # [1 2 3 4 5 6]
+
+# 排序
+arr = np.array([3, 1, 4, 1, 5, 9, 2, 6])
+sorted_arr = np.sort(arr)
+print(f"排序: {sorted_arr}")  # [1 1 2 3 4 5 6 9]
+
+# 去重
+unique_arr = np.unique(arr)
+print(f"去重: {unique_arr}")  # [1 2 3 4 5 6 9]</code></pre>
+
+            <h3>广播机制</h3>
+            <pre><code class="python">import numpy as np
+
+# 不同形状的数组可以运算
+arr = np.array([[1, 2, 3], [4, 5, 6]])
+scalar = 10
+print(f"数组 + 标量:\n{arr + scalar}")
+
+# 不同维度的数组
+arr1 = np.array([[1], [2], [3]])  # (3, 1)
+arr2 = np.array([4, 5, 6])        # (3,)
+result = arr1 + arr2
+print(f"广播结果:\n{result}")
+# [[5 6 7]
+#  [6 7 8]
+#  [7 8 9]]</code></pre>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>NumPy 数组比 Python 列表快得多，特别是在处理大量数据时。
+            </div>
+        </section>
+
+        <section id="pandas" class="content-section">
+            <h2>Pandas</h2>
+            <p>Pandas 是 Python 中数据分析的核心库，提供了 DataFrame 和 Series 数据结构，让数据处理变得简单高效。</p>
+
+            <h3>安装</h3>
+            <pre><code class="bash">pip install pandas</code></pre>
+
+            <h3>创建 DataFrame</h3>
+            <pre><code class="python">import pandas as pd
+
+# 从字典创建
+data = {
+    '姓名': ['张三', '李四', '王五'],
+    '年龄': [25, 30, 35],
+    '城市': ['北京', '上海', '广州']
+}
+df = pd.DataFrame(data)
+print(df)
+
+# 从列表创建
+data = [
+    ['张三', 25, '北京'],
+    ['李四', 30, '上海'],
+    ['王五', 35, '广州']
+]
+df = pd.DataFrame(data, columns=['姓名', '年龄', '城市'])
+print(df)
+
+# 从 NumPy 数组创建
+import numpy as np
+arr = np.random.rand(5, 3)
+df = pd.DataFrame(arr, columns=['A', 'B', 'C'])
+print(df)</code></pre>
+
+            <h3>读取和写入数据</h3>
+            <pre><code class="python">import pandas as pd
+
+# 读取 CSV 文件
+df = pd.read_csv('data.csv')
+
+# 读取 Excel 文件
+df = pd.read_excel('data.xlsx')
+
+# 读取 JSON 文件
+df = pd.read_json('data.json')
+
+# 写入 CSV 文件
+df.to_csv('output.csv', index=False, encoding='utf-8')
+
+# 写入 Excel 文件
+df.to_excel('output.xlsx', index=False)
+
+# 写入 JSON 文件
+df.to_json('output.json', force_ascii=False, indent=2)</code></pre>
+
+            <h3>数据查看</h3>
+            <pre><code class="python">import pandas as pd
+
+# 假设 df 是一个 DataFrame
+print(f"前5行:\n{df.head()}")
+print(f"后5行:\n{df.tail()}")
+print(f"基本信息:\n{df.info()}")
+print(f"统计信息:\n{df.describe()}")
+print(f"列名: {df.columns.tolist()}")
+print(f"形状: {df.shape}")
+print(f"数据类型:\n{df.dtypes}")</code></pre>
+
+            <h3>数据选择</h3>
+            <pre><code class="python">import pandas as pd
+
+# 选择列
+print(df['姓名'])        # 单列
+print(df[['姓名', '年龄']])  # 多列
+
+# 选择行（位置索引）
+print(df.iloc[0])       # 第一行
+print(df.iloc[0:3])     # 前三行
+
+# 选择行（标签索引）
+print(df.loc[0])        # 第一行
+print(df.loc[0:2])      # 前三行
+
+# 条件选择
+print(df[df['年龄'] > 25])      # 年龄大于25的行
+print(df[df['城市'] == '北京']) # 城市为北京的行
+
+# 组合条件
+print(df[(df['年龄'] > 25) & (df['城市'] == '上海')])</code></pre>
+
+            <h3>数据操作</h3>
+            <pre><code class="python">import pandas as pd
+
+# 添加列
+df['工资'] = [8000, 10000, 12000]
+
+# 删除列
+df = df.drop('工资', axis=1)
+
+# 重命名列
+df = df.rename(columns={'姓名': 'name', '年龄': 'age'})
+
+# 排序
+df_sorted = df.sort_values('年龄', ascending=False)
+
+# 去重
+df_unique = df.drop_duplicates()
+
+# 填充缺失值
+df_filled = df.fillna(0)
+
+# 删除缺失值
+df_clean = df.dropna()</code></pre>
+
+            <h3>数据聚合</h3>
+            <pre><code class="python">import pandas as pd
+
+# 按列分组
+grouped = df.groupby('城市')
+print(f"各城市平均年龄:\n{grouped['年龄'].mean()}")
+
+# 多种聚合
+result = df.groupby('城市').agg({
+    '年龄': ['mean', 'max', 'min'],
+    '工资': 'sum'
+})
+print(result)
+
+# 计数
+count = df['城市'].value_counts()
+print(f"城市人数:\n{count}")</code></pre>
+
+            <h3>数据合并</h3>
+            <pre><code class="python">import pandas as pd
+
+df1 = pd.DataFrame({'姓名': ['张三', '李四'], '年龄': [25, 30]})
+df2 = pd.DataFrame({'姓名': ['张三', '李四'], '工资': [8000, 10000]})
+
+# 内连接
+merged = pd.merge(df1, df2, on='姓名')
+print(merged)
+
+# 左连接
+left_join = pd.merge(df1, df2, on='姓名', how='left')
+print(left_join)
+
+# 拼接
+concatenated = pd.concat([df1, df2], axis=0)  # 纵向拼接
+print(concatenated)</code></pre>
+
+            <h3>时间序列</h3>
+            <pre><code class="python">import pandas as pd
+
+# 创建时间序列
+dates = pd.date_range('2026-01-01', periods=7, freq='D')
+df = pd.DataFrame({'日期': dates, '值': range(7)})
+print(df)
+
+# 设置索引
+df = df.set_index('日期')
+
+# 按时间选择
+print(df['2026-01-01':'2026-01-03'])
+
+# 重采样
+monthly = df.resample('M').sum()
+print(monthly)</code></pre>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>Pandas 是数据分析和数据科学的基础库，建议深入学习。
+            </div>
+        </section>
+
+        <section id="matplotlib" class="content-section">
+            <h2>Matplotlib</h2>
+            <p>Matplotlib 是 Python 中最流行的数据可视化库，可以创建各种静态、动态和交互式图表。</p>
+
+            <h3>安装</h3>
+            <pre><code class="bash">pip install matplotlib</code></pre>
+
+            <h3>基本折线图</h3>
+            <pre><code class="python">import matplotlib.pyplot as plt
+
+# 数据
+x = [1, 2, 3, 4, 5]
+y = [2, 4, 6, 8, 10]
+
+# 创建图表
+plt.figure(figsize=(10, 6))
+plt.plot(x, y, marker='o', linestyle='-', color='blue', label='数据')
+
+# 添加标题和标签
+plt.title('折线图示例', fontsize=16)
+plt.xlabel('X 轴', fontsize=12)
+plt.ylabel('Y 轴', fontsize=12)
+
+# 添加网格
+plt.grid(True, linestyle='--', alpha=0.6)
+
+# 显示图例
+plt.legend()
+
+# 显示图表
+plt.show()</code></pre>
+
+            <h3>柱状图</h3>
+            <pre><code class="python">import matplotlib.pyplot as plt
+
+# 数据
+categories = ['A', 'B', 'C', 'D', 'E']
+values = [23, 45, 56, 78, 32]
+
+# 创建柱状图
+plt.figure(figsize=(10, 6))
+plt.bar(categories, values, color='skyblue', edgecolor='black')
+
+# 添加标题和标签
+plt.title('柱状图示例', fontsize=16)
+plt.xlabel('类别', fontsize=12)
+plt.ylabel('数值', fontsize=12)
+
+# 在柱子上显示数值
+for i, v in enumerate(values):
+    plt.text(i, v + 1, str(v), ha='center', va='bottom')
+
+plt.show()</code></pre>
+
+            <h3>散点图</h3>
+            <pre><code class="python">import matplotlib.pyplot as plt
+import numpy as np
+
+# 生成随机数据
+np.random.seed(42)
+x = np.random.randn(100)
+y = np.random.randn(100)
+colors = np.random.rand(100)
+sizes = 1000 * np.random.rand(100)
+
+# 创建散点图
+plt.figure(figsize=(10, 6))
+plt.scatter(x, y, c=colors, s=sizes, alpha=0.6, cmap='viridis')
+
+# 添加标题和标签
+plt.title('散点图示例', fontsize=16)
+plt.xlabel('X 轴', fontsize=12)
+plt.ylabel('Y 轴', fontsize=12)
+
+# 添加颜色条
+plt.colorbar(label='颜色')
+
+plt.show()</code></pre>
+
+            <h3>饼图</h3>
+            <pre><code class="python">import matplotlib.pyplot as plt
+
+# 数据
+labels = ['A', 'B', 'C', 'D']
+sizes = [15, 30, 45, 10]
+colors = ['#ff9999', '#66b3ff', '#99ff99', '#ffcc99']
+explode = (0, 0.1, 0, 0)  # 突出显示第二块
+
+# 创建饼图
+plt.figure(figsize=(10, 6))
+plt.pie(sizes, explode=explode, labels=labels, colors=colors,
+        autopct='%1.1f%%', shadow=True, startangle=90)
+
+plt.title('饼图示例', fontsize=16)
+plt.axis('equal')  # 使饼图为圆形
+
+plt.show()</code></pre>
+
+            <h3>直方图</h3>
+            <pre><code class="python">import matplotlib.pyplot as plt
+import numpy as np
+
+# 生成正态分布数据
+np.random.seed(42)
+data = np.random.randn(1000)
+
+# 创建直方图
+plt.figure(figsize=(10, 6))
+plt.hist(data, bins=30, color='skyblue', edgecolor='black', alpha=0.7)
+
+# 添加标题和标签
+plt.title('直方图示例', fontsize=16)
+plt.xlabel('数值', fontsize=12)
+plt.ylabel('频数', fontsize=12)
+
+# 添加网格
+plt.grid(True, linestyle='--', alpha=0.6)
+
+plt.show()</code></pre>
+
+            <h3>子图</h3>
+            <pre><code class="python">import matplotlib.pyplot as plt
+import numpy as np
+
+# 创建 2x2 子图
+fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+
+# 子图 1: 折线图
+x = np.linspace(0, 10, 100)
+axes[0, 0].plot(x, np.sin(x), color='blue')
+axes[0, 0].set_title('正弦波')
+axes[0, 0].grid(True)
+
+# 子图 2: 柱状图
+categories = ['A', 'B', 'C', 'D']
+values = [10, 20, 15, 25]
+axes[0, 1].bar(categories, values, color='orange')
+axes[0, 1].set_title('柱状图')
+
+# 子图 3: 散点图
+x = np.random.randn(50)
+y = np.random.randn(50)
+axes[1, 0].scatter(x, y, color='green', alpha=0.6)
+axes[1, 0].set_title('散点图')
+
+# 子图 4: 饼图
+sizes = [30, 20, 25, 25]
+axes[1, 1].pie(sizes, labels=['A', 'B', 'C', 'D'], autopct='%1.1f%%')
+axes[1, 1].set_title('饼图')
+
+plt.tight_layout()
+plt.show()</code></pre>
+
+            <h3>保存图表</h3>
+            <pre><code class="python">import matplotlib.pyplot as plt
+
+# 创建图表
+plt.figure(figsize=(10, 6))
+plt.plot([1, 2, 3, 4, 5], [2, 4, 6, 8, 10])
+plt.title('保存图表示例')
+
+# 保存为不同格式
+plt.savefig('chart.png', dpi=300, bbox_inches='tight')  # PNG
+plt.savefig('chart.jpg', quality=95)  # JPG
+plt.savefig('chart.pdf')  # PDF
+plt.savefig('chart.svg')  # SVG
+
+plt.close()</code></pre>
+
+            <h3>自定义样式</h3>
+            <pre><code class="python">import matplotlib.pyplot as plt
+
+# 设置样式
+plt.style.use('seaborn')
+
+# 自定义图表
+fig, ax = plt.subplots(figsize=(10, 6))
+
+# 绘制数据
+x = [1, 2, 3, 4, 5]
+y1 = [2, 4, 6, 8, 10]
+y2 = [1, 3, 5, 7, 9]
+
+ax.plot(x, y1, 'b-', linewidth=2, label='数据1')
+ax.plot(x, y2, 'r--', linewidth=2, label='数据2')
+
+# 设置标题和标签
+ax.set_title('自定义样式图表', fontsize=18, pad=20)
+ax.set_xlabel('X 轴', fontsize=14)
+ax.set_ylabel('Y 轴', fontsize=14)
+
+# 设置刻度标签大小
+ax.tick_params(axis='both', which='major', labelsize=12)
+
+# 添加图例
+ax.legend(fontsize=12, loc='upper left')
+
+# 添加网格
+ax.grid(True, linestyle='--', alpha=0.7)
+
+plt.tight_layout()
+plt.show()</code></pre>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>Matplotlib 功能强大，可以创建几乎所有类型的图表，建议结合 Pandas 使用进行数据可视化。
+            </div>
+        </section>
+
+        <section id="keras" class="content-section">
+            <h2>Keras</h2>
+            <p>Keras 是一个高级神经网络 API，运行在 TensorFlow、CNTK 或 Theano 之上，让深度学习变得简单。</p>
+
+            <h3>安装</h3>
+            <pre><code class="bash">pip install tensorflow
+# Keras 已集成在 TensorFlow 中</code></pre>
+
+            <h3>基本神经网络模型</h3>
+            <pre><code class="python">import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
+
+# 创建序列模型
+model = keras.Sequential([
+    layers.Dense(64, activation='relu', input_shape=(10,)),
+    layers.Dense(32, activation='relu'),
+    layers.Dense(1, activation='sigmoid')
+])
+
+# 编译模型
+model.compile(
+    optimizer='adam',
+    loss='binary_crossentropy',
+    metrics=['accuracy']
+)
+
+# 查看模型结构
+model.summary()</code></pre>
+
+            <h3>构建分类模型</h3>
+            <pre><code class="python">import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
+
+# 函数式 API 构建
+inputs = keras.Input(shape=(784,))
+x = layers.Dense(128, activation='relu')(inputs)
+x = layers.Dropout(0.2)(x)
+x = layers.Dense(64, activation='relu')(x)
+outputs = layers.Dense(10, activation='softmax')(x)
+
+# 创建模型
+model = keras.Model(inputs=inputs, outputs=outputs)
+
+# 编译模型
+model.compile(
+    optimizer='adam',
+    loss='sparse_categorical_crossentropy',
+    metrics=['accuracy']
+)
+
+model.summary()</code></pre>
+
+            <h3>准备数据</h3>
+            <pre><code class="python">import tensorflow as tf
+from tensorflow.keras.datasets import mnist
+
+# 加载 MNIST 数据集
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
+
+# 归一化数据
+x_train = x_train.astype('float32') / 255.0
+x_test = x_test.astype('float32') / 255.0
+
+# 展平图像
+x_train = x_train.reshape(-1, 784)
+x_test = x_test.reshape(-1, 784)
+
+print(f"训练集形状: {x_train.shape}")
+print(f"测试集形状: {x_test.shape}")</code></pre>
+
+            <h3>训练模型</h3>
+            <pre><code class="python">import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
+
+# 创建模型
+model = keras.Sequential([
+    layers.Dense(128, activation='relu', input_shape=(784,)),
+    layers.Dropout(0.2),
+    layers.Dense(64, activation='relu'),
+    layers.Dense(10, activation='softmax')
+])
+
+# 编译模型
+model.compile(
+    optimizer='adam',
+    loss='sparse_categorical_crossentropy',
+    metrics=['accuracy']
+)
+
+# 训练模型
+history = model.fit(
+    x_train, y_train,
+    epochs=10,
+    batch_size=32,
+    validation_split=0.2,
+    verbose=1
+)</code></pre>
+
+            <h3>评估模型</h3>
+            <pre><code class="python"># 评估模型
+test_loss, test_acc = model.evaluate(x_test, y_test, verbose=2)
+print(f'\n测试准确率: {test_acc:.4f}')
+
+# 预测
+predictions = model.predict(x_test[:5])
+predicted_classes = tf.argmax(predictions, axis=1)
+print(f"预测结果: {predicted_classes.numpy()}")
+print(f"真实标签: {y_test[:5]}")</code></pre>
+
+            <h3>卷积神经网络 (CNN)</h3>
+            <pre><code class="python">import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
+
+# 创建 CNN 模型
+model = keras.Sequential([
+    layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)),
+    layers.MaxPooling2D((2, 2)),
+    layers.Conv2D(64, (3, 3), activation='relu'),
+    layers.MaxPooling2D((2, 2)),
+    layers.Conv2D(64, (3, 3), activation='relu'),
+    layers.Flatten(),
+    layers.Dense(64, activation='relu'),
+    layers.Dense(10, activation='softmax')
+])
+
+# 编译模型
+model.compile(
+    optimizer='adam',
+    loss='sparse_categorical_crossentropy',
+    metrics=['accuracy']
+)
+
+model.summary()</code></pre>
+
+            <h3>使用 CNN 处理图像</h3>
+            <pre><code class="python">import tensorflow as tf
+from tensorflow.keras.datasets import mnist
+
+# 加载数据
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
+
+# 归一化并添加通道维度
+x_train = x_train.astype('float32') / 255.0
+x_test = x_test.astype('float32') / 255.0
+x_train = x_train.reshape(-1, 28, 28, 1)
+x_test = x_test.reshape(-1, 28, 28, 1)
+
+# 训练 CNN 模型
+history = model.fit(
+    x_train, y_train,
+    epochs=5,
+    batch_size=64,
+    validation_split=0.2
+)
+
+# 评估
+test_loss, test_acc = model.evaluate(x_test, y_test, verbose=2)
+print(f'\n测试准确率: {test_acc:.4f}')</code></pre>
+
+            <h3>保存和加载模型</h3>
+            <pre><code class="python"># 保存整个模型
+model.save('my_model.keras')
+
+# 加载模型
+loaded_model = keras.models.load_model('my_model.keras')
+
+# 只保存模型权重
+model.save_weights('model_weights.weights')
+
+# 加载权重
+model.load_weights('model_weights.weights')
+
+# 保存模型架构
+json_string = model.to_json()
+
+# 从 JSON 加载架构
+from tensorflow.keras.models import model_from_json
+model_architecture = model_from_json(json_string)
+model_architecture.load_weights('model_weights.weights')</code></pre>
+
+            <h3>回调函数</h3>
+            <pre><code class="python">from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping, TensorBoard
+
+# 模型检查点
+checkpoint = ModelCheckpoint(
+    'best_model.keras',
+    monitor='val_loss',
+    save_best_only=True,
+    mode='min',
+    verbose=1
+)
+
+# 早停
+early_stopping = EarlyStopping(
+    monitor='val_loss',
+    patience=5,
+    restore_best_weights=True
+)
+
+# TensorBoard
+tensorboard = TensorBoard(log_dir='./logs')
+
+# 训练时使用回调
+history = model.fit(
+    x_train, y_train,
+    epochs=50,
+    batch_size=32,
+    validation_split=0.2,
+    callbacks=[checkpoint, early_stopping, tensorboard]
+)</code></pre>
+
+            <h3>自定义层</h3>
+            <pre><code class="python">import tensorflow as tf
+from tensorflow.keras import layers
+
+class CustomLayer(layers.Layer):
+    def __init__(self, units=32):
+        super(CustomLayer, self).__init__()
+        self.units = units
+
+    def build(self, input_shape):
+        self.w = self.add_weight(
+            shape=(input_shape[-1], self.units),
+            initializer='random_normal',
+            trainable=True
+        )
+        self.b = self.add_weight(
+            shape=(self.units,),
+            initializer='zeros',
+            trainable=True
+        )
+
+    def call(self, inputs):
+        return tf.matmul(inputs, self.w) + self.b
+
+# 使用自定义层
+model = keras.Sequential([
+    CustomLayer(64),
+    layers.Activation('relu'),
+    layers.Dense(10, activation='softmax')
+])
+
+model.compile(optimizer='adam', loss='sparse_categorical_crossentropy')
+model.summary()</code></pre>
+
+            <h3>迁移学习</h3>
+            <pre><code class="python">from tensorflow.keras.applications import VGG16
+from tensorflow.keras import layers, models
+
+# 加载预训练模型（不包括顶层）
+base_model = VGG16(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
+
+# 冻结基础模型
+base_model.trainable = False
+
+# 添加自定义层
+model = models.Sequential([
+    base_model,
+    layers.Flatten(),
+    layers.Dense(256, activation='relu'),
+    layers.Dropout(0.5),
+    layers.Dense(10, activation='softmax')
+])
+
+# 编译模型
+model.compile(
+    optimizer='adam',
+    loss='sparse_categorical_crossentropy',
+    metrics=['accuracy']
+)
+
+model.summary()</code></pre>
+
+            <div class="feature-box">
+                <h3>Keras 优势：</h3>
+                <ul>
+                    <li>🎯 简单易用：API 设计简洁直观</li>
+                    <li>🔧 灵活性强：支持快速原型设计</li>
+                    <li>🚀 高性能：基于 TensorFlow 优化</li>
+                    <li>📚 丰富资源：大量预训练模型</li>
+                    <li>🌐 社区活跃：广泛的使用和支持</li>
+                </ul>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>Keras 适合快速构建和训练深度学习模型，特别适合初学者和快速原型开发。
+            </div>
+        </section>
+    </main>
+</body>
+</html>

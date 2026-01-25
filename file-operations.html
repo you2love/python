@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件操作 - Python 入门教程</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>    <nav>
+        <div class="nav-category">
+            <h3>📚 当前分类</h3>
+            <ul>
+                <li><a href="file-operations.html" class="active">文件操作</a></li>
+                <li><a href="directory-operations.html">目录操作</a></li>
+                <li><a href="exceptions.html">异常处理</a></li>
+                <li><a href="pypdf2.html">PyPDF2</a></li>
+                <li><a href="python-docx.html">python-docx</a></li>
+                <li><a href="docxtpl.html">docxtpl</a></li>
+                <li><a href="openpyxl.html">openpyxl</a></li>
+                <li><a href="python-pptx.html">python-pptx</a></li>
+                <li><a href="difflib.html">difflib</a></li>
+                <li><a href="filecmp.html">filecmp</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="topic-nav">
+            <a href="directory-operations.html">目录操作 →</a>
+        </div>
+
+        <section id="fileio" class="content-section">
+            <h2>文件操作</h2>
+            <p>Python 提供了丰富的文件操作功能，可以轻松地读取和写入文件。</p>
+
+            <h3>读取文件</h3>
+            <pre><code class="python"># 方法1：使用 with 语句（推荐）
+with open('example.txt', 'r', encoding='utf-8') as file:
+    content = file.read()  # 读取整个文件
+    print(content)
+
+# 方法2：逐行读取
+with open('example.txt', 'r', encoding='utf-8') as file:
+    for line in file:
+        print(line.strip())  # strip() 去除换行符
+
+# 方法3：读取所有行到列表
+with open('example.txt', 'r', encoding='utf-8') as file:
+    lines = file.readlines()
+    print(lines)</code></pre>
+
+            <h3>写入文件</h3>
+            <pre><code class="python"># 写入文本（覆盖模式）
+with open('output.txt', 'w', encoding='utf-8') as file:
+    file.write("Hello, Python!\n")
+    file.write("这是第二行\n")
+
+# 追加模式
+with open('output.txt', 'a', encoding='utf-8') as file:
+    file.write("这是追加的内容\n")
+
+# 写入多行
+lines = ["第一行\n", "第二行\n", "第三行\n"]
+with open('output.txt', 'w', encoding='utf-8') as file:
+    file.writelines(lines)</code></pre>
+
+            <h3>JSON 文件处理</h3>
+            <pre><code class="python">import json
+
+# 写入 JSON 文件
+data = {
+    "name": "张三",
+    "age": 25,
+    "hobbies": ["阅读", "编程", "旅行"]
+}
+
+with open('data.json', 'w', encoding='utf-8') as file:
+    json.dump(data, file, ensure_ascii=False, indent=2)
+
+# 读取 JSON 文件
+with open('data.json', 'r', encoding='utf-8') as file:
+    loaded_data = json.load(file)
+    print(loaded_data)</code></pre>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>使用 with 语句可以自动关闭文件，避免资源泄漏。
+            </div>
+        </section>
+
+        <div class="topic-nav">
+            <a href="directory-operations.html">目录操作 →</a>
+        </div>
+    </main>
+</body>
+</html>

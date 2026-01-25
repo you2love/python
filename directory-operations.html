@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>目录操作 - Python 入门教程</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>    <nav>
+        <div class="nav-category">
+            <h3>📚 当前分类</h3>
+            <ul>
+                <li><a href="file-operations.html">文件操作</a></li>
+                <li><a href="directory-operations.html" class="active">目录操作</a></li>
+                <li><a href="exceptions.html">异常处理</a></li>
+                <li><a href="pypdf2.html">PyPDF2</a></li>
+                <li><a href="python-docx.html">python-docx</a></li>
+                <li><a href="docxtpl.html">docxtpl</a></li>
+                <li><a href="openpyxl.html">openpyxl</a></li>
+                <li><a href="python-pptx.html">python-pptx</a></li>
+                <li><a href="difflib.html">difflib</a></li>
+                <li><a href="filecmp.html">filecmp</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="topic-nav">
+            <a href="file-operations.html">← 文件操作</a> | <a href="exceptions.html">异常处理 →</a>
+        </div>
+
+        <section id="directory" class="content-section">
+            <h2>目录操作</h2>
+            <p>Python 提供了 os 和 pathlib 模块来操作文件系统，包括创建、删除、遍历目录等。</p>
+
+            <h3>使用 pathlib（推荐）</h3>
+            <pre><code class="python">from pathlib import Path
+
+# 获取当前目录
+current_dir = Path.cwd()
+print(f"当前目录: {current_dir}")
+
+# 创建目录
+new_dir = Path("my_folder")
+new_dir.mkdir(exist_ok=True)  # exist_ok=True 避免目录已存在时报错
+
+# 创建嵌套目录
+nested_dir = Path("parent/child/grandchild")
+nested_dir.mkdir(parents=True, exist_ok=True)
+
+# 检查路径是否存在
+print(f"目录是否存在: {new_dir.exists()}")
+
+# 检查是否是目录
+print(f"是目录吗: {new_dir.is_dir()}")
+
+# 遍历目录
+for item in current_dir.iterdir():
+    if item.is_file():
+        print(f"文件: {item.name}")
+    elif item.is_dir():
+        print(f"目录: {item.name}")
+
+# 获取所有 Python 文件
+python_files = list(current_dir.glob("*.py"))
+print(f"Python 文件: {[f.name for f in python_files]}")
+
+# 删除目录（必须为空）
+empty_dir = Path("empty_folder")
+empty_dir.mkdir(exist_ok=True)
+empty_dir.rmdir()  # 只能删除空目录
+
+# 删除文件
+file_to_delete = Path("test.txt")
+if file_to_delete.exists():
+    file_to_delete.unlink()</code></pre>
+
+            <h3>使用 os 模块</h3>
+            <pre><code class="python">import os
+
+# 获取当前目录
+current_dir = os.getcwd()
+print(f"当前目录: {current_dir}")
+
+# 创建目录
+os.makedirs("my_folder", exist_ok=True)
+
+# 创建嵌套目录
+os.makedirs("parent/child", exist_ok=True)
+
+# 列出目录内容
+items = os.listdir(current_dir)
+print(f"目录内容: {items}")
+
+# 检查路径是否存在
+print(f"路径存在: {os.path.exists('my_folder')}")
+
+# 检查是否是目录
+print(f"是目录: {os.path.isdir('my_folder')}")
+
+# 检查是否是文件
+print(f"是文件: {os.path.isfile('test.txt')}")
+
+# 获取文件大小
+if os.path.exists("example.txt"):
+    size = os.path.getsize("example.txt")
+    print(f"文件大小: {size} 字节")
+
+# 删除空目录
+os.rmdir("empty_folder")
+
+# 删除文件
+if os.path.exists("test.txt"):
+    os.remove("test.txt")</code></pre>
+
+            <h3>路径操作</h3>
+            <pre><code class="python">from pathlib import Path
+import os
+
+# 使用 pathlib
+path = Path("/home/user/documents/file.txt")
+print(f"文件名: {path.name}")           # file.txt
+print(f"扩展名: {path.suffix}")         # .txt
+print(f"父目录: {path.parent}")         # /home/user/documents
+print(f"绝对路径: {path.absolute()}")
+
+# 拼接路径
+new_path = Path("/home/user") / "documents" / "file.txt"
+print(f"拼接路径: {new_path}")
+
+# 使用 os
+path = "/home/user/documents/file.txt"
+print(f"目录名: {os.path.dirname(path)}")      # /home/user/documents
+print(f"文件名: {os.path.basename(path)}")    # file.txt
+print(f"分割路径: {os.path.split(path)}")
+
+# 拼接路径
+new_path = os.path.join("/home/user", "documents", "file.txt")
+print(f"拼接路径: {new_path}")</code></pre>
+
+            <h3>遍历目录树</h3>
+            <pre><code class="python">import os
+
+# 遍历目录树
+for root, dirs, files in os.walk("."):
+    print(f"当前目录: {root}")
+    print(f"子目录: {dirs}")
+    print(f"文件: {files}")
+    print("-" * 40)
+
+# 使用 pathlib 递归遍历
+from pathlib import Path
+for path in Path(".").rglob("*.py"):
+    print(f"Python 文件: {path}")</code></pre>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>pathlib 是 Python 3.4+ 引入的模块，提供了更面向对象的方式来处理路径，推荐使用。
+            </div>
+        </section>
+
+        <div class="topic-nav">
+            <a href="file-operations.html">← 文件操作</a> | <a href="exceptions.html">异常处理 →</a>
+        </div>
+    </main>
+</body>
+</html>

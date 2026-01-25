@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>psutil - Python 入门教程</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>    <nav>
+        <div class="nav-category">
+            <h3>📚 当前分类</h3>
+            <ul>
+                <li><a href="advanced-features.html">高级特性</a></li>
+                <li><a href="fabric.html">Fabric</a></li>
+                <li><a href="psutil.html" class="active">psutil</a></li>
+                <li><a href="logging.html">logging</a></li>
+                <li><a href="ansible.html">Ansible</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="topic-nav">
+            <a href="fabric.html">← Fabric</a> | <a href="logging.html">logging →</a>
+        </div>
+
+        <section id="psutil" class="content-section">
+            <h2>psutil</h2>
+            <p>psutil 是一个跨平台库，用于获取系统和进程信息，如 CPU、内存、磁盘、网络等。</p>
+
+            <h3>安装</h3>
+            <pre><code class="bash">pip install psutil</code></pre>
+
+            <h3>CPU 信息</h3>
+            <pre><code class="python">import psutil
+
+# CPU 逻辑核心数
+print(f"CPU 核心数: {psutil.cpu_count(logical=True)}")
+print(f"CPU 物理核心数: {psutil.cpu_count(logical=False)}")
+
+# CPU 使用率
+print(f"CPU 使用率: {psutil.cpu_percent(interval=1)}%")
+
+# 每个 CPU 的使用率
+print(f"各 CPU 使用率: {psutil.cpu_percent(interval=1, percpu=True)}")
+
+# CPU 时间统计
+print(f"CPU 时间: {psutil.cpu_times()}")
+
+# CPU 频率
+print(f"CPU 频率: {psutil.cpu_freq()}")</code></pre>
+
+            <h3>内存信息</h3>
+            <pre><code class="python">import psutil
+
+# 内存信息
+mem = psutil.virtual_memory()
+print(f"总内存: {mem.total / (1024**3):.2f} GB")
+print(f"可用内存: {mem.available / (1024**3):.2f} GB")
+print(f"已用内存: {mem.used / (1024**3):.2f} GB")
+print(f"内存使用率: {mem.percent}%")
+
+# 交换内存信息
+swap = psutil.swap_memory()
+print(f"总交换内存: {swap.total / (1024**3):.2f} GB")
+print(f"已用交换内存: {swap.used / (1024**3):.2f} GB")</code></pre>
+
+            <h3>磁盘信息</h3>
+            <pre><code class="python">import psutil
+
+# 磁盘分区
+partitions = psutil.disk_partitions()
+for partition in partitions:
+    print(f"设备: {partition.device}")
+    print(f"挂载点: {partition.mountpoint}")
+    print(f"文件系统: {partition.fstype}")
+
+# 磁盘使用情况
+disk_usage = psutil.disk_usage('/')
+print(f"总空间: {disk_usage.total / (1024**3):.2f} GB")
+print(f"已用空间: {disk_usage.used / (1024**3):.2f} GB")
+print(f"可用空间: {disk_usage.free / (1024**3):.2f} GB")
+print(f"使用率: {disk_usage.percent}%")
+
+# 磁盘 I/O 统计
+disk_io = psutil.disk_io_counters()
+print(f"读次数: {disk_io.read_count}")
+print(f"写字节数: {disk_io.write_bytes / (1024**2):.2f} MB")</code></pre>
+
+            <h3>网络信息</h3>
+            <pre><code class="python">import psutil
+
+# 网络接口
+net_io = psutil.net_io_counters()
+print(f"发送字节数: {net_io.bytes_sent / (1024**2):.2f} MB")
+print(f"接收字节数: {net_io.bytes_recv / (1024**2):.2f} MB")
+print(f"发送包数: {net_io.packets_sent}")
+print(f"接收包数: {net_io.packets_recv}")
+
+# 网络接口详情
+interfaces = psutil.net_if_addrs()
+for interface, addrs in interfaces.items():
+    print(f"接口: {interface}")
+    for addr in addrs:
+        print(f"  地址: {addr.address}")
+
+# 网络连接
+connections = psutil.net_connections(kind='inet')
+for conn in connections[:5]:
+    print(f"本地地址: {conn.laddr}, 远程地址: {conn.raddr}, 状态: {conn.status}")</code></pre>
+
+            <h3>进程信息</h3>
+            <pre><code class="python">import psutil
+
+# 获取当前进程
+current_process = psutil.Process()
+print(f"进程 ID: {current_process.pid}")
+print(f"进程名称: {current_process.name()}")
+print(f"进程状态: {current_process.status()}")
+print(f"创建时间: {current_process.create_time()}")
+print(f"CPU 使用率: {current_process.cpu_percent(interval=1)}%")
+print(f"内存使用: {current_process.memory_info().rss / (1024**2):.2f} MB")
+
+# 获取所有进程
+for proc in psutil.process_iter(['pid', 'name', 'username']):
+    print(f"PID: {proc.info['pid']}, 名称: {proc.info['name']}, 用户: {proc.info['username']}")
+
+# 查找特定进程
+for proc in psutil.process_iter(['pid', 'name']):
+    if proc.info['name'] == 'python':
+        print(f"找到 Python 进程: PID {proc.info['pid']}")</code></pre>
+
+            <h3>系统信息</h3>
+            <pre><code class="python">import psutil
+import platform
+
+# 系统信息
+print(f"系统: {platform.system()}")
+print(f"版本: {platform.release()}")
+print(f"架构: {platform.machine()}")
+
+# 启动时间
+boot_time = psutil.boot_time()
+print(f"系统启动时间: {boot_time}")
+
+# 用户信息
+users = psutil.users()
+for user in users:
+    print(f"用户: {user.name}, 终端: {user.terminal}, 主机: {user.host}")</code></pre>
+
+            <h3>监控脚本示例</h3>
+            <pre><code class="python">import psutil
+import time
+
+def monitor_system(interval=5):
+    """监控系统资源"""
+    while True:
+        # CPU 使用率
+        cpu_percent = psutil.cpu_percent(interval=1)
+        
+        # 内存使用率
+        mem = psutil.virtual_memory()
+        mem_percent = mem.percent
+        
+        # 磁盘使用率
+        disk = psutil.disk_usage('/')
+        disk_percent = disk.percent
+        
+        print(f"CPU: {cpu_percent}%, 内存: {mem_percent}%, 磁盘: {disk_percent}%")
+        time.sleep(interval)
+
+# monitor_system()</code></pre>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>psutil 适合系统监控、性能分析、资源管理等场景，支持 Windows、Linux、macOS 等多个平台。
+            </div>
+        </section>
+
+        <div class="topic-nav">
+            <a href="fabric.html">← Fabric</a> | <a href="logging.html">logging →</a>
+        </div>
+    </main>
+</body>
+</html>

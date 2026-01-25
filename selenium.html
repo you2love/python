@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selenium - Python 入门教程</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>    <nav>
+        <div class="nav-category">
+            <h3>📚 当前分类</h3>
+            <ul>
+                <li><a href="beautifulsoup.html">BeautifulSoup</a></li>
+                <li><a href="selenium.html" class="active">Selenium</a></li>
+                <li><a href="playwright.html">Playwright</a></li>
+                <li><a href="scrapy.html">Scrapy</a></li>
+                <li><a href="regex.html">正则表达式</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="topic-nav">
+            <a href="beautifulsoup.html">← BeautifulSoup</a> | <a href="playwright.html">Playwright →</a>
+        </div>
+
+        <section id="selenium" class="content-section">
+            <h2>Selenium</h2>
+            <p>Selenium 是一个自动化测试工具，可以模拟浏览器操作，适合爬取动态网页。</p>
+
+            <h3>安装</h3>
+            <pre><code class="bash">pip install selenium</code></pre>
+
+            <h3>基本使用</h3>
+            <pre><code class="python">from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+import time
+
+# 创建浏览器驱动（需要先下载对应浏览器的驱动）
+driver = webdriver.Chrome()  # 或 webdriver.Firefox()
+
+try:
+    # 打开网页
+    driver.get('https://www.baidu.com')
+
+    # 查找元素
+    search_box = driver.find_element(By.ID, 'kw')
+
+    # 输入搜索内容
+    search_box.send_keys('Python 爬虫')
+
+    # 提交搜索
+    search_box.send_keys(Keys.RETURN)
+
+    # 等待页面加载
+    time.sleep(2)
+
+    # 获取搜索结果
+    results = driver.find_elements(By.CSS_SELECTOR, '.result')
+    for result in results[:5]:
+        print(result.text)
+
+finally:
+    # 关闭浏览器
+    driver.quit()</code></pre>
+
+            <h3>元素定位</h3>
+            <pre><code class="python">from selenium import webdriver
+from selenium.webdriver.common.by import By
+
+driver = webdriver.Chrome()
+driver.get('https://example.com')
+
+# 通过 ID
+element = driver.find_element(By.ID, 'element_id')
+
+# 通过 Name
+element = driver.find_element(By.NAME, 'element_name')
+
+# 通过 Class Name
+element = driver.find_element(By.CLASS_NAME, 'element_class')
+
+# 通过 Tag Name
+element = driver.find_element(By.TAG_NAME, 'div')
+
+# 通过 CSS Selector
+element = driver.find_element(By.CSS_SELECTOR, '.class > div')
+
+# 通过 XPath
+element = driver.find_element(By.XPATH, '//div[@class="example"]')
+
+# 通过 Link Text
+element = driver.find_element(By.LINK_TEXT, '点击这里')
+
+# 通过 Partial Link Text
+element = driver.find_element(By.PARTIAL_LINK_TEXT, '点击')
+
+driver.quit()</code></pre>
+
+            <h3>元素操作</h3>
+            <pre><code class="python">from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import Select
+
+driver = webdriver.Chrome()
+driver.get('https://example.com')
+
+# 点击按钮
+button = driver.find_element(By.ID, 'submit')
+button.click()
+
+# 输入文本
+input_field = driver.find_element(By.ID, 'username')
+input_field.send_keys('张三')
+
+# 清除输入
+input_field.clear()
+
+# 获取文本
+text = element.text
+
+# 获取属性
+href = element.get_attribute('href')
+
+# 下拉框选择
+select = Select(driver.find_element(By.ID, 'country'))
+select.select_by_visible_text('中国')
+select.select_by_value('CN')
+select.select_by_index(0)
+
+# 滚动页面
+driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+
+driver.quit()</code></pre>
+
+            <h3>等待机制</h3>
+            <pre><code class="python">from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+driver = webdriver.Chrome()
+driver.get('https://example.com')
+
+# 显式等待
+try:
+    element = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.ID, 'dynamic-element'))
+    )
+    print("元素已加载")
+except:
+    print("等待超时")
+
+# 等待元素可点击
+element = WebDriverWait(driver, 10).until(
+    EC.element_to_be_clickable((By.ID, 'button'))
+)
+
+# 等待文本出现
+WebDriverWait(driver, 10).until(
+    EC.text_to_be_present_in_element((By.ID, 'status'), '完成')
+)
+
+driver.quit()</code></pre>
+
+            <h3>处理弹窗和 iframe</h3>
+            <pre><code class="python">from selenium import webdriver
+from selenium.webdriver.common.by import By
+
+driver = webdriver.Chrome()
+driver.get('https://example.com')
+
+# 处理 Alert 弹窗
+driver.find_element(By.ID, 'show-alert').click()
+alert = driver.switch_to.alert
+print(f"弹窗文本: {alert.text}")
+alert.accept()  # 点击确定
+# alert.dismiss()  # 点击取消
+
+# 处理 Confirm 弹窗
+driver.find_element(By.ID, 'show-confirm').click()
+confirm = driver.switch_to.alert
+confirm.dismiss()
+
+# 处理 Prompt 弹窗
+driver.find_element(By.ID, 'show-prompt').click()
+prompt = driver.switch_to.alert
+prompt.send_keys('输入内容')
+prompt.accept()
+
+# 切换到 iframe
+driver.switch_to.frame('iframe_id')
+# 在 iframe 中操作
+driver.switch_to.default_content()  # 切换回主页面
+
+driver.quit()</code></pre>
+
+            <h3>无头模式</h3>
+            <pre><code class="python">from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+
+# 配置无头模式
+chrome_options = Options()
+chrome_options.add_argument('--headless')
+chrome_options.add_argument('--disable-gpu')
+
+driver = webdriver.Chrome(options=chrome_options)
+driver.get('https://example.com')
+print(driver.title)
+driver.quit()</code></pre>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>Selenium 适合需要 JavaScript 渲染的动态网页，但速度较慢，资源占用大。
+            </div>
+        </section>
+
+        <div class="topic-nav">
+            <a href="beautifulsoup.html">← BeautifulSoup</a> | <a href="playwright.html">Playwright →</a>
+        </div>
+    </main>
+</body>
+</html>

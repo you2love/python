@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>logging - Python 入门教程</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>    <nav>
+        <div class="nav-category">
+            <h3>📚 当前分类</h3>
+            <ul>
+                <li><a href="advanced-features.html">高级特性</a></li>
+                <li><a href="fabric.html">Fabric</a></li>
+                <li><a href="psutil.html">psutil</a></li>
+                <li><a href="logging.html" class="active">logging</a></li>
+                <li><a href="ansible.html">Ansible</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="topic-nav">
+            <a href="psutil.html">← psutil</a> | <a href="ansible.html">Ansible →</a>
+        </div>
+
+        <section id="logging" class="content-section">
+            <h2>logging</h2>
+            <p>logging 是 Python 内置的日志记录模块，提供了灵活的日志记录功能。</p>
+
+            <h3>基本使用</h3>
+            <pre><code class="python">import logging
+
+# 配置日志级别
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+
+# 不同级别的日志
+logging.debug('调试信息')
+logging.info('普通信息')
+logging.warning('警告信息')
+logging.error('错误信息')
+logging.critical('严重错误')</code></pre>
+
+            <h3>日志级别</h3>
+            <pre><code class="python">import logging
+
+# 设置日志级别
+logging.basicConfig(level=logging.DEBUG)
+
+# DEBUG: 10 - 调试信息
+logging.debug('这是调试信息')
+
+# INFO: 20 - 普通信息
+logging.info('这是普通信息')
+
+# WARNING: 30 - 警告信息
+logging.warning('这是警告信息')
+
+# ERROR: 40 - 错误信息
+logging.error('这是错误信息')
+
+# CRITICAL: 50 - 严重错误
+logging.critical('这是严重错误')</code></pre>
+
+            <h3>记录到文件</h3>
+            <pre><code class="python">import logging
+
+# 配置日志文件
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    filename='app.log',
+    filemode='a'  # 追加模式
+)
+
+logging.info('这条日志会写入文件')
+logging.error('错误也会写入文件')</code></pre>
+
+            <h3>创建 Logger</h3>
+            <pre><code class="python">import logging
+
+# 创建 logger
+logger = logging.getLogger('my_app')
+logger.setLevel(logging.DEBUG)
+
+# 创建处理器
+console_handler = logging.StreamHandler()
+file_handler = logging.FileHandler('app.log')
+
+# 设置处理器级别
+console_handler.setLevel(logging.INFO)
+file_handler.setLevel(logging.DEBUG)
+
+# 创建格式化器
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+console_handler.setFormatter(formatter)
+file_handler.setFormatter(formatter)
+
+# 添加处理器
+logger.addHandler(console_handler)
+logger.addHandler(file_handler)
+
+# 使用 logger
+logger.debug('调试信息')
+logger.info('普通信息')
+logger.warning('警告信息')
+logger.error('错误信息')</code></pre>
+
+            <h3>日志轮转</h3>
+            <pre><code class="python">import logging
+from logging.handlers import RotatingFileHandler
+
+# 创建轮转文件处理器
+handler = RotatingFileHandler(
+    'app.log',
+    maxBytes=10*1024*1024,  # 10MB
+    backupCount=5  # 保留5个备份
+)
+
+# 设置格式
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+
+# 创建 logger
+logger = logging.getLogger('my_app')
+logger.setLevel(logging.DEBUG)
+logger.addHandler(handler)
+
+logger.info('这条日志会写入文件，文件超过10MB会自动轮转')</code></pre>
+
+            <h3>按时间轮转</h3>
+            <pre><code class="python">import logging
+from logging.handlers import TimedRotatingFileHandler
+
+# 按天轮转
+handler = TimedRotatingFileHandler(
+    'app.log',
+    when='midnight',  # 每天午夜轮转
+    interval=1,
+    backupCount=7  # 保留7天的日志
+)
+
+handler.suffix = '%Y-%m-%d'  # 文件名后缀
+
+# 设置格式
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+
+# 创建 logger
+logger = logging.getLogger('my_app')
+logger.setLevel(logging.DEBUG)
+logger.addHandler(handler)
+
+logger.info('这条日志每天午夜会自动轮转')</code></pre>
+
+            <h3>异常跟踪</h3>
+            <pre><code class="python">import logging
+
+logging.basicConfig(
+    level=logging.ERROR,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+
+try:
+    result = 10 / 0
+except Exception as e:
+    # 记录异常信息
+    logging.error('发生错误', exc_info=True)
+    # 或者
+    logging.exception('发生错误')</code></pre>
+
+            <h3>结构化日志</h3>
+            <pre><code class="python">import logging
+import json
+
+class StructuredFormatter(logging.Formatter):
+    def format(self, record):
+        log_data = {
+            'timestamp': self.formatTime(record),
+            'level': record.levelname,
+            'logger': record.name,
+            'message': record.getMessage(),
+            'module': record.module,
+            'function': record.funcName,
+            'line': record.lineno
+        }
+        return json.dumps(log_data, ensure_ascii=False)
+
+# 使用结构化格式
+handler = logging.StreamHandler()
+handler.setFormatter(StructuredFormatter())
+
+logger = logging.getLogger('structured')
+logger.setLevel(logging.INFO)
+logger.addHandler(handler)
+
+logger.info('这是结构化日志')</code></pre>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>logging 模块功能强大，建议在生产环境中使用，而不是使用 print 语句。
+            </div>
+        </section>
+
+        <div class="topic-nav">
+            <a href="psutil.html">← psutil</a> | <a href="ansible.html">Ansible →</a>
+        </div>
+    </main>
+</body>
+</html>

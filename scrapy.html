@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scrapy - Python 入门教程</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>    <nav>
+        <div class="nav-category">
+            <h3>📚 当前分类</h3>
+            <ul>
+                <li><a href="beautifulsoup.html">BeautifulSoup</a></li>
+                <li><a href="selenium.html">Selenium</a></li>
+                <li><a href="playwright.html">Playwright</a></li>
+                <li><a href="scrapy.html" class="active">Scrapy</a></li>
+                <li><a href="regex.html">正则表达式</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="topic-nav">
+            <a href="playwright.html">← Playwright</a> | <a href="regex.html">正则表达式 →</a>
+        </div>
+
+        <section id="scrapy" class="content-section">
+            <h2>Scrapy</h2>
+            <p>Scrapy 是一个强大的 Python 爬虫框架，适合大规模数据抓取。</p>
+
+            <h3>安装</h3>
+            <pre><code class="bash">pip install scrapy</code></pre>
+
+            <h3>创建项目</h3>
+            <pre><code class="bash"># 创建新项目
+scrapy startproject myproject
+
+# 创建爬虫
+cd myproject
+scrapy genspider myspider example.com
+
+# 运行爬虫
+scrapy crawl myspider</code></pre>
+
+            <h3>基本爬虫</h3>
+            <pre><code class="python">import scrapy
+
+class MySpider(scrapy.Spider):
+    name = 'myspider'
+    start_urls = ['https://quotes.toscrape.com/']
+
+    def parse(self, response):
+        # 提取数据
+        for quote in response.css('.quote'):
+            yield {
+                'text': quote.css('.text::text').get(),
+                'author': quote.css('.author::text').get(),
+                'tags': quote.css('.tag::text').getall(),
+            }
+
+        # 跟踪下一页链接
+        next_page = response.css('li.next a::attr(href)').get()
+        if next_page:
+            yield response.follow(next_page, callback=self.parse)</code></pre>
+
+            <h3>Items 定义</h3>
+            <pre><code class="python">import scrapy
+
+class QuoteItem(scrapy.Item):
+    text = scrapy.Field()
+    author = scrapy.Field()
+    tags = scrapy.Field()</code></pre>
+
+            <h3>使用 Items</h3>
+            <pre><code class="python">import scrapy
+from myproject.items import QuoteItem
+
+class MySpider(scrapy.Spider):
+    name = 'myspider'
+    start_urls = ['https://quotes.toscrape.com/']
+
+    def parse(self, response):
+        for quote in response.css('.quote'):
+            item = QuoteItem()
+            item['text'] = quote.css('.text::text').get()
+            item['author'] = quote.css('.author::text').get()
+            item['tags'] = quote.css('.tag::text').getall()
+            yield item</code></pre>
+
+            <h3>Pipelines 处理</h3>
+            <pre><code class="python">import json
+
+class JsonPipeline:
+    def open_spider(self, spider):
+        self.file = open('output.json', 'w', encoding='utf-8')
+
+    def close_spider(self, spider):
+        self.file.close()
+
+    def process_item(self, item, spider):
+        line = json.dumps(dict(item), ensure_ascii=False) + '\n'
+        self.file.write(line)
+        return item</code></pre>
+
+            <h3>配置 Pipelines</h3>
+            <pre><code class="python"># settings.py
+ITEM_PIPELINES = {
+    'myproject.pipelines.JsonPipeline': 300,
+}</code></pre>
+
+            <h3>中间件</h3>
+            <pre><code class="python">class UserAgentMiddleware:
+    def process_request(self, request, spider):
+        request.headers['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
+
+class ProxyMiddleware:
+    def process_request(self, request, spider):
+        request.meta['proxy'] = 'http://proxy.example.com:8080'</code></pre>
+
+            <h3>配置中间件</h3>
+            <pre><code class="python"># settings.py
+DOWNLOADER_MIDDLEWARES = {
+    'myproject.middlewares.UserAgentMiddleware': 400,
+    'myproject.middlewares.ProxyMiddleware': 410,
+}</code></pre>
+
+            <h3>常用设置</h3>
+            <pre><code class="python"># settings.py
+
+# 遵守 robots.txt
+ROBOTSTXT_OBEY = False
+
+# 下载延迟
+DOWNLOAD_DELAY = 2
+
+# 并发请求数
+CONCURRENT_REQUESTS = 16
+
+# User-Agent
+USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
+
+# Cookies
+COOKIES_ENABLED = False
+
+# 重试次数
+RETRY_TIMES = 3
+
+# 超时时间
+DOWNLOAD_TIMEOUT = 30</code></pre>
+
+            <h3>导出数据</h3>
+            <pre><code class="bash"># 导出为 JSON
+scrapy crawl myspider -o output.json
+
+# 导出为 CSV
+scrapy crawl myspider -o output.csv
+
+# 导出为 XML
+scrapy crawl myspider -o output.xml</code></pre>
+
+            <h3>运行多个爬虫</h3>
+            <pre><code class="python">from scrapy.crawler import CrawlerProcess
+from myproject.spiders.myspider import MySpider
+
+process = CrawlerProcess({
+    'USER_AGENT': 'Mozilla/5.0',
+})
+
+process.crawl(MySpider)
+process.start()</code></pre>
+
+            <div class="feature-box">
+                <h3>Scrapy 特点：</h3>
+                <ul>
+                    <li>🚀 高性能：异步处理，支持高并发</li>
+                    <li>🔧 可扩展：支持中间件、管道等扩展</li>
+                    <li>📊 数据提取：支持 CSS 选择器、XPath</li>
+                    <li>💾 数据存储：支持多种格式导出</li>
+                    <li>🌐 分布式：支持分布式爬取</li>
+                </ul>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>Scrapy 适合大规模数据抓取，配合 Playwright 可以处理动态网页。
+            </div>
+        </section>
+
+        <div class="topic-nav">
+            <a href="playwright.html">← Playwright</a> | <a href="regex.html">正则表达式 →</a>
+        </div>
+    </main>
+</body>
+</html>

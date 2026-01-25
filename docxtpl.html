@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>docxtpl - Python 入门教程</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>    <nav>
+        <div class="nav-category">
+            <h3>📚 当前分类</h3>
+            <ul>
+                <li><a href="file-operations.html">文件操作</a></li>
+                <li><a href="directory-operations.html">目录操作</a></li>
+                <li><a href="exceptions.html">异常处理</a></li>
+                <li><a href="pypdf2.html">PyPDF2</a></li>
+                <li><a href="python-docx.html">python-docx</a></li>
+                <li><a href="docxtpl.html" class="active">docxtpl</a></li>
+                <li><a href="openpyxl.html">openpyxl</a></li>
+                <li><a href="python-pptx.html">python-pptx</a></li>
+                <li><a href="difflib.html">difflib</a></li>
+                <li><a href="filecmp.html">filecmp</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="topic-nav">
+            <a href="python-docx.html">← python-docx</a> | <a href="openpyxl.html">openpyxl →</a>
+        </div>
+
+        <section id="docxtpl" class="content-section">
+            <h2>docxtpl</h2>
+            <p>docxtpl 是一个基于 python-docx 的模板库，可以使用 Jinja2 模板语法批量生成 Word 文档。</p>
+
+            <h3>安装</h3>
+            <pre><code class="bash">pip install docxtpl</code></pre>
+
+            <h3>基本使用</h3>
+            <pre><code class="python">from docxtpl import DocxTemplate
+
+# 加载模板
+doc = DocxTemplate("template.docx")
+
+# 准备数据
+context = {
+    'name': '张三',
+    'age': 25,
+    'city': '北京',
+    'hobbies': ['阅读', '编程', '旅行']
+}
+
+# 渲染模板
+doc.render(context)
+
+# 保存文档
+doc.save("output.docx")
+print("文档已生成")</code></pre>
+
+            <h3>模板示例</h3>
+            <pre><code class="python"># 在 Word 模板中使用以下语法：
+
+# 简单变量
+# {{ name }}
+
+# 条件判断
+# {% if age >= 18 %}
+# 成年人
+# {% else %}
+# 未成年
+# {% endif %}
+
+# 循环
+# {% for hobby in hobbies %}
+# - {{ hobby }}
+# {% endfor %}
+
+# 表格
+# | 姓名 | 年龄 | 城市 |
+# |------|------|------|
+# {% for person in persons %}
+# | {{ person.name }} | {{ person.age }} | {{ person.city }} |
+# {% endfor %}</code></pre>
+
+            <h3>批量生成文档</h3>
+            <pre><code class="python">from docxtpl import DocxTemplate
+
+# 加载模板
+template = DocxTemplate("template.docx")
+
+# 准备数据列表
+data_list = [
+    {'name': '张三', 'age': 25, 'city': '北京'},
+    {'name': '李四', 'age': 30, 'city': '上海'},
+    {'name': '王五', 'age': 28, 'city': '广州'}
+]
+
+# 批量生成文档
+for i, data in enumerate(data_list):
+    context = {'person': data}
+    template.render(context)
+    template.save(f"output_{i+1}.docx")
+    print(f"已生成: output_{i+1}.docx")</code></pre>
+
+            <h3>使用图片</h3>
+            <pre><code class="python">from docxtpl import DocxTemplate
+from docx.shared import Inches
+
+# 加载模板
+doc = DocxTemplate("template.docx")
+
+# 准备数据（包含图片）
+context = {
+    'name': '张三',
+    'photo': 'photo.png'  # 图片路径
+}
+
+# 渲染模板
+doc.render(context)
+
+# 保存文档
+doc.save("output_with_image.docx")</code></pre>
+
+            <h3>复杂模板</h3>
+            <pre><code class="python">from docxtpl import DocxTemplate
+from datetime import datetime
+
+# 加载模板
+doc = DocxTemplate("invoice_template.docx")
+
+# 准备发票数据
+context = {
+    'invoice_number': 'INV-2026-001',
+    'date': datetime.now().strftime('%Y-%m-%d'),
+    'customer': {
+        'name': '某某公司',
+        'address': '北京市朝阳区',
+        'phone': '010-12345678'
+    },
+    'items': [
+        {'name': '产品A', 'quantity': 2, 'price': 100.00},
+        {'name': '产品B', 'quantity': 1, 'price': 200.00},
+        {'name': '产品C', 'quantity': 3, 'price': 50.00}
+    ],
+    'total': 450.00
+}
+
+# 渲染模板
+doc.render(context)
+
+# 保存发票
+doc.save("invoice_2026_001.docx")</code></pre>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>docxtpl 非常适合批量生成格式统一的文档，如合同、发票、报告等。
+            </div>
+        </section>
+
+        <div class="topic-nav">
+            <a href="python-docx.html">← python-docx</a> | <a href="openpyxl.html">openpyxl →</a>
+        </div>
+    </main>
+</body>
+</html>
