@@ -6,98 +6,192 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>实用工具 - Python 入门教程</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>    <nav>
+    <link rel="stylesheet" href="styles.css">    <style>
+        /* 二级导航样式 */
+        .nav-category {
+            margin-bottom: 10px;
+        }
+
+        .nav-category > h3 {
+            color: #764ba2;
+            font-size: 1em;
+            margin-bottom: 8px;
+            padding-left: 8px;
+            border-left: 3px solid #667eea;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .nav-category > h3:hover {
+            background: rgba(102, 126, 234, 0.1);
+            border-left-color: #764ba2;
+        }
+
+        .nav-toggle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 4px;
+            font-size: 14px;
+            color: #667eea;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .nav-category > h3:hover .nav-toggle {
+            background: #667eea;
+            color: white;
+        }
+
+        .nav-items {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .nav-items.expanded {
+            max-height: 500px;
+        }
+
+        .nav-category.expanded > h3 .nav-toggle {
+            transform: rotate(45deg);
+            background: #764ba2;
+            color: white;
+        }
+    </style>
+
+    </head>
+<body>
+    <nav>
         <div class="nav-category">
-            <h3>📚 基础入门</h3>
-            <ul>
-                <li><a href="basics.html">简介</a></li>
-                <li><a href="basics.html#installation">安装</a></li>
-                <li><a href="basics.html#basics">基础语法</a></li>
-                <li><a href="basics.html#variables">变量</a></li>
-                <li><a href="basics.html#datatypes">数据类型</a></li>
-                <li><a href="basics.html#controlflow">控制流</a></li>
-                <li><a href="basics.html#functions">函数</a></li>
-                <li><a href="basics.html#oop">面向对象</a></li>
-                <li><a href="basics.html#stringformat">字符串格式化</a></li>
-                <li><a href="basics.html#tips">常用技巧</a></li>
-            </ul>
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>📚 基础入门</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="basics.html">简介</a></li>
+                    <li><a href="basics.html#installation">安装</a></li>
+                    <li><a href="basics.html#basics">基础语法</a></li>
+                    <li><a href="basics.html#variables">变量</a></li>
+                    <li><a href="basics.html#datatypes">数据类型</a></li>
+                    <li><a href="basics.html#controlflow">控制流</a></li>
+                    <li><a href="basics.html#functions">函数</a></li>
+                    <li><a href="basics.html#oop">面向对象</a></li>
+                    <li><a href="basics.html#stringformat">字符串格式化</a></li>
+                    <li><a href="basics.html#tips">常用技巧</a></li>
+                </ul>
+            </div>
         </div>
         <div class="nav-category">
-            <h3>📁 文件操作</h3>
-            <ul>
-                <li><a href="file-management.html">文件操作</a></li>
-                <li><a href="file-management.html#directory">目录操作</a></li>
-                <li><a href="file-management.html#exceptions">异常处理</a></li>
-                <li><a href="file-management.html#pypdf2">PyPDF2</a></li>
-                <li><a href="file-management.html#pythondocx">python-docx</a></li>
-                <li><a href="file-management.html#docxtpl">docxtpl</a></li>
-                <li><a href="file-management.html#openpyxl">openpyxl</a></li>
-                <li><a href="file-management.html#pythonpptx">python-pptx</a></li>
-                <li><a href="file-management.html#difflib">difflib</a></li>
-                <li><a href="file-management.html#filecmp">filecmp</a></li>
-            </ul>
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>📁 文件操作</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="file-management.html">文件操作</a></li>
+                    <li><a href="file-management.html#directory">目录操作</a></li>
+                    <li><a href="file-management.html#exceptions">异常处理</a></li>
+                    <li><a href="file-management.html#pypdf2">PyPDF2</a></li>
+                    <li><a href="file-management.html#pythondocx">python-docx</a></li>
+                    <li><a href="file-management.html#docxtpl">docxtpl</a></li>
+                    <li><a href="file-management.html#openpyxl">openpyxl</a></li>
+                    <li><a href="file-management.html#pythonpptx">python-pptx</a></li>
+                    <li><a href="file-management.html#difflib">difflib</a></li>
+                    <li><a href="file-management.html#filecmp">filecmp</a></li>
+                </ul>
+            </div>
         </div>
         <div class="nav-category">
-            <h3>🌐 网络编程</h3>
-            <ul>
-                <li><a href="network-programming.html">网络编程</a></li>
-                <li><a href="network-programming.html#asyncio">异步编程</a></li>
-                <li><a href="network-programming.html#requests">Requests</a></li>
-                <li><a href="network-programming.html#aiohttp">aiohttp</a></li>
-                <li><a href="network-programming.html#fastapi">FastAPI</a></li>
-                <li><a href="network-programming.html#scapy">Scapy</a></li>
-            </ul>
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>🌐 网络编程</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="network-programming.html">网络编程</a></li>
+                    <li><a href="network-programming.html#asyncio">异步编程</a></li>
+                    <li><a href="network-programming.html#requests">Requests</a></li>
+                    <li><a href="network-programming.html#aiohttp">aiohttp</a></li>
+                    <li><a href="network-programming.html#fastapi">FastAPI</a></li>
+                    <li><a href="network-programming.html#scapy">Scapy</a></li>
+                </ul>
+            </div>
         </div>
         <div class="nav-category">
-            <h3>🕷️ 爬虫技术</h3>
-            <ul>
-                <li><a href="web-scraping.html">BeautifulSoup</a></li>
-                <li><a href="web-scraping.html#selenium">Selenium</a></li>
-                <li><a href="web-scraping.html#playwright">Playwright</a></li>
-                <li><a href="web-scraping.html#scrapy">Scrapy</a></li>
-                <li><a href="web-scraping.html#regex">正则表达式</a></li>
-            </ul>
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>🕷️ 爬虫技术</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="web-scraping.html">BeautifulSoup</a></li>
+                    <li><a href="web-scraping.html#selenium">Selenium</a></li>
+                    <li><a href="web-scraping.html#playwright">Playwright</a></li>
+                    <li><a href="web-scraping.html#scrapy">Scrapy</a></li>
+                    <li><a href="web-scraping.html#regex">正则表达式</a></li>
+                </ul>
+            </div>
         </div>
         <div class="nav-category">
-            <h3>📊 数据分析</h3>
-            <ul>
-                <li><a href="data-analysis.html">NumPy</a></li>
-                <li><a href="data-analysis.html#pandas">Pandas</a></li>
-                <li><a href="data-analysis.html#matplotlib">Matplotlib</a></li>
-                <li><a href="data-analysis.html#keras">Keras</a></li>
-            </ul>
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>📊 数据分析</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="data-analysis.html">NumPy</a></li>
+                    <li><a href="data-analysis.html#pandas">Pandas</a></li>
+                    <li><a href="data-analysis.html#matplotlib">Matplotlib</a></li>
+                    <li><a href="data-analysis.html#keras">Keras</a></li>
+                </ul>
+            </div>
         </div>
         <div class="nav-category">
-            <h3>💾 数据存储</h3>
-            <ul>
-                <li><a href="databases.html">SQLAlchemy</a></li>
-                <li><a href="databases.html#mysql">MySQL</a></li>
-                <li><a href="databases.html#mongodb">MongoDB</a></li>
-                <li><a href="databases.html#redis">Redis</a></li>
-            </ul>
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>💾 数据存储</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="databases.html">SQLAlchemy</a></li>
+                    <li><a href="databases.html#mysql">MySQL</a></li>
+                    <li><a href="databases.html#mongodb">MongoDB</a></li>
+                    <li><a href="databases.html#redis">Redis</a></li>
+                </ul>
+            </div>
         </div>
         <div class="nav-category">
-            <h3>🔧 系统运维</h3>
-            <ul>
-                <li><a href="devops.html">高级特性</a></li>
-                <li><a href="devops.html#fabric">Fabric</a></li>
-                <li><a href="devops.html#psutil">psutil</a></li>
-                <li><a href="devops.html#logging">logging</a></li>
-                <li><a href="devops.html#ansible">Ansible</a></li>
-            </ul>
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>🔧 系统运维</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="devops.html">高级特性</a></li>
+                    <li><a href="devops.html#fabric">Fabric</a></li>
+                    <li><a href="devops.html#psutil">psutil</a></li>
+                    <li><a href="devops.html#logging">logging</a></li>
+                    <li><a href="devops.html#ansible">Ansible</a></li>
+                </ul>
+            </div>
         </div>
         <div class="nav-category">
-            <h3>🛠️ 实用工具</h3>
-            <ul>
-                <li><a href="#qrcode" class="active">QRCode</a></li>
-                <li><a href="#resources">学习资源</a></li>
-            </ul>
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>🛠️ 实用工具</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="tools.html">QRCode</a></li>
+                    <li><a href="tools.html#resources">学习资源</a></li>
+                </ul>
+            </div>
         </div>
     </nav>
 
-    <main>
+    <script>
+        function toggleNav(header) {
+            const category = header.parentElement;
+            const items = category.querySelector('.nav-items');
+            const toggle = header.querySelector('.nav-toggle');
+
+            category.classList.toggle('expanded');
+            items.classList.toggle('expanded');
+
+            if (items.classList.contains('expanded')) {
+                toggle.textContent = '−';
+            } else {
+                toggle.textContent = '+';
+            }
+        }
+    </script>
+
+<main>
         <section id="qrcode" class="content-section">
             <h2>QRCode</h2>
             <p>qrcode 库可以轻松生成二维码图片，支持自定义颜色、大小和样式。</p>
