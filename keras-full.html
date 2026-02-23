@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keras 3.x 完整教程 - Python 入门教程</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .nav-category {
+            margin-bottom: 10px;
+        }
+        .nav-category > h3 {
+            color: #764ba2;
+            font-size: 1em;
+            margin-bottom: 8px;
+            padding-left: 8px;
+            border-left: 3px solid #667eea;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        .nav-category > h3:hover {
+            background: rgba(102, 126, 234, 0.1);
+            border-left-color: #764ba2;
+        }
+        .nav-toggle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 4px;
+            font-size: 14px;
+            color: #667eea;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+        .nav-category > h3:hover .nav-toggle {
+            background: #667eea;
+            color: white;
+        }
+        .nav-items {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .nav-items.expanded {
+            max-height: 500px;
+        }
+        .nav-category.expanded > h3 .nav-toggle {
+            transform: rotate(45deg);
+            background: #764ba2;
+            color: white;
+        }
+        
+        /* 架构图样式 */
+        .architecture-diagram {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+        .architecture-diagram h4 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+        .diagram-box {
+            background: white;
+            border: 2px solid #764ba2;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .diagram-box.application {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+        }
+        .diagram-box.api {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+        }
+        .diagram-box.backend {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+        }
+        .diagram-arrow {
+            text-align: center;
+            font-size: 1.5em;
+            color: #667eea;
+            margin: 5px 0;
+        }
+        .diagram-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        /* 类卡片样式 */
+        .class-card {
+            background: white;
+            border-left: 4px solid #667eea;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .class-card h4 {
+            color: #667eea;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        .class-card code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #e83e8c;
+        }
+        .class-card ul {
+            margin-left: 20px;
+        }
+        .class-card li {
+            margin: 5px 0;
+        }
+        
+        /* 学习路径样式 */
+        .learning-path {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 25px 0;
+        }
+        .path-step {
+            flex: 1;
+            min-width: 150px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+        }
+        .path-step::after {
+            content: "→";
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5em;
+            color: #667eea;
+        }
+        .path-step:last-child::after {
+            display: none;
+        }
+        .path-step .step-number {
+            font-size: 2em;
+            font-weight: bold;
+            opacity: 0.8;
+        }
+        .path-step .step-title {
+            font-size: 1.1em;
+            margin: 10px 0 5px 0;
+        }
+        .path-step .step-desc {
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+        
+        /* 对比表格 */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .comparison-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+        .comparison-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .comparison-table tr:hover {
+            background: #f8f9fa;
+        }
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-category">
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>📚 基础入门</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="basics.html">简介</a></li>
+                    <li><a href="basics.html#installation">安装</a></li>
+                    <li><a href="basics.html#basics">基础语法</a></li>
+                    <li><a href="basics.html#variables">变量</a></li>
+                    <li><a href="basics.html#datatypes">数据类型</a></li>
+                    <li><a href="basics.html#controlflow">控制流</a></li>
+                    <li><a href="basics.html#functions">函数</a></li>
+                    <li><a href="basics.html#oop">面向对象</a></li>
+                    <li><a href="basics.html#stringformat">字符串格式化</a></li>
+                    <li><a href="basics.html#tips">常用技巧</a></li>
+                    <li><a href="devops.html#decorator">装饰器</a></li>
+                    <li><a href="devops.html#async">异步</a></li>
+                    <li><a href="devops.html#coroutine">协程</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="nav-category">
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>📁 文件操作</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="file-management.html">文件操作</a></li>
+                    <li><a href="file-management.html#directory">目录操作</a></li>
+                    <li><a href="file-management.html#exceptions">异常处理</a></li>
+                    <li><a href="file-management.html#pypdf2">PyPDF2</a></li>
+                    <li><a href="file-management.html#pythondocx">python-docx</a></li>
+                    <li><a href="file-management.html#docxtpl">docxtpl</a></li>
+                    <li><a href="file-management.html#openpyxl">openpyxl</a></li>
+                    <li><a href="file-management.html#pythonpptx">python-pptx</a></li>
+                    <li><a href="file-management.html#difflib">difflib</a></li>
+                    <li><a href="file-management.html#filecmp">filecmp</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="nav-category">
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>🌐 网络编程</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="network-programming.html">网络编程</a></li>
+                    <li><a href="network-programming.html#asyncio">异步编程</a></li>
+                    <li><a href="network-programming.html#requests">Requests</a></li>
+                    <li><a href="network-programming.html#aiohttp">aiohttp</a></li>
+                    <li><a href="network-programming.html#fastapi">FastAPI</a></li>
+                    <li><a href="network-programming.html#scapy">Scapy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="nav-category">
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>🕷️ 爬虫技术</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="web-scraping.html">BeautifulSoup</a></li>
+                    <li><a href="web-scraping.html#selenium">Selenium</a></li>
+                    <li><a href="web-scraping.html#playwright">Playwright</a></li>
+                    <li><a href="web-scraping.html#scrapy">Scrapy</a></li>
+                    <li><a href="web-scraping.html#regex">正则表达式</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="nav-category">
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>📊 数据分析</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="data-analysis.html">NumPy</a></li>
+                    <li><a href="data-analysis.html#pandas">Pandas</a></li>
+                    <li><a href="data-analysis.html#matplotlib">Matplotlib</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="nav-category">
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>🤖 AI 第三方库</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="keras-full.html">Keras 完整教程</a></li>
+                    <li><a href="ai-libraries.html#pytorch">PyTorch</a></li>
+                    <li><a href="ai-libraries.html#scikit-learn">Scikit-learn</a></li>
+                    <li><a href="ai-libraries.html#transformers">Transformers</a></li>
+                    <li><a href="ai-libraries.html#opencv">OpenCV</a></li>
+                    <li><a href="ai-libraries.html#langchain">LangChain</a></li>
+                    <li><a href="ai-libraries.html#llama-index">LlamaIndex</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="nav-category">
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>💾 数据存储</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="databases.html">SQLAlchemy</a></li>
+                    <li><a href="databases.html#mysql">MySQL</a></li>
+                    <li><a href="databases.html#mongodb">MongoDB</a></li>
+                    <li><a href="databases.html#redis">Redis</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="nav-category">
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>🔧 系统运维</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="devops.html#fabric">Fabric</a></li>
+                    <li><a href="devops.html#psutil">psutil</a></li>
+                    <li><a href="devops.html#logging">logging</a></li>
+                    <li><a href="devops.html#ansible">Ansible</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="nav-category">
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>🛠️ 实用工具</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="tools.html">QRCode</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+        function toggleNav(header) {
+            const category = header.parentElement;
+            const items = category.querySelector('.nav-items');
+            const toggle = header.querySelector('.nav-toggle');
+            category.classList.toggle('expanded');
+            items.classList.toggle('expanded');
+            if (items.classList.contains('expanded')) {
+                toggle.textContent = '−';
+            } else {
+                toggle.textContent = '+';
+            }
+        }
+    </script>
+
+    <main>
+        <div class="topic-nav">
+            <a href="data-analysis.html">← 数据分析</a>
+            <a href="ai-libraries.html">AI 第三方库 →</a>
+        </div>
+
+        <section id="intro" class="content-section">
+            <h2>🧠 Keras 3.x 完整教程</h2>
+            <p>Keras 3 是最新的高级神经网络 API，支持多后端（TensorFlow、PyTorch、JAX），让深度学习开发和部署更加灵活。本教程将从零开始，系统讲解 Keras 的架构、核心类和高级应用。</p>
+            
+            <div class="feature-box">
+                <h3>Keras 3 核心特性：</h3>
+                <ul>
+                    <li>🔄 <strong>多后端支持</strong>：可切换 TensorFlow、PyTorch 或 JAX 后端</li>
+                    <li>🚀 <strong>性能优化</strong>：自动启用 XLA 编译加速</li>
+                    <li>🎯 <strong>原生支持</strong>：支持原生 TensorFlow、PyTorch 和 JAX 工作流</li>
+                    <li>📦 <strong>向后兼容</strong>：完全兼容 Keras 2.x API</li>
+                    <li>🔧 <strong>灵活部署</strong>：支持多种模型格式导出</li>
+                </ul>
+            </div>
+
+            <h3>📚 学习路径</h3>
+            <div class="learning-path">
+                <div class="path-step">
+                    <div class="step-number">1</div>
+                    <div class="step-title">架构理解</div>
+                    <div class="step-desc">了解 Keras 三层架构</div>
+                </div>
+                <div class="path-step">
+                    <div class="step-number">2</div>
+                    <div class="step-title">核心类</div>
+                    <div class="step-desc">掌握 Model、Layer、Optimizer</div>
+                </div>
+                <div class="path-step">
+                    <div class="step-number">3</div>
+                    <div class="step-title">基础模型</div>
+                    <div class="step-desc">Sequential 和函数式 API</div>
+                </div>
+                <div class="path-step">
+                    <div class="step-number">4</div>
+                    <div class="step-title">模型训练</div>
+                    <div class="step-desc">compile、fit、evaluate</div>
+                </div>
+                <div class="path-step">
+                    <div class="step-number">5</div>
+                    <div class="step-title">高级应用</div>
+                    <div class="step-desc">自定义、回调、部署</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="architecture" class="content-section">
+            <h2>一、Keras 架构图</h2>
+            <p>Keras 采用清晰的三层架构设计，从用户应用到后端实现，层次分明，易于理解和扩展。</p>
+            
+            <div class="architecture-diagram">
+                <h4>🏗️ Keras 3 架构总览</h4>
+                
+                <div class="diagram-box application">
+                    <strong>📱 应用层 (Applications)</strong><br>
+                    <small>预训练模型 | 示例应用 | 用户项目</small>
+                </div>
+                
+                <div class="diagram-arrow">↓</div>
+                
+                <div class="diagram-box api">
+                    <strong>🔌 API 层 (Keras API)</strong><br>
+                    <small>Models | Layers | Losses | Optimizers | Metrics</small>
+                </div>
+                
+                <div class="diagram-arrow">↓</div>
+                
+                <div class="diagram-grid">
+                    <div class="diagram-box backend">
+                        <strong>⚙️ TensorFlow 后端</strong>
+                    </div>
+                    <div class="diagram-box backend">
+                        <strong>🔥 PyTorch 后端</strong>
+                    </div>
+                    <div class="diagram-box backend">
+                        <strong>🔬 JAX 后端</strong>
+                    </div>
+                </div>
+            </div>
+
+            <h3>架构层次说明</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>层次</th>
+                        <th>组件</th>
+                        <th>功能</th>
+                        <th>示例</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>应用层</strong></td>
+                        <td>预训练模型、示例</td>
+                        <td>直接可用的深度学习应用</td>
+                        <td><code>keras.applications.VGG16</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>API 层</strong></td>
+                        <td>Models、Layers、Optimizers</td>
+                        <td>构建和训练模型的核心 API</td>
+                        <td><code>keras.Model</code>, <code>keras.layers.Dense</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>后端层</strong></td>
+                        <td>TensorFlow/PyTorch/JAX</td>
+                        <td>底层张量运算和自动微分</td>
+                        <td><code>keras.ops.matmul</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="core-classes" class="content-section">
+            <h2>二、核心类详解</h2>
+            <p>Keras 的核心类构成了深度学习模型的基础，理解这些类是掌握 Keras 的关键。</p>
+
+            <h3>2.1 Model 类 - 模型基类</h3>
+            <div class="class-card">
+                <h4>📦 <code>keras.Model</code></h4>
+                <p>所有模型的基类，支持函数式 API 和自定义模型</p>
+                <ul>
+                    <li><strong>主要方法</strong>：<code>call()</code>, <code>compile()</code>, <code>fit()</code>, <code>evaluate()</code>, <code>predict()</code></li>
+                    <li><strong>属性</strong>：<code>layers</code>, <code>inputs</code>, <code>outputs</code>, <code>weights</code></li>
+                    <li><strong>用途</strong>：构建复杂的有向无环图 (DAG) 模型</li>
+                </ul>
+                <pre><code class="python">import keras
+
+# 函数式 API 示例
+inputs = keras.Input(shape=(784,))
+x = keras.layers.Dense(128, activation='relu')(inputs)
+outputs = keras.layers.Dense(10, activation='softmax')(x)
+model = keras.Model(inputs=inputs, outputs=outputs)</code></pre>
+            </div>
+
+            <h3>2.2 Sequential 类 - 顺序模型</h3>
+            <div class="class-card">
+                <h4>📋 <code>keras.Sequential</code></h4>
+                <p>简单的层堆叠模型，适用于线性结构</p>
+                <ul>
+                    <li><strong>主要方法</strong>：<code>add()</code>, <code>build()</code>, <code>summary()</code></li>
+                    <li><strong>限制</strong>：不支持多输入/多输出、共享层、非线拓扑</li>
+                    <li><strong>用途</strong>：快速构建简单的前馈网络</li>
+                </ul>
+                <pre><code class="python">from keras import Sequential, layers
+
+model = Sequential([
+    layers.Input(shape=(784,)),
+    layers.Dense(128, activation='relu'),
+    layers.Dropout(0.2),
+    layers.Dense(10, activation='softmax')
+])</code></pre>
+            </div>
+
+            <h3>2.3 Layer 类 - 层基类</h3>
+            <div class="class-card">
+                <h4>🧱 <code>keras.layers.Layer</code></h4>
+                <p>所有层的基类，用于创建自定义层</p>
+                <ul>
+                    <li><strong>主要方法</strong>：<code>build()</code>, <code>call()</code>, <code>add_weight()</code></li>
+                    <li><strong>状态</strong>：可训练权重 (<code>trainable_weights</code>)</li>
+                    <li><strong>用途</strong>：创建自定义神经网络层</li>
+                </ul>
+                <pre><code class="python">import keras
+import keras.ops as ops
+
+class CustomLayer(keras.layers.Layer):
+    def __init__(self, units=32):
+        super().__init__()
+        self.units = units
+    
+    def build(self, input_shape):
+        self.w = self.add_weight(
+            shape=(input_shape[-1], self.units),
+            initializer='glorot_uniform',
+            trainable=True
+        )
+        self.b = self.add_weight(
+            shape=(self.units,),
+            initializer='zeros',
+            trainable=True
+        )
+    
+    def call(self, inputs):
+        return ops.matmul(inputs, self.w) + self.b</code></pre>
+            </div>
+
+            <h3>2.4 Optimizer 类 - 优化器</h3>
+            <div class="class-card">
+                <h4>⚡ <code>keras.optimizers.Optimizer</code></h4>
+                <p>更新模型权重以最小化损失函数</p>
+                <ul>
+                    <li><strong>常用优化器</strong>：<code>Adam</code>, <code>SGD</code>, <code>RMSprop</code>, <code>Adagrad</code></li>
+                    <li><strong>主要方法</strong>：<code>apply_gradients()</code>, <code>minimize()</code></li>
+                    <li><strong>关键参数</strong>：<code>learning_rate</code>, <code>momentum</code>, <code>decay</code></li>
+                </ul>
+                <pre><code class="python">from keras import optimizers
+
+# Adam 优化器（推荐默认选择）
+optimizer = optimizers.Adam(
+    learning_rate=0.001,
+    beta_1=0.9,
+    beta_2=0.999,
+    epsilon=1e-7
+)
+
+# SGD 优化器（带 momentum）
+optimizer = optimizers.SGD(
+    learning_rate=0.01,
+    momentum=0.9,
+    nesterov=True
+)</code></pre>
+            </div>
+
+            <h3>2.5 Loss 类 - 损失函数</h3>
+            <div class="class-card">
+                <h4>📉 <code>keras.losses.Loss</code></h4>
+                <p>计算预测值与真实值之间的差异</p>
+                <ul>
+                    <li><strong>分类损失</strong>：<code>CategoricalCrossentropy</code>, <code>SparseCategoricalCrossentropy</code>, <code>BinaryCrossentropy</code></li>
+                    <li><strong>回归损失</strong>：<code>MSE</code>, <code>MAE</code>, <code>Huber</code></li>
+                    <li><strong>自定义损失</strong>：继承 <code>Loss</code> 类</li>
+                </ul>
+                <pre><code class="python">from keras import losses
+
+# 分类损失
+loss_fn = losses.SparseCategoricalCrossentropy()
+
+# 回归损失
+loss_fn = losses.MeanSquaredError()
+
+# 自定义损失
+class DiceLoss(losses.Loss):
+    def call(self, y_true, y_pred):
+        intersection = ops.sum(y_true * y_pred)
+        union = ops.sum(y_true) + ops.sum(y_pred)
+        return 1 - (2. * intersection + 1) / (union + 1)</code></pre>
+            </div>
+
+            <h3>2.6 Metric 类 - 评估指标</h3>
+            <div class="class-card">
+                <h4>📊 <code>keras.metrics.Metric</code></h4>
+                <p>评估模型性能，不参与训练</p>
+                <ul>
+                    <li><strong>常用指标</strong>：<code>Accuracy</code>, <code>Precision</code>, <code>Recall</code>, <code>AUC</code></li>
+                    <li><strong>主要方法</strong>：<code>update_state()</code>, <code>result()</code>, <code>reset_state()</code></li>
+                    <li><strong>与损失区别</strong>：指标不用于反向传播</li>
+                </ul>
+                <pre><code class="python">from keras import metrics
+
+# 分类指标
+metric = metrics.CategoricalAccuracy()
+
+# 回归指标
+metric = metrics.MeanAbsoluteError()
+
+# 多指标评估
+model.compile(
+    optimizer='adam',
+    loss='sparse_categorical_crossentropy',
+    metrics=['accuracy', 'precision', 'recall']
+)</code></pre>
+            </div>
+
+            <h3>核心类关系图</h3>
+            <div class="architecture-diagram">
+                <div class="diagram-grid">
+                    <div class="diagram-box api">
+                        <strong>Model</strong><br>
+                        <small>模型容器</small>
+                    </div>
+                    <div class="diagram-box api">
+                        <strong>Layer</strong><br>
+                        <small>层基类</small>
+                    </div>
+                    <div class="diagram-box api">
+                        <strong>Optimizer</strong><br>
+                        <small>优化器</small>
+                    </div>
+                </div>
+                <div class="diagram-arrow">↓ 组合使用</div>
+                <div class="diagram-grid">
+                    <div class="diagram-box api">
+                        <strong>Loss</strong><br>
+                        <small>损失函数</small>
+                    </div>
+                    <div class="diagram-box api">
+                        <strong>Metric</strong><br>
+                        <small>评估指标</small>
+                    </div>
+                    <div class="diagram-box api">
+                        <strong>Callback</strong><br>
+                        <small>回调函数</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="layers" class="content-section">
+            <h2>三、常用层 (Layers) 详解</h2>
+            <p>Keras 提供了丰富的内置层，覆盖各种深度学习任务需求。</p>
+
+            <h3>3.1 核心层</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>层类型</th>
+                        <th>类名</th>
+                        <th>参数</th>
+                        <th>用途</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>全连接层</strong></td>
+                        <td><code>Dense</code></td>
+                        <td><code>units, activation</code></td>
+                        <td>标准神经网络层，每个神经元连接所有输入</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dropout 层</strong></td>
+                        <td><code>Dropout</code></td>
+                        <td><code>rate</code></td>
+                        <td>随机丢弃神经元，防止过拟合</td>
+                    </tr>
+                    <tr>
+                        <td><strong>激活层</strong></td>
+                        <td><code>Activation</code></td>
+                        <td><code>activation</code></td>
+                        <td>应用激活函数</td>
+                    </tr>
+                    <tr>
+                        <td><strong>输入层</strong></td>
+                        <td><code>Input</code></td>
+                        <td><code>shape, dtype</code></td>
+                        <td>定义模型输入</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>3.2 卷积层 (CNN)</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>层类型</th>
+                        <th>类名</th>
+                        <th>参数</th>
+                        <th>用途</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>2D 卷积</strong></td>
+                        <td><code>Conv2D</code></td>
+                        <td><code>filters, kernel_size, strides</code></td>
+                        <td>图像特征提取</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2D 池化</strong></td>
+                        <td><code>MaxPooling2D</code></td>
+                        <td><code>pool_size, strides</code></td>
+                        <td>下采样，减少参数</td>
+                    </tr>
+                    <tr>
+                        <td><strong>全局池化</strong></td>
+                        <td><code>GlobalAveragePooling2D</code></td>
+                        <td>-</td>
+                        <td>将特征图转为向量</td>
+                    </tr>
+                    <tr>
+                        <td><strong>BatchNorm</strong></td>
+                        <td><code>BatchNormalization</code></td>
+                        <td>-</td>
+                        <td>批归一化，加速训练</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>3.3 循环层 (RNN)</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>层类型</th>
+                        <th>类名</th>
+                        <th>参数</th>
+                        <th>用途</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>LSTM</strong></td>
+                        <td><code>LSTM</code></td>
+                        <td><code>units, return_sequences</code></td>
+                        <td>长短期记忆，处理序列</td>
+                    </tr>
+                    <tr>
+                        <td><strong>GRU</strong></td>
+                        <td><code>GRU</code></td>
+                        <td><code>units</code></td>
+                        <td>门控循环单元，LSTM 简化版</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SimpleRNN</strong></td>
+                        <td><code>SimpleRNN</code></td>
+                        <td><code>units</code></td>
+                        <td>基础 RNN 层</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>3.4 嵌入层 (NLP)</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>层类型</th>
+                        <th>类名</th>
+                        <th>参数</th>
+                        <th>用途</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>词嵌入</strong></td>
+                        <td><code>Embedding</code></td>
+                        <td><code>input_dim, output_dim</code></td>
+                        <td>将词索引转为稠密向量</td>
+                    </tr>
+                    <tr>
+                        <td><strong>位置编码</strong></td>
+                        <td><code>PositionalEncoding</code></td>
+                        <td>-</td>
+                        <td>Transformer 位置信息</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>层使用示例</h3>
+            <pre><code class="python">from keras import Sequential, layers
+
+# CNN 模型示例
+cnn_model = Sequential([
+    layers.Input(shape=(224, 224, 3)),
+    
+    # 卷积块 1
+    layers.Conv2D(32, (3, 3), activation='relu', padding='same'),
+    layers.BatchNormalization(),
+    layers.Conv2D(32, (3, 3), activation='relu', padding='same'),
+    layers.MaxPooling2D((2, 2)),
+    layers.Dropout(0.25),
+    
+    # 卷积块 2
+    layers.Conv2D(64, (3, 3), activation='relu', padding='same'),
+    layers.BatchNormalization(),
+    layers.Conv2D(64, (3, 3), activation='relu', padding='same'),
+    layers.MaxPooling2D((2, 2)),
+    layers.Dropout(0.25),
+    
+    # 分类头
+    layers.GlobalAveragePooling2D(),
+    layers.Dense(128, activation='relu'),
+    layers.Dropout(0.5),
+    layers.Dense(10, activation='softmax')
+])
+
+# RNN 模型示例
+rnn_model = Sequential([
+    layers.Input(shape=(None, 128)),  # 序列长度可变
+    layers.LSTM(64, return_sequences=True),
+    layers.Dropout(0.2),
+    layers.LSTM(32),
+    layers.Dense(10, activation='softmax')
+])</code></pre>
+        </section>
+
+        <section id="models" class="content-section">
+            <h2>四、模型构建方法</h2>
+            <p>Keras 提供三种模型构建方式，从简单到复杂，满足不同需求。</p>
+
+            <h3>4.1 Sequential 模型（最简单）</h3>
+            <p>适用于简单的层堆叠，线性结构。</p>
+            <pre><code class="python">from keras import Sequential, layers
+
+# 方法 1：直接传入层列表
+model = Sequential([
+    layers.Input(shape=(784,)),
+    layers.Dense(128, activation='relu'),
+    layers.Dense(10, activation='softmax')
+])
+
+# 方法 2：使用 add() 逐个添加
+model = Sequential()
+model.add(layers.Input(shape=(784,)))
+model.add(layers.Dense(128, activation='relu'))
+model.add(layers.Dense(10, activation='softmax'))
+
+model.summary()</code></pre>
+
+            <h3>4.2 函数式 API（推荐）</h3>
+            <p>适用于复杂结构：多输入/多输出、共享层、残差连接等。</p>
+            <pre><code class="python">import keras
+from keras import layers
+
+# 单输入单输出
+inputs = keras.Input(shape=(784,))
+x = layers.Dense(128, activation='relu')(inputs)
+x = layers.Dropout(0.2)(x)
+outputs = layers.Dense(10, activation='softmax')(x)
+model = keras.Model(inputs=inputs, outputs=outputs)
+
+# 多输入多输出
+input1 = keras.Input(shape=(100,))
+input2 = keras.Input(shape=(50,))
+
+x1 = layers.Dense(64, activation='relu')(input1)
+x2 = layers.Dense(64, activation='relu')(input2)
+
+# 合并输入
+merged = layers.Concatenate()([x1, x2])
+output1 = layers.Dense(10, activation='softmax', name='class_output')(merged)
+output2 = layers.Dense(1, name='reg_output')(merged)
+
+model = keras.Model(inputs=[input1, input2], outputs=[output1, output2])</code></pre>
+
+            <h3>4.3 自定义模型（最灵活）</h3>
+            <p>继承 <code>keras.Model</code> 类，完全控制前向传播。</p>
+            <pre><code class="python">import keras
+from keras import layers
+import keras.ops as ops
+
+class ResidualBlock(keras.Model):
+    """自定义残差块"""
+    def __init__(self, filters):
+        super().__init__()
+        self.conv1 = layers.Conv2D(filters, 3, padding='same', activation='relu')
+        self.conv2 = layers.Conv2D(filters, 3, padding='same', activation='relu')
+        self.bn1 = layers.BatchNormalization()
+        self.bn2 = layers.BatchNormalization()
+    
+    def call(self, inputs, training=False):
+        x = self.conv1(inputs)
+        x = self.bn1(x, training=training)
+        x = ops.relu(x)
+        
+        x = self.conv2(x)
+        x = self.bn2(x, training=training)
+        
+        # 残差连接
+        x = ops.add([inputs, x])
+        return ops.relu(x)
+
+class CustomCNN(keras.Model):
+    """自定义 CNN 模型"""
+    def __init__(self, num_classes=10):
+        super().__init__()
+        self.conv1 = layers.Conv2D(32, 3, activation='relu', padding='same')
+        self.res_block = ResidualBlock(32)
+        self.pool = layers.GlobalAveragePooling2D()
+        self.dense = layers.Dense(num_classes, activation='softmax')
+    
+    def call(self, inputs, training=False):
+        x = self.conv1(inputs)
+        x = self.res_block(x, training=training)
+        x = self.pool(x)
+        return self.dense(x)
+
+# 使用自定义模型
+model = CustomCNN(num_classes=10)
+model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])</code></pre>
+        </section>
+
+        <section id="training" class="content-section">
+            <h2>五、模型训练完整流程</h2>
+            <p>从数据准备到模型评估，掌握完整的训练流程。</p>
+
+            <h3>5.1 数据准备</h3>
+            <pre><code class="python">import keras
+import numpy as np
+from keras.datasets import mnist
+from keras.utils import to_categorical
+
+# 加载数据
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
+
+# 数据预处理
+x_train = x_train.astype('float32') / 255.0
+x_test = x_test.astype('float32') / 255.0
+x_train = x_train.reshape(-1, 28, 28, 1)
+x_test = x_test.reshape(-1, 28, 28, 1)
+
+# 标签编码
+y_train_cat = to_categorical(y_train, 10)
+y_test_cat = to_categorical(y_test, 10)
+
+print(f"训练集：{x_train.shape}, 测试集：{x_test.shape}")</code></pre>
+
+            <h3>5.2 编译模型</h3>
+            <pre><code class="python">from keras import Sequential, layers, optimizers, losses, metrics
+
+# 构建模型
+model = Sequential([
+    layers.Input(shape=(28, 28, 1)),
+    layers.Conv2D(32, 3, activation='relu'),
+    layers.MaxPooling2D(),
+    layers.Conv2D(64, 3, activation='relu'),
+    layers.MaxPooling2D(),
+    layers.Flatten(),
+    layers.Dense(128, activation='relu'),
+    layers.Dropout(0.5),
+    layers.Dense(10, activation='softmax')
+])
+
+# 编译模型
+model.compile(
+    optimizer=optimizers.Adam(learning_rate=0.001),
+    loss=losses.SparseCategoricalCrossentropy(),
+    metrics=[
+        metrics.Accuracy(name='accuracy'),
+        metrics.Precision(name='precision'),
+        metrics.Recall(name='recall')
+    ]
+)</code></pre>
+
+            <h3>5.3 训练模型</h3>
+            <pre><code class="python">from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau, TensorBoard
+
+# 定义回调
+callbacks = [
+    # 模型检查点
+    ModelCheckpoint(
+        'best_model.keras',
+        monitor='val_loss',
+        save_best_only=True,
+        mode='min',
+        verbose=1
+    ),
+    # 早停
+    EarlyStopping(
+        monitor='val_loss',
+        patience=10,
+        restore_best_weights=True
+    ),
+    # 学习率衰减
+    ReduceLROnPlateau(
+        monitor='val_loss',
+        factor=0.5,
+        patience=5,
+        min_lr=1e-7,
+        verbose=1
+    ),
+    # TensorBoard
+    TensorBoard(log_dir='./logs')
+]
+
+# 训练模型
+history = model.fit(
+    x_train, y_train,
+    batch_size=128,
+    epochs=50,
+    validation_split=0.1,
+    callbacks=callbacks,
+    verbose=1
+)
+
+print(f"训练完成！最终准确率：{history.history['accuracy'][-1]:.4f}")</code></pre>
+
+            <h3>5.4 评估和预测</h3>
+            <pre><code class="python">import numpy as np
+
+# 评估模型
+test_results = model.evaluate(x_test, y_test, verbose=0)
+print(f"测试损失：{test_results[0]:.4f}")
+print(f"测试准确率：{test_results[1]:.4f}")
+
+# 预测
+predictions = model.predict(x_test[:10])
+predicted_classes = np.argmax(predictions, axis=1)
+
+print(f"预测类别：{predicted_classes}")
+print(f"真实类别：{y_test[:10]}")
+
+# 详细分类报告
+from sklearn.metrics import classification_report
+y_pred = model.predict(x_test)
+y_pred_classes = np.argmax(y_pred, axis=1)
+print(classification_report(y_test, y_pred_classes))</code></pre>
+        </section>
+
+        <section id="advanced" class="content-section">
+            <h2>六、高级主题</h2>
+
+            <h3>6.1 迁移学习</h3>
+            <pre><code class="python">import keras
+from keras import layers
+
+# 加载预训练模型（不包括顶层）
+base_model = keras.applications.ResNet50(
+    weights='imagenet',
+    include_top=False,
+    input_shape=(224, 224, 3)
+)
+
+# 冻结基础模型
+base_model.trainable = False
+
+# 添加自定义层
+inputs = keras.Input(shape=(224, 224, 3))
+x = keras.applications.resnet.preprocess_input(inputs)
+x = base_model(x, training=False)
+x = layers.GlobalAveragePooling2D()(x)
+x = layers.Dropout(0.2)(x)
+outputs = layers.Dense(100, activation='softmax')(x)
+
+model = keras.Model(inputs, outputs)
+
+# 编译和训练
+model.compile(
+    optimizer='adam',
+    loss='sparse_categorical_crossentropy',
+    metrics=['accuracy']
+)
+
+# 训练顶层
+# model.fit(train_data, train_labels, epochs=10)
+
+# 微调：解冻部分层
+base_model.trainable = True
+for layer in base_model.layers[:-20]:
+    layer.trainable = False
+
+model.compile(
+    optimizer=keras.optimizers.Adam(learning_rate=1e-5),
+    loss='sparse_categorical_crossentropy',
+    metrics=['accuracy']
+)</code></pre>
+
+            <h3>6.2 数据增强</h3>
+            <pre><code class="python">from keras import Sequential, layers
+
+# 数据增强层
+data_augmentation = Sequential([
+    layers.RandomFlip('horizontal'),
+    layers.RandomRotation(0.1),
+    layers.RandomZoom(0.1),
+    layers.RandomContrast(0.1),
+    layers.RandomTranslation(0.1, 0.1),
+], name='data_augmentation')
+
+# 在模型中使用
+model = Sequential([
+    layers.Input(shape=(224, 224, 3)),
+    data_augmentation,
+    layers.Rescaling(1./255),
+    layers.Conv2D(32, 3, activation='relu'),
+    # ... 更多层
+])</code></pre>
+
+            <h3>6.3 自定义训练循环</h3>
+            <pre><code class="python">import keras
+import keras.ops as ops
+
+# 获取优化器
+optimizer = keras.optimizers.Adam()
+loss_fn = keras.losses.SparseCategoricalCrossentropy()
+train_acc_metric = keras.metrics.Accuracy()
+
+# 自定义训练步骤
+@ops.jit_compile  # XLA 加速
+def train_step(x_batch, y_batch):
+    with ops.GradientTape() as tape:
+        predictions = model(x_batch, training=True)
+        loss = loss_fn(y_batch, predictions)
+    
+    gradients = tape.gradient(loss, model.trainable_weights)
+    optimizer.apply_gradients(zip(gradients, model.trainable_weights))
+    train_acc_metric.update_state(y_batch, predictions)
+    return loss
+
+# 训练循环
+for epoch in range(epochs):
+    for x_batch, y_batch in train_dataset:
+        loss = train_step(x_batch, y_batch)
+    
+    acc = train_acc_metric.result()
+    print(f"Epoch {epoch+1}: loss={loss:.4f}, acc={acc:.4f}")
+    train_acc_metric.reset_states()</code></pre>
+
+            <h3>6.4 模型导出和部署</h3>
+            <pre><code class="python"># 保存为 Keras 格式
+model.save('model.keras')
+loaded_model = keras.models.load_model('model.keras')
+
+# 导出为 SavedModel（TensorFlow 部署）
+model.export('saved_model/')
+
+# 导出为 ONNX（跨平台部署）
+# pip install tf2onnx
+import tf2onnx
+onnx_model, _ = tf2onnx.convert.from_keras(model)
+
+# 序列化模型架构
+config = model.get_config()
+json_config = model.to_json()
+
+# 从配置重建模型
+reconstructed = keras.Model.from_config(config)</code></pre>
+        </section>
+
+        <section id="comparison" class="content-section">
+            <h2>七、Keras 2 vs Keras 3</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>特性</th>
+                        <th>Keras 2.x</th>
+                        <th>Keras 3.x</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>后端支持</strong></td>
+                        <td>仅 TensorFlow</td>
+                        <td>TensorFlow, PyTorch, JAX</td>
+                    </tr>
+                    <tr>
+                        <td><strong>导入方式</strong></td>
+                        <td><code>from tensorflow import keras</code></td>
+                        <td><code>import keras</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>输入层</strong></td>
+                        <td><code>input_shape</code> 参数</td>
+                        <td><code>Input()</code> 层（推荐）</td>
+                    </tr>
+                    <tr>
+                        <td><strong>模型格式</strong></td>
+                        <td><code>.h5</code></td>
+                        <td><code>.keras</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>导出 API</strong></td>
+                        <td><code>model.save()</code></td>
+                        <td><code>model.export()</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong> ops 模块</strong></td>
+                        <td>使用 <code>tf.*</code></td>
+                        <td>使用 <code>keras.ops.*</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>XLA 加速</strong></td>
+                        <td>手动配置</td>
+                        <td>自动启用</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="best-practices" class="content-section">
+            <h2>八、最佳实践</h2>
+            
+            <div class="feature-box">
+                <h3>✅ 推荐做法：</h3>
+                <ul>
+                    <li>使用 <code>Input()</code> 层明确定义输入</li>
+                    <li>优先使用函数式 API 构建模型</li>
+                    <li>添加 <code>BatchNormalization</code> 加速训练</li>
+                    <li>使用 <code>Dropout</code> 防止过拟合</li>
+                    <li>使用回调函数监控训练过程</li>
+                    <li>保存最佳模型权重</li>
+                    <li>使用混合精度训练加速（<code>keras.mixed_precision</code>）</li>
+                </ul>
+            </div>
+
+            <div class="tip-box">
+                <h3>❌ 避免做法：</h3>
+                <ul>
+                    <li>避免在模型中使用硬编码的维度</li>
+                    <li>避免过大的学习率导致训练不稳定</li>
+                    <li>避免在没有 BatchNorm 时使用 bias</li>
+                    <li>避免在测试时忘记设置 <code>training=False</code></li>
+                </ul>
+            </div>
+        </section>
+
+        <div class="topic-nav">
+            <a href="data-analysis.html">← 数据分析</a>
+            <a href="ai-libraries.html">AI 第三方库 →</a>
+        </div>
+    </main>
+</body>
+</html>
