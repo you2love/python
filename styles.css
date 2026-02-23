@@ -158,14 +158,14 @@ main {
 pre {
     background: #0d1117;
     color: #00ff00;
-    padding: 10px;
+    padding: 15px;
     border-radius: 8px;
     overflow-x: auto;
     margin: 10px 0;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     font-family: 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
-    font-size: 0.85em;
-    line-height: 1.4;
+    font-size: 1.1em;
+    line-height: 1.5;
     border: 1px solid #30363d;
 }
 
