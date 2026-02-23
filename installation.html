@@ -214,20 +214,20 @@
             <h2>安装 Python</h2>
             
             <div class="tip-box">
-                <strong>💡 2026 年推荐：</strong>建议安装 Python 3.11 或 3.12 版本，获得最佳性能和最新特性。Python 3.13 已于 2024 年 10 月发布，也可尝试使用。
+                <strong>💡 2026 年推荐：</strong>建议安装 Python 3.14 或 3.13 版本，获得最佳性能和最新特性。Python 3.14 已于 2025 年 10 月发布，带来了显著的性能提升和新特性。
             </div>
             
             <h3>Windows 系统</h3>
             <ol>
                 <li>访问 <a href="https://www.python.org/downloads/" target="_blank">Python 官网</a></li>
-                <li>下载最新版本的 Python 安装包（推荐 Python 3.12+）</li>
+                <li>下载最新版本的 Python 安装包（推荐 Python 3.14）</li>
                 <li>运行安装程序，勾选 "Add Python to PATH"</li>
                 <li>点击 "Install Now" 完成安装</li>
             </ol>
 
             <h3>macOS 系统</h3>
             <ol>
-                <li>使用 Homebrew 安装：<code>brew install python@3.12</code></li>
+                <li>使用 Homebrew 安装：<code>brew install python@3.14</code></li>
                 <li>或从 Python 官网下载安装包</li>
             </ol>
 
@@ -241,14 +241,14 @@ sudo yum install python3 python3-pip      # CentOS/RHEL</code></pre>
 curl https://pyenv.run | bash
 
 # 安装指定 Python 版本
-pyenv install 3.12.0
-pyenv install 3.11.0
+pyenv install 3.14.0
+pyenv install 3.13.0
 
 # 设置全局版本
-pyenv global 3.12.0
+pyenv global 3.14.0
 
 # 设置项目局部版本
-pyenv local 3.11.0</code></pre>
+pyenv local 3.13.0</code></pre>
 
             <h3>验证安装</h3>
             <p>在终端或命令提示符中输入：</p>
@@ -263,6 +263,17 @@ pip --version</code></pre>
             <pre><code>python -m pip install --upgrade pip
 # 或
 pip3 install --upgrade pip</code></pre>
+
+            <div class="feature-box">
+                <h3>Python 3.14 主要新特性：</h3>
+                <ul>
+                    <li>🚀 <strong>性能提升</strong>：CPython 解释器性能优化，启动速度更快</li>
+                    <li>📝 <strong>错误消息改进</strong>：更清晰、更有针对性的错误提示</li>
+                    <li>🔧 <strong>标准库增强</strong>：pathlib、asyncio 等模块功能增强</li>
+                    <li>🎯 <strong>类型提示改进</strong>：更强大的类型检查支持</li>
+                    <li>🗑️ <strong>清理废弃 API</strong>：移除已废弃的接口，API 更简洁</li>
+                </ul>
+            </div>
         </section>
 
         <div class="topic-nav">

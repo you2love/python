@@ -400,9 +400,8 @@ async def async_operation():
     return "异步完成"
 
 async def main():
-    # 在事件循环中运行同步操作
-    loop = asyncio.get_event_loop()
-    result1 = await loop.run_in_executor(None, blocking_operation)
+    # Python 3.14 推荐：使用 asyncio.to_thread() 运行同步操作
+    result1 = await asyncio.to_thread(blocking_operation)
     print(result1)
 
     # 运行异步操作
@@ -425,12 +424,12 @@ async def task2():
     print("任务2 完成")
 
 async def main():
-    # 获取事件循环
-    loop = asyncio.get_event_loop()
+    # Python 3.14 推荐：直接创建和等待任务
+    # 不再使用 get_event_loop()（已废弃）
 
     # 创建任务
-    t1 = loop.create_task(task1())
-    t2 = loop.create_task(task2())
+    t1 = asyncio.create_task(task1())
+    t2 = asyncio.create_task(task2())
 
     # 等待任务完成
     await t1
@@ -442,6 +441,16 @@ asyncio.run(main())</code></pre>
 
             <div class="tip-box">
                 <strong>💡 提示：</strong>异步编程适合 I/O 密集型任务，如网络请求、文件操作等，可以显著提高性能。
+            </div>
+
+            <div class="feature-box">
+                <h3>Python 3.14 asyncio 改进：</h3>
+                <ul>
+                    <li>✅ <code>asyncio.run()</code> 是推荐的入口点</li>
+                    <li>✅ <code>asyncio.to_thread()</code> 替代 <code>run_in_executor()</code></li>
+                    <li>❌ <code>get_event_loop()</code> 已废弃，使用 <code>create_task()</code></li>
+                    <li>✅ 更好的错误消息和调试支持</li>
+                </ul>
             </div>
         </section>
 

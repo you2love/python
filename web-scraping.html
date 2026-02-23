@@ -1003,7 +1003,7 @@ process.start()</code></pre>
             <pre><code class="python">import re
 
 # 匹配字符串
-text = "Hello, Python 3.10!"
+text = "Hello, Python 3.14!"
 
 # 查找第一个匹配
 match = re.search(r'Python', text)
@@ -1081,12 +1081,12 @@ if match:
 pattern = re.compile(r'\d+')
 
 # 使用预编译的模式
-text = "Python 3.10 is awesome"
+text = "Python 3.14 is awesome"
 matches = pattern.findall(text)
 print(matches)  # ['3', '10']
 
 # 多次使用
-for text in ["Python 3.8", "Python 3.9", "Python 3.10"]:
+for text in ["Python 3.14", "Python 3.14", "Python 3.14"]:
     version = pattern.findall(text)
     print(f"{text}: {version}")</code></pre>
 
