@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 第三方库 - Python 入门教程</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* 二级导航样式 */
+        .nav-category {
+            margin-bottom: 10px;
+        }
+
+        .nav-category > h3 {
+            color: #764ba2;
+            font-size: 1em;
+            margin-bottom: 8px;
+            padding-left: 8px;
+            border-left: 3px solid #667eea;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .nav-category > h3:hover {
+            background: rgba(102, 126, 234, 0.1);
+            border-left-color: #764ba2;
+        }
+
+        .nav-toggle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 4px;
+            font-size: 14px;
+            color: #667eea;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .nav-category > h3:hover .nav-toggle {
+            background: #667eea;
+            color: white;
+        }
+
+        .nav-items {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .nav-items.expanded {
+            max-height: 500px;
+        }
+
+        .nav-category.expanded > h3 .nav-toggle {
+            transform: rotate(45deg);
+            background: #764ba2;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-category">
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>📚 基础入门</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="basics.html">简介</a></li>
+                    <li><a href="basics.html#installation">安装</a></li>
+                    <li><a href="basics.html#basics">基础语法</a></li>
+                    <li><a href="basics.html#variables">变量</a></li>
+                    <li><a href="basics.html#datatypes">数据类型</a></li>
+                    <li><a href="basics.html#controlflow">控制流</a></li>
+                    <li><a href="basics.html#functions">函数</a></li>
+                    <li><a href="basics.html#oop">面向对象</a></li>
+                    <li><a href="basics.html#stringformat">字符串格式化</a></li>
+                    <li><a href="basics.html#tips">常用技巧</a></li>
+                    <li><a href="devops.html">高级特性</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="nav-category">
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>📁 文件操作</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="file-management.html">文件操作</a></li>
+                    <li><a href="file-management.html#directory">目录操作</a></li>
+                    <li><a href="file-management.html#exceptions">异常处理</a></li>
+                    <li><a href="file-management.html#pypdf2">PyPDF2</a></li>
+                    <li><a href="file-management.html#pythondocx">python-docx</a></li>
+                    <li><a href="file-management.html#docxtpl">docxtpl</a></li>
+                    <li><a href="file-management.html#openpyxl">openpyxl</a></li>
+                    <li><a href="file-management.html#pythonpptx">python-pptx</a></li>
+                    <li><a href="file-management.html#difflib">difflib</a></li>
+                    <li><a href="file-management.html#filecmp">filecmp</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="nav-category">
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>🌐 网络编程</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="network-programming.html">网络编程</a></li>
+                    <li><a href="network-programming.html#asyncio">异步编程</a></li>
+                    <li><a href="network-programming.html#requests">Requests</a></li>
+                    <li><a href="network-programming.html#aiohttp">aiohttp</a></li>
+                    <li><a href="network-programming.html#fastapi">FastAPI</a></li>
+                    <li><a href="network-programming.html#scapy">Scapy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="nav-category">
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>🕷️ 爬虫技术</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="web-scraping.html">BeautifulSoup</a></li>
+                    <li><a href="web-scraping.html#selenium">Selenium</a></li>
+                    <li><a href="web-scraping.html#playwright">Playwright</a></li>
+                    <li><a href="web-scraping.html#scrapy">Scrapy</a></li>
+                    <li><a href="web-scraping.html#regex">正则表达式</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="nav-category">
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>📊 数据分析</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="data-analysis.html">NumPy</a></li>
+                    <li><a href="data-analysis.html#pandas">Pandas</a></li>
+                    <li><a href="data-analysis.html#matplotlib">Matplotlib</a></li>
+                    <li><a href="data-analysis.html#keras">Keras</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="nav-category">
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>🤖 AI 第三方库</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="ai-libraries.html#pytorch">PyTorch</a></li>
+                    <li><a href="ai-libraries.html#scikit-learn">Scikit-learn</a></li>
+                    <li><a href="ai-libraries.html#transformers">Transformers</a></li>
+                    <li><a href="ai-libraries.html#opencv">OpenCV</a></li>
+                    <li><a href="ai-libraries.html#langchain">LangChain</a></li>
+                    <li><a href="ai-libraries.html#llama-index">LlamaIndex</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="nav-category">
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>💾 数据存储</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="databases.html">SQLAlchemy</a></li>
+                    <li><a href="databases.html#mysql">MySQL</a></li>
+                    <li><a href="databases.html#mongodb">MongoDB</a></li>
+                    <li><a href="databases.html#redis">Redis</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="nav-category">
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>🔧 系统运维</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="devops.html#decorator">装饰器</a></li>
+                    <li><a href="devops.html#async">异步</a></li>
+                    <li><a href="devops.html#coroutine">协程</a></li>
+                    <li><a href="devops.html#fabric">Fabric</a></li>
+                    <li><a href="devops.html#psutil">psutil</a></li>
+                    <li><a href="devops.html#logging">logging</a></li>
+                    <li><a href="devops.html#ansible">Ansible</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="nav-category">
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>🛠️ 实用工具</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="tools.html">QRCode</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+        function toggleNav(header) {
+            const category = header.parentElement;
+            const items = category.querySelector('.nav-items');
+            const toggle = header.querySelector('.nav-toggle');
+
+            category.classList.toggle('expanded');
+            items.classList.toggle('expanded');
+
+            if (items.classList.contains('expanded')) {
+                toggle.textContent = '−';
+            } else {
+                toggle.textContent = '+';
+            }
+        }
+    </script>
+
+    <main>
+        <section id="intro" class="content-section">
+            <h2>🤖 Python AI 第三方库概览</h2>
+            <p>Python 是人工智能和机器学习领域最流行的编程语言之一。本页面介绍几个常用的 AI 第三方库，涵盖深度学习、机器学习、自然语言处理、计算机视觉和大语言模型应用开发。</p>
+            
+            <div class="feature-box">
+                <h3>本页面内容：</h3>
+                <ul>
+                    <li>🔥 <strong>PyTorch</strong> - 灵活的深度学习框架</li>
+                    <li>📈 <strong>Scikit-learn</strong> - 经典机器学习库</li>
+                    <li>🤖 <strong>Transformers</strong> - 预训练大语言模型库</li>
+                    <li>👁️ <strong>OpenCV</strong> - 计算机视觉库</li>
+                    <li>⛓️ <strong>LangChain</strong> - LLM 应用开发框架</li>
+                    <li>🦙 <strong>LlamaIndex</strong> - LLM 数据索引框架</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="pytorch" class="content-section">
+            <h2>PyTorch</h2>
+            <p>PyTorch 是由 Facebook AI 研究院开发的开源深度学习框架，以其动态计算图和易用性而闻名，是当前最流行的深度学习框架之一。</p>
+
+            <h3>安装</h3>
+            <pre><code class="bash"># CPU 版本
+pip install torch
+
+# GPU 版本 (CUDA 11.8)
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118</code></pre>
+
+            <h3>张量基础</h3>
+            <pre><code class="python">import torch
+
+# 创建张量
+x = torch.tensor([1, 2, 3, 4, 5])
+print(f"一维张量：{x}")
+
+# 创建二维张量
+matrix = torch.tensor([[1, 2, 3], [4, 5, 6]])
+print(f"二维张量:\n{matrix}")
+
+# 创建特定张量
+zeros = torch.zeros(3, 3)           # 全零
+ones = torch.ones(2, 4)             # 全一
+random = torch.rand(3, 3)           # 随机
+eye = torch.eye(3)                  # 单位矩阵
+arange = torch.arange(0, 10, 2)     # [0, 2, 4, 6, 8]
+
+print(f"形状：{matrix.shape}")
+print(f"数据类型：{matrix.dtype}")
+print(f"设备：{matrix.device}")</code></pre>
+
+            <h3>张量运算</h3>
+            <pre><code class="python">import torch
+
+x = torch.tensor([1.0, 2.0, 3.0, 4.0])
+y = torch.tensor([5.0, 6.0, 7.0, 8.0])
+
+# 基本运算
+print(f"加法：{x + y}")
+print(f"乘法：{x * y}")
+print(f"点积：{torch.dot(x, y)}")
+
+# 矩阵乘法
+A = torch.randn(3, 4)
+B = torch.randn(4, 2)
+C = torch.matmul(A, B)
+print(f"矩阵乘法形状：{C.shape}")
+
+# 广播机制
+scalar = 10
+print(f"张量 + 标量：{x + scalar}")</code></pre>
+
+            <h3>自动求导</h3>
+            <pre><code class="python">import torch
+
+# 创建需要梯度的张量
+x = torch.tensor(2.0, requires_grad=True)
+y = x ** 2 + 3 * x + 1
+
+# 反向传播
+y.backward()
+
+print(f"x 的梯度：{x.grad}")  # dy/dx = 2x + 3 = 7
+
+# 多变量求导
+x = torch.randn(3, requires_grad=True)
+y = x * 2
+z = y.sum()
+z.backward()
+
+print(f"梯度：{x.grad}")</code></pre>
+
+            <h3>构建神经网络</h3>
+            <pre><code class="python">import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+class NeuralNetwork(nn.Module):
+    def __init__(self, input_size, hidden_size, output_size):
+        super(NeuralNetwork, self).__init__()
+        self.fc1 = nn.Linear(input_size, hidden_size)
+        self.relu = nn.ReLU()
+        self.fc2 = nn.Linear(hidden_size, output_size)
+        self.softmax = nn.Softmax(dim=1)
+    
+    def forward(self, x):
+        x = self.fc1(x)
+        x = self.relu(x)
+        x = self.fc2(x)
+        x = self.softmax(x)
+        return x
+
+# 创建模型
+model = NeuralNetwork(input_size=784, hidden_size=128, output_size=10)
+print(model)</code></pre>
+
+            <h3>训练循环</h3>
+            <pre><code class="python">import torch
+import torch.nn as nn
+import torch.optim as optim
+
+# 假设已有数据和模型
+X_train = torch.randn(1000, 784)
+y_train = torch.randint(0, 10, (1000,))
+
+model = NeuralNetwork(784, 128, 10)
+
+# 损失函数和优化器
+criterion = nn.CrossEntropyLoss()
+optimizer = optim.Adam(model.parameters(), lr=0.001)
+
+# 训练循环
+num_epochs = 10
+batch_size = 32
+
+for epoch in range(num_epochs):
+    model.train()
+    total_loss = 0
+    
+    for i in range(0, len(X_train), batch_size):
+        # 获取批次数据
+        X_batch = X_train[i:i+batch_size]
+        y_batch = y_train[i:i+batch_size]
+        
+        # 前向传播
+        outputs = model(X_batch)
+        loss = criterion(outputs, y_batch)
+        
+        # 反向传播
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+        
+        total_loss += loss.item()
+    
+    print(f"Epoch [{epoch+1}/{num_epochs}], Loss: {total_loss:.4f}")</code></pre>
+
+            <h3>使用 GPU 加速</h3>
+            <pre><code class="python">import torch
+
+# 检查 GPU 可用性
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+print(f"使用设备：{device}")
+
+# 将模型和数据移动到 GPU
+model = NeuralNetwork(784, 128, 10).to(device)
+X_train = X_train.to(device)
+y_train = y_train.to(device)
+
+# 后续训练会自动在 GPU 上进行</code></pre>
+
+            <h3>保存和加载模型</h3>
+            <pre><code class="python"># 保存模型参数
+torch.save(model.state_dict(), 'model.pth')
+
+# 加载模型参数
+model = NeuralNetwork(784, 128, 10)
+model.load_state_dict(torch.load('model.pth'))
+model.eval()
+
+# 保存整个模型
+torch.save(model, 'complete_model.pth')
+
+# 加载整个模型
+model = torch.load('complete_model.pth')</code></pre>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>PyTorch 的动态计算图让调试更简单，非常适合研究和快速原型开发。
+            </div>
+        </section>
+
+        <section id="scikit-learn" class="content-section">
+            <h2>Scikit-learn</h2>
+            <p>Scikit-learn 是 Python 中最流行的机器学习库，提供了各种经典的机器学习算法和工具，适合数据分析和建模任务。</p>
+
+            <h3>安装</h3>
+            <pre><code class="bash">pip install scikit-learn</code></pre>
+
+            <h3>数据预处理</h3>
+            <pre><code class="python">from sklearn.preprocessing import StandardScaler, MinMaxScaler, LabelEncoder
+from sklearn.model_selection import train_test_split
+import numpy as np
+
+# 生成示例数据
+X = np.random.randn(100, 5)
+y = np.random.randint(0, 2, 100)
+
+# 标准化
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# 归一化
+minmax = MinMaxScaler()
+X_normalized = minmax.fit_transform(X)
+
+# 划分训练测试集
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+print(f"训练集大小：{len(X_train)}, 测试集大小：{len(X_test)}")</code></pre>
+
+            <h3>分类算法</h3>
+            <pre><code class="python">from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, classification_report
+
+# 加载数据
+iris = load_iris()
+X, y = iris.data, iris.target
+
+# 划分数据
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# 随机森林
+rf = RandomForestClassifier(n_estimators=100, random_state=42)
+rf.fit(X_train, y_train)
+rf_pred = rf.predict(X_test)
+print(f"随机森林准确率：{accuracy_score(y_test, rf_pred):.4f}")
+
+# SVM
+svm = SVC(kernel='rbf', random_state=42)
+svm.fit(X_train, y_train)
+svm_pred = svm.predict(X_test)
+print(f"SVM 准确率：{accuracy_score(y_test, svm_pred):.4f}")
+
+# 逻辑回归
+lr = LogisticRegression(random_state=42)
+lr.fit(X_train, y_train)
+lr_pred = lr.predict(X_test)
+print(f"逻辑回归准确率：{accuracy_score(y_test, lr_pred):.4f}")
+
+# 详细评估
+print(classification_report(y_test, rf_pred))</code></pre>
+
+            <h3>回归算法</h3>
+            <pre><code class="python">from sklearn.datasets import load_boston
+from sklearn.linear_model import LinearRegression, Ridge, Lasso
+from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.metrics import mean_squared_error, r2_score
+
+# 加载数据
+boston = load_boston()
+X, y = boston.data, boston.target
+
+# 划分数据
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# 线性回归
+lr = LinearRegression()
+lr.fit(X_train, y_train)
+lr_pred = lr.predict(X_test)
+print(f"线性回归 R²: {r2_score(y_test, lr_pred):.4f}")
+
+# 岭回归
+ridge = Ridge(alpha=1.0)
+ridge.fit(X_train, y_train)
+ridge_pred = ridge.predict(X_test)
+print(f"岭回归 R²: {r2_score(y_test, ridge_pred):.4f}")
+
+# 梯度提升
+gbr = GradientBoostingRegressor(n_estimators=100, random_state=42)
+gbr.fit(X_train, y_train)
+gbr_pred = gbr.predict(X_test)
+print(f"梯度提升 R²: {r2_score(y_test, gbr_pred):.4f}")</code></pre>
+
+            <h3>聚类算法</h3>
+            <pre><code class="python">from sklearn.datasets import make_blobs
+from sklearn.cluster import KMeans, DBSCAN
+from sklearn.metrics import silhouette_score
+import matplotlib.pyplot as plt
+
+# 生成聚类数据
+X, y_true = make_blobs(n_samples=300, centers=4, 
+                        cluster_std=0.60, random_state=0)
+
+# K-Means 聚类
+kmeans = KMeans(n_clusters=4, random_state=42)
+kmeans_labels = kmeans.fit_predict(X)
+kmeans_score = silhouette_score(X, kmeans_labels)
+print(f"K-Means 轮廓分数：{kmeans_score:.4f}")
+
+# DBSCAN 聚类
+dbscan = DBSCAN(eps=0.3, min_samples=5)
+dbscan_labels = dbscan.fit_predict(X)
+dbscan_score = silhouette_score(X, dbscan_labels)
+print(f"DBSCAN 轮廓分数：{dbscan_score:.4f}")</code></pre>
+
+            <h3>降维</h3>
+            <pre><code class="python">from sklearn.decomposition import PCA
+from sklearn.manifold import TSNE
+import matplotlib.pyplot as plt
+
+# 生成高维数据
+X = np.random.randn(100, 50)
+
+# PCA 降维
+pca = PCA(n_components=2)
+X_pca = pca.fit_transform(X)
+print(f"PCA 解释方差比：{pca.explained_variance_ratio_}")
+
+# t-SNE 降维
+tsne = TSNE(n_components=2, random_state=42)
+X_tsne = tsne.fit_transform(X)
+
+# 可视化
+fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+axes[0].scatter(X_pca[:, 0], X_pca[:, 1])
+axes[0].set_title('PCA')
+axes[1].scatter(X_tsne[:, 0], X_tsne[:, 1])
+axes[1].set_title('t-SNE')
+plt.show()</code></pre>
+
+            <h3>模型选择与调参</h3>
+            <pre><code class="python">from sklearn.model_selection import GridSearchCV, cross_val_score
+from sklearn.ensemble import RandomForestClassifier
+
+# 参数网格
+param_grid = {
+    'n_estimators': [50, 100, 200],
+    'max_depth': [None, 10, 20, 30],
+    'min_samples_split': [2, 5, 10]
+}
+
+# 网格搜索
+grid_search = GridSearchCV(
+    RandomForestClassifier(random_state=42),
+    param_grid,
+    cv=5,
+    scoring='accuracy',
+    n_jobs=-1
+)
+
+grid_search.fit(X_train, y_train)
+
+print(f"最佳参数：{grid_search.best_params_}")
+print(f"最佳交叉验证分数：{grid_search.best_score_:.4f}")
+
+# 交叉验证
+cv_scores = cross_val_score(grid_search.best_estimator_, 
+                            X_train, y_train, cv=10)
+print(f"10 折交叉验证平均分：{cv_scores.mean():.4f}")</code></pre>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>Scikit-learn API 设计统一，所有模型都遵循 fit/predict 模式，易于学习和使用。
+            </div>
+        </section>
+
+        <section id="transformers" class="content-section">
+            <h2>Transformers</h2>
+            <p>Transformers 是由 Hugging Face 开发的库，提供了数千个预训练模型，用于文本、图像和音频任务，是大语言模型应用的基石。</p>
+
+            <h3>安装</h3>
+            <pre><code class="bash">pip install transformers
+pip install torch  # PyTorch 后端
+# 或
+pip install tensorflow  # TensorFlow 后端</code></pre>
+
+            <h3>文本分类</h3>
+            <pre><code class="python">from transformers import pipeline
+
+# 使用预训练管道
+classifier = pipeline("sentiment-analysis")
+
+# 情感分析
+result = classifier("I love using Transformers library!")
+print(f"情感：{result[0]['label']}")
+print(f"置信度：{result[0]['score']:.4f}")
+
+# 多文本
+texts = [
+    "This is amazing!",
+    "I hate this.",
+    "It's okay, nothing special."
+]
+results = classifier(texts)
+for text, result in zip(texts, results):
+    print(f"'{text}' -> {result['label']} ({result['score']:.4f})")</code></pre>
+
+            <h3>文本生成</h3>
+            <pre><code class="python">from transformers import pipeline
+
+# 文本生成管道
+generator = pipeline("text-generation", 
+                     model="gpt2")
+
+# 生成文本
+prompt = "Once upon a time"
+result = generator(prompt, max_length=50, num_return_sequences=3)
+
+for i, r in enumerate(result):
+    print(f"\n生成文本 {i+1}:")
+    print(r['generated_text'])</code></pre>
+
+            <h3>问答系统</h3>
+            <pre><code class="python">from transformers import pipeline
+
+# 问答管道
+qa_pipeline = pipeline("question-answering")
+
+context = """
+Python 是一种高级编程语言，由 Guido van Rossum 于 1991 年创建。
+Python 设计哲学强调代码可读性，使用缩进来表示代码块。
+Python 支持多种编程范式，包括面向对象、函数式和过程式编程。
+"""
+
+question = "Python 是谁创建的？"
+result = qa_pipeline(question=question, context=context)
+
+print(f"答案：{result['answer']}")
+print(f"置信度：{result['score']:.4f}")</code></pre>
+
+            <h3>使用 Auto 类加载模型</h3>
+            <pre><code class="python">from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import torch
+
+# 模型名称
+model_name = "bert-base-chinese"
+
+# 加载分词器和模型
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModelForSequenceClassification.from_pretrained(model_name)
+
+# 准备输入
+text = "这是一个测试句子"
+inputs = tokenizer(text, return_tensors="pt", 
+                   padding=True, truncation=True)
+
+# 模型推理
+with torch.no_grad():
+    outputs = model(**inputs)
+
+print(f"输出形状：{outputs.logits.shape}")</code></pre>
+
+            <h3>微调模型</h3>
+            <pre><code class="python">from transformers import AutoTokenizer, AutoModelForSequenceClassification
+from transformers import TrainingArguments, Trainer
+from datasets import load_dataset
+
+# 加载数据集
+dataset = load_dataset("imdb")
+
+# 加载分词器和模型
+model_name = "distilbert-base-uncased"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModelForSequenceClassification.from_pretrained(
+    model_name, num_labels=2
+)
+
+# 预处理数据
+def tokenize_function(examples):
+    return tokenizer(examples["text"], padding="max_length", 
+                     truncation=True)
+
+tokenized_datasets = dataset.map(tokenize_function, batched=True)
+
+# 训练参数
+training_args = TrainingArguments(
+    output_dir="./results",
+    num_train_epochs=3,
+    per_device_train_batch_size=16,
+    per_device_eval_batch_size=64,
+    evaluation_strategy="epoch",
+    save_strategy="epoch",
+    logging_dir="./logs",
+)
+
+# 创建 Trainer
+trainer = Trainer(
+    model=model,
+    args=training_args,
+    train_dataset=tokenized_datasets["train"],
+    eval_dataset=tokenized_datasets["test"],
+)
+
+# 开始训练
+trainer.train()</code></pre>
+
+            <h3>中文文本处理</h3>
+            <pre><code class="python">from transformers import AutoTokenizer, AutoModelForSequenceClassification
+
+# 使用中文预训练模型
+model_name = "hfl/chinese-roberta-wwm-ext"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+# 中文文本
+texts = [
+    "这部电影非常好看，剧情精彩",
+    "服务太差了，不会再来了",
+    "产品质量一般，价格偏高"
+]
+
+# 批量编码
+inputs = tokenizer(texts, padding=True, truncation=True, 
+                   return_tensors="pt", max_length=128)
+
+print(f"输入形状：{inputs['input_ids'].shape}")
+print(f"分词结果：{tokenizer.convert_ids_to_tokens(inputs['input_ids'][0])}")</code></pre>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>Hugging Face Model Hub 提供了超过 10 万个预训练模型，可以直接使用或微调。
+            </div>
+        </section>
+
+        <section id="opencv" class="content-section">
+            <h2>OpenCV</h2>
+            <p>OpenCV (Open Source Computer Vision Library) 是最流行的计算机视觉库，提供了 2500+ 个优化算法，用于图像和视频处理。</p>
+
+            <h3>安装</h3>
+            <pre><code class="bash">pip install opencv-python
+pip install opencv-python-headless  # 无 GUI 版本 (服务器)</code></pre>
+
+            <h3>读取和显示图像</h3>
+            <pre><code class="python">import cv2
+
+# 读取图像
+img = cv2.imread('image.jpg')
+
+# 检查是否成功
+if img is None:
+    print("无法读取图像")
+else:
+    print(f"图像形状：{img.shape}")  # (高度，宽度，通道数)
+    
+    # 显示图像
+    cv2.imshow('Image', img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    
+    # 保存图像
+    cv2.imwrite('output.jpg', img)</code></pre>
+
+            <h3>图像预处理</h3>
+            <pre><code class="python">import cv2
+
+img = cv2.imread('image.jpg')
+
+# 转换为灰度图
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+# 高斯模糊
+blurred = cv2.GaussianBlur(img, (5, 5), 0)
+
+# Canny 边缘检测
+edges = cv2.Canny(img, 100, 200)
+
+# 阈值处理
+_, thresh = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY)
+
+# 显示结果
+cv2.imshow('Original', img)
+cv2.imshow('Gray', gray)
+cv2.imshow('Edges', edges)
+cv2.waitKey(0)
+cv2.destroyAllWindows()</code></pre>
+
+            <h3>人脸检测</h3>
+            <pre><code class="python">import cv2
+
+# 加载预训练的人脸检测器
+face_cascade = cv2.CascadeClassifier(
+    cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'
+)
+
+# 读取图像
+img = cv2.imread('group_photo.jpg')
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+# 检测人脸
+faces = face_cascade.detectMultiScale(
+    gray, scaleFactor=1.1, minNeighbors=5, 
+    minSize=(30, 30)
+)
+
+print(f"检测到 {len(faces)} 张人脸")
+
+# 绘制矩形框
+for (x, y, w, h) in faces:
+    cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
+
+cv2.imshow('Face Detection', img)
+cv2.waitKey(0)
+cv2.destroyAllWindows()</code></pre>
+
+            <h3>视频处理</h3>
+            <pre><code class="python">import cv2
+
+# 打开摄像头
+cap = cv2.VideoCapture(0)
+
+# 或使用视频文件
+# cap = cv2.VideoCapture('video.mp4')
+
+while True:
+    # 读取帧
+    ret, frame = cap.read()
+    
+    if not ret:
+        break
+    
+    # 转换为灰度
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    
+    # 显示
+    cv2.imshow('Video', gray)
+    
+    # 按 q 退出
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+cap.release()
+cv2.destroyAllWindows()</code></pre>
+
+            <h3>特征检测</h3>
+            <pre><code class="python">import cv2
+import matplotlib.pyplot as plt
+
+# 读取图像
+img1 = cv2.imread('image1.jpg', 0)
+img2 = cv2.imread('image2.jpg', 0)
+
+# 使用 ORB 检测特征点
+orb = cv2.ORB_create()
+
+# 检测关键点和描述子
+kp1, des1 = orb.detectAndCompute(img1, None)
+kp2, des2 = orb.detectAndCompute(img2, None)
+
+# 特征匹配
+bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
+matches = bf.match(des1, des2)
+matches = sorted(matches, key=lambda x: x.distance)
+
+# 绘制匹配结果
+result = cv2.drawMatches(img1, kp1, img2, kp2, 
+                         matches[:50], None)
+
+plt.figure(figsize=(15, 8))
+plt.imshow(result)
+plt.axis('off')
+plt.show()</code></pre>
+
+            <h3>对象跟踪</h3>
+            <pre><code class="python">import cv2
+
+# 打开摄像头
+cap = cv2.VideoCapture(0)
+
+# 创建跟踪器
+tracker = cv2.TrackerKCF_create()
+
+# 读取第一帧
+ret, frame = cap.read()
+
+# 选择 ROI (手动框选跟踪对象)
+bbox = cv2.selectROI("Select object", frame, fromCenter=False)
+cv2.destroyWindow("Select object")
+
+# 初始化跟踪器
+tracker.init(frame, bbox)
+
+while True:
+    ret, frame = cap.read()
+    
+    if not ret:
+        break
+    
+    # 更新跟踪器
+    success, bbox = tracker.update(frame)
+    
+    if success:
+        x, y, w, h = [int(v) for v in bbox]
+        cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+    else:
+        cv2.putText(frame, "Lost", (50, 50), 
+                    cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+    
+    cv2.imshow('Tracking', frame)
+    
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+cap.release()
+cv2.destroyAllWindows()</code></pre>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>OpenCV 与深度学习框架结合使用效果更佳，如使用 PyTorch 检测对象后用 OpenCV 绘制结果。
+            </div>
+        </section>
+
+        <section id="langchain" class="content-section">
+            <h2>LangChain</h2>
+            <p>LangChain 是一个用于开发大语言模型 (LLM) 应用的框架，提供了组件和工具来构建上下文感知、推理能力强的 AI 应用。</p>
+
+            <h3>安装</h3>
+            <pre><code class="bash">pip install langchain
+pip install langchain-community
+pip install langchain-openai  # OpenAI 支持
+pip install langchain-chroma   # 向量数据库</code></pre>
+
+            <h3>基本 LLM 调用</h3>
+            <pre><code class="python">from langchain_openai import ChatOpenAI
+from langchain_core.messages import HumanMessage
+
+# 初始化 LLM
+llm = ChatOpenAI(
+    model="gpt-3.5-turbo",
+    temperature=0.7,
+    api_key="your-api-key"
+)
+
+# 发送消息
+messages = [HumanMessage(content="你好，请介绍一下自己")]
+response = llm.invoke(messages)
+
+print(response.content)</code></pre>
+
+            <h3>提示模板</h3>
+            <pre><code class="python">from langchain.prompts import ChatPromptTemplate
+
+# 创建提示模板
+template = """
+你是一个{role}。请回答以下问题：
+
+问题：{question}
+"""
+
+prompt = ChatPromptTemplate.from_template(template)
+
+# 格式化提示
+formatted = prompt.format(
+    role="Python 专家",
+    question="什么是装饰器？"
+)
+
+print(formatted)</code></pre>
+
+            <h3>链 (Chain)</h3>
+            <pre><code class="python">from langchain_openai import ChatOpenAI
+from langchain.prompts import ChatPromptTemplate
+from langchain.chains import LLMChain
+
+# 初始化 LLM
+llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0.7)
+
+# 创建提示模板
+prompt = ChatPromptTemplate.from_messages([
+    ("system", "你是一个专业的{profession}助手"),
+    ("human", "请解释：{topic}")
+])
+
+# 创建链
+chain = LLMChain(llm=llm, prompt=prompt)
+
+# 执行链
+response = chain.run(profession="Python 开发者", topic="异步编程")
+print(response)</code></pre>
+
+            <h3>文档加载</h3>
+            <pre><code class="python">from langchain_community.document_loaders import (
+    TextLoader, 
+    PyPDFLoader,
+    WebBaseLoader
+)
+
+# 加载文本文件
+loader = TextLoader("document.txt", encoding='utf-8')
+docs = loader.load()
+
+# 加载 PDF
+pdf_loader = PyPDFLoader("document.pdf")
+pdf_docs = pdf_loader.load()
+
+# 加载网页
+web_loader = WebBaseLoader("https://example.com")
+web_docs = web_loader.load()
+
+print(f"加载了 {len(docs)} 个文档")
+print(f"文档内容长度：{len(docs[0].page_content)}")</code></pre>
+
+            <h3>文本分割</h3>
+            <pre><code class="python">from langchain_text_splitters import (
+    CharacterTextSplitter,
+    RecursiveCharacterTextSplitter
+)
+
+# 递归字符分割
+text_splitter = RecursiveCharacterTextSplitter(
+    chunk_size=500,
+    chunk_overlap=50,
+    length_function=len,
+    separators=["\n\n", "\n", "。", "！", "？", ""]
+)
+
+# 分割文档
+chunks = text_splitter.split_documents(docs)
+
+print(f"分割成 {len(chunks)} 个块")
+print(f"第一个块大小：{len(chunks[0].page_content)} 字符")</code></pre>
+
+            <h3>向量存储</h3>
+            <pre><code class="python">from langchain_openai import OpenAIEmbeddings
+from langchain_chroma import Chroma
+
+# 初始化嵌入模型
+embeddings = OpenAIEmbeddings(api_key="your-api-key")
+
+# 创建向量存储
+vectorstore = Chroma.from_documents(
+    documents=chunks,
+    embedding=embeddings,
+    persist_directory="./chroma_db"
+)
+
+# 相似性搜索
+query = "什么是机器学习？"
+results = vectorstore.similarity_search(query, k=3)
+
+for i, result in enumerate(results):
+    print(f"\n相关片段 {i+1}:")
+    print(result.page_content[:200])</code></pre>
+
+            <h3>检索问答链</h3>
+            <pre><code class="python">from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+from langchain_chroma import Chroma
+from langchain.chains import RetrievalQA
+
+# 初始化组件
+llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0.7)
+embeddings = OpenAIEmbeddings()
+vectorstore = Chroma(persist_directory="./chroma_db", 
+                     embedding_function=embeddings)
+
+# 创建检索 QA 链
+qa_chain = RetrievalQA.from_chain_type(
+    llm=llm,
+    chain_type="stuff",
+    retriever=vectorstore.as_retriever(search_kwargs={"k": 3}),
+    return_source_documents=True
+)
+
+# 提问
+query = "文档中如何定义人工智能？"
+result = qa_chain.invoke({"query": query})
+
+print(f"答案：{result['result']}")
+print(f"\n参考来源：{len(result['source_documents'])} 个文档")</code></pre>
+
+            <h3>Agent</h3>
+            <pre><code class="python">from langchain.agents import load_tools, initialize_agent
+from langchain.agents import AgentType
+from langchain_openai import ChatOpenAI
+
+# 初始化 LLM
+llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+
+# 加载工具
+tools = load_tools(["serpapi", "llm-math"], llm=llm)
+
+# 初始化 Agent
+agent = initialize_agent(
+    tools, 
+    llm, 
+    agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+    verbose=True
+)
+
+# 运行 Agent
+response = agent.run("2026 年中国 GDP 增长率是多少？乘以 2 是多少？")
+print(response)</code></pre>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>LangChain 支持多种 LLM 提供商和向量数据库，可以灵活构建各种 AI 应用。
+            </div>
+        </section>
+
+        <section id="llama-index" class="content-section">
+            <h2>LlamaIndex</h2>
+            <p>LlamaIndex 是一个数据框架，用于将私有或领域特定数据与大型语言模型 (LLM) 连接，构建 RAG (检索增强生成) 应用。</p>
+
+            <h3>安装</h3>
+            <pre><code class="bash">pip install llama-index
+pip install llama-index-llms-openai
+pip install llama-index-embeddings-openai
+pip install llama-index-vector-stores-chroma</code></pre>
+
+            <h3>基本使用</h3>
+            <pre><code class="python">from llama_index.core import VectorStoreIndex, SimpleDirectoryReader
+
+# 加载文档
+documents = SimpleDirectoryReader("./data").load_data()
+
+# 创建索引
+index = VectorStoreIndex.from_documents(documents)
+
+# 创建查询引擎
+query_engine = index.as_query_engine()
+
+# 查询
+response = query_engine.query("文档的主要内容是什么？")
+print(response)</code></pre>
+
+            <h3>自定义设置</h3>
+            <pre><code class="python">from llama_index.core import Settings
+from llama_index.llms.openai import OpenAI
+from llama_index.embeddings.openai import OpenAIEmbedding
+
+# 配置全局设置
+Settings.llm = OpenAI(model="gpt-4", temperature=0.7)
+Settings.embed_model = OpenAIEmbedding(model="text-embedding-3-small")
+Settings.chunk_size = 512
+Settings.chunk_overlap = 50
+
+# 加载文档并创建索引
+documents = SimpleDirectoryReader("./data").load_data()
+index = VectorStoreIndex.from_documents(documents)</code></pre>
+
+            <h3>多种索引类型</h3>
+            <pre><code class="python">from llama_index.core import (
+    VectorStoreIndex,
+    ListIndex,
+    KeywordTableIndex,
+    SummaryIndex
+)
+
+# 向量索引 (语义搜索)
+vector_index = VectorStoreIndex.from_documents(documents)
+
+# 列表索引 (顺序遍历)
+list_index = ListIndex.from_documents(documents)
+
+# 关键词索引 (关键词匹配)
+keyword_index = KeywordTableIndex.from_documents(documents)
+
+# 摘要索引 (摘要生成)
+summary_index = SummaryIndex.from_documents(documents)
+
+# 创建查询引擎
+vector_query = vector_index.as_query_engine()
+list_query = list_index.as_query_engine()
+keyword_query = keyword_index.as_query_engine()
+summary_query = summary_index.as_query_engine()</code></pre>
+
+            <h3>查询引擎配置</h3>
+            <pre><code class="python">from llama_index.core import get_response_synthesizer
+from llama_index.core.retrievers import VectorIndexRetriever
+from llama_index.core.query_engine import RetrieverQueryEngine
+
+# 配置检索器
+retriever = VectorIndexRetriever(
+    index=index,
+    similarity_top_k=5,
+)
+
+# 配置响应合成器
+response_synthesizer = get_response_synthesizer(
+    response_mode="compact",
+)
+
+# 创建查询引擎
+query_engine = RetrieverQueryEngine(
+    retriever=retriever,
+    response_synthesizer=response_synthesizer,
+)
+
+# 查询
+response = query_engine.query("请总结文档要点")
+print(response)</code></pre>
+
+            <h3>与 LangChain 集成</h3>
+            <pre><code class="python">from llama_index.core import VectorStoreIndex, SimpleDirectoryReader
+from llama_index.core.query_engine import LangchainQueryEngine
+
+# 创建 LlamaIndex 查询引擎
+documents = SimpleDirectoryReader("./data").load_data()
+index = VectorStoreIndex.from_documents(documents)
+llama_query_engine = index.as_query_engine()
+
+# 转换为 LangChain 兼容的查询引擎
+langchain_query_engine = LangchainQueryEngine(llama_query_engine)
+
+# 在 LangChain 链中使用
+from langchain.chains import LLMChain
+from langchain.prompts import PromptTemplate
+
+prompt = PromptTemplate(
+    input_variables=["query"],
+    template="基于以下信息回答：{query}"
+)
+
+chain = LLMChain(llm=llm, prompt=prompt)
+result = chain.run(query=langchain_query_engine.invoke("问题"))</code></pre>
+
+            <h3>持久化索引</h3>
+            <pre><code class="python">from llama_index.core import StorageContext, load_index_from_storage
+import os
+
+# 保存索引
+index.storage_context.persist(persist_dir="./storage")
+
+# 加载索引
+if os.path.exists("./storage"):
+    storage_context = StorageContext.from_defaults(
+        persist_dir="./storage"
+    )
+    index = load_index_from_storage(storage_context)
+
+# 查询
+query_engine = index.as_query_engine()
+response = query_engine.query("文档内容")</code></pre>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>LlamaIndex 专注于数据索引和检索，与 LangChain 配合使用可以构建强大的 RAG 应用。
+            </div>
+        </section>
+
+        <section id="summary" class="content-section">
+            <h2>总结</h2>
+            <p>以上是 Python 中常用的 AI 第三方库介绍。每个库都有其特定的使用场景和优势：</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>库</th>
+                        <th>主要用途</th>
+                        <th>特点</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>PyTorch</strong></td>
+                        <td>深度学习</td>
+                        <td>动态计算图、灵活、研究友好</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Scikit-learn</strong></td>
+                        <td>机器学习</td>
+                        <td>算法丰富、API 统一、易于使用</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Transformers</strong></td>
+                        <td>NLP/大模型</td>
+                        <td>预训练模型多、Hugging Face 生态</td>
+                    </tr>
+                    <tr>
+                        <td><strong>OpenCV</strong></td>
+                        <td>计算机视觉</td>
+                        <td>功能全面、性能优化、应用广泛</td>
+                    </tr>
+                    <tr>
+                        <td><strong>LangChain</strong></td>
+                        <td>LLM 应用开发</td>
+                        <td>组件化、灵活、支持多种 LLM</td>
+                    </tr>
+                    <tr>
+                        <td><strong>LlamaIndex</strong></td>
+                        <td>RAG 应用</td>
+                        <td>数据索引、检索增强、与 LangChain 互补</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="feature-box">
+                <h3>学习建议：</h3>
+                <ul>
+                    <li>🎯 <strong>初学者</strong>：从 Scikit-learn 开始，理解机器学习基础</li>
+                    <li>🔥 <strong>深度学习</strong>：学习 PyTorch，掌握神经网络</li>
+                    <li>🤖 <strong>NLP/大模型</strong>：使用 Transformers，快速应用预训练模型</li>
+                    <li>👁️ <strong>计算机视觉</strong>：OpenCV 是必备工具</li>
+                    <li>⛓️ <strong>LLM 应用</strong>：LangChain + LlamaIndex 构建 RAG 应用</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+    </style>
+</body>
+</html>
