@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scikit-learn 完整教程 - Python 入门教程</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .nav-category {
+            margin-bottom: 10px;
+        }
+        .nav-category > h3 {
+            color: #764ba2;
+            font-size: 1em;
+            margin-bottom: 8px;
+            padding-left: 8px;
+            border-left: 3px solid #667eea;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        .nav-category > h3:hover {
+            background: rgba(102, 126, 234, 0.1);
+            border-left-color: #764ba2;
+        }
+        .nav-toggle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 4px;
+            font-size: 14px;
+            color: #667eea;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+        .nav-category > h3:hover .nav-toggle {
+            background: #667eea;
+            color: white;
+        }
+        .nav-items {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .nav-items.expanded {
+            max-height: 500px;
+        }
+        .nav-category.expanded > h3 .nav-toggle {
+            transform: rotate(45deg);
+            background: #764ba2;
+            color: white;
+        }
+        
+        /* 流程图样式 */
+        .flowchart {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+            overflow-x: auto;
+        }
+        .flow-step {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border: 2px solid #764ba2;
+            border-radius: 8px;
+            padding: 15px 25px;
+            margin: 10px;
+            min-width: 150px;
+            font-weight: 600;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .flow-step.start {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            border: none;
+        }
+        .flow-step.process {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+        }
+        .flow-step.decision {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            border-radius: 20px;
+        }
+        .flow-step.end {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+            color: white;
+            border: none;
+            border-radius: 20px;
+        }
+        .flow-arrow {
+            text-align: center;
+            font-size: 1.5em;
+            color: #667eea;
+            margin: 10px 0;
+        }
+        .flow-row {
+            text-align: center;
+            margin: 10px 0;
+        }
+        
+        /* 序列图样式 */
+        .sequence-diagram {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+            overflow-x: auto;
+        }
+        .sequence-lifeline {
+            display: inline-block;
+            vertical-align: top;
+            text-align: center;
+            margin: 0 20px;
+        }
+        .sequence-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .sequence-line {
+            width: 2px;
+            height: 200px;
+            background: #667eea;
+            margin: 0 auto;
+            position: relative;
+        }
+        .sequence-arrow {
+            text-align: center;
+            color: #667eea;
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+        .sequence-activation {
+            position: absolute;
+            width: 4px;
+            background: #f093fb;
+            left: -1px;
+        }
+        
+        /* 树图样式 */
+        .tree-diagram {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+            overflow-x: auto;
+        }
+        .tree-node {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin: 5px;
+            min-width: 120px;
+            text-align: center;
+        }
+        .tree-node.sub {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            font-size: 0.9em;
+        }
+        .tree-node.leaf {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            font-size: 0.85em;
+        }
+        .tree-branch {
+            text-align: center;
+            color: #667eea;
+            font-size: 1.2em;
+            margin: 5px 0;
+        }
+        .tree-level {
+            text-align: center;
+            margin: 10px 0;
+        }
+        
+        /* 对比表格 */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .comparison-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+        .comparison-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .comparison-table tr:hover {
+            background: #f8f9fa;
+        }
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        /* 特性卡片 */
+        .feature-card {
+            background: white;
+            border-left: 4px solid #667eea;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .feature-card h4 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        
+        /* 实战案例样式 */
+        .case-study {
+            background: white;
+            border-left: 4px solid #667eea;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .case-study h4 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        .case-study .difficulty {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+        .case-study .difficulty.beginner { background: #28a745; }
+        .case-study .difficulty.intermediate { background: #ffc107; color: #333; }
+        .case-study .difficulty.advanced { background: #dc3545; }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-category">
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>📚 基础入门</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="basics.html">简介</a></li>
+                    <li><a href="basics.html#installation">安装</a></li>
+                    <li><a href="basics.html#basics">基础语法</a></li>
+                    <li><a href="basics.html#variables">变量</a></li>
+                    <li><a href="basics.html#datatypes">数据类型</a></li>
+                    <li><a href="basics.html#controlflow">控制流</a></li>
+                    <li><a href="basics.html#functions">函数</a></li>
+                    <li><a href="basics.html#oop">面向对象</a></li>
+                    <li><a href="basics.html#stringformat">字符串格式化</a></li>
+                    <li><a href="basics.html#tips">常用技巧</a></li>
+                    <li><a href="devops.html#decorator">装饰器</a></li>
+                    <li><a href="devops.html#async">异步</a></li>
+                    <li><a href="devops.html#coroutine">协程</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="nav-category">
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>📁 文件操作</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="file-management.html">文件操作</a></li>
+                    <li><a href="file-management.html#directory">目录操作</a></li>
+                    <li><a href="file-management.html#exceptions">异常处理</a></li>
+                    <li><a href="file-management.html#pypdf2">PyPDF2</a></li>
+                    <li><a href="file-management.html#pythondocx">python-docx</a></li>
+                    <li><a href="file-management.html#docxtpl">docxtpl</a></li>
+                    <li><a href="file-management.html#openpyxl">openpyxl</a></li>
+                    <li><a href="file-management.html#pythonpptx">python-pptx</a></li>
+                    <li><a href="file-management.html#difflib">difflib</a></li>
+                    <li><a href="file-management.html#filecmp">filecmp</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="nav-category">
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>🌐 网络编程</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="network-programming.html">网络编程</a></li>
+                    <li><a href="network-programming.html#asyncio">异步编程</a></li>
+                    <li><a href="network-programming.html#requests">Requests</a></li>
+                    <li><a href="network-programming.html#aiohttp">aiohttp</a></li>
+                    <li><a href="network-programming.html#fastapi">FastAPI</a></li>
+                    <li><a href="network-programming.html#scapy">Scapy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="nav-category">
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>🕷️ 爬虫技术</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="web-scraping.html">BeautifulSoup</a></li>
+                    <li><a href="web-scraping.html#selenium">Selenium</a></li>
+                    <li><a href="web-scraping.html#playwright">Playwright</a></li>
+                    <li><a href="web-scraping.html#scrapy">Scrapy</a></li>
+                    <li><a href="web-scraping.html#regex">正则表达式</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="nav-category">
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>📊 数据分析</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="data-analysis.html">NumPy</a></li>
+                    <li><a href="data-analysis.html#pandas">Pandas</a></li>
+                    <li><a href="data-analysis.html#matplotlib">Matplotlib</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="nav-category">
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>🤖 AI 第三方库</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="keras-full.html">Keras 完整教程</a></li>
+                    <li><a href="scikit-learn-full.html">Scikit-learn 完整教程</a></li>
+                    <li><a href="ai-libraries.html#pytorch">PyTorch</a></li>
+                    <li><a href="ai-libraries.html#transformers">Transformers</a></li>
+                    <li><a href="ai-libraries.html#opencv">OpenCV</a></li>
+                    <li><a href="ai-libraries.html#langchain">LangChain</a></li>
+                    <li><a href="ai-libraries.html#llama-index">LlamaIndex</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="nav-category">
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>💾 数据存储</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="databases.html">SQLAlchemy</a></li>
+                    <li><a href="databases.html#mysql">MySQL</a></li>
+                    <li><a href="databases.html#mongodb">MongoDB</a></li>
+                    <li><a href="databases.html#redis">Redis</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="nav-category">
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>🔧 系统运维</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="devops.html#fabric">Fabric</a></li>
+                    <li><a href="devops.html#psutil">psutil</a></li>
+                    <li><a href="devops.html#logging">logging</a></li>
+                    <li><a href="devops.html#ansible">Ansible</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="nav-category">
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>🛠️ 实用工具</h3>
+            <div class="nav-items">
+                <ul>
+                    <li><a href="tools.html">QRCode</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+        function toggleNav(header) {
+            const category = header.parentElement;
+            const items = category.querySelector('.nav-items');
+            const toggle = header.querySelector('.nav-toggle');
+            category.classList.toggle('expanded');
+            items.classList.toggle('expanded');
+            if (items.classList.contains('expanded')) {
+                toggle.textContent = '−';
+            } else {
+                toggle.textContent = '+';
+            }
+        }
+    </script>
+
+    <main>
+        <div class="topic-nav">
+            <a href="data-analysis.html">← 数据分析</a>
+            <a href="ai-libraries.html">AI 第三方库 →</a>
+        </div>
+
+        <section id="intro" class="content-section">
+            <h2>📘 Scikit-learn 完整教程</h2>
+            <p>Scikit-learn 是 Python 中最流行的机器学习库，提供了各种经典的机器学习算法和工具。本教程将从零开始，系统讲解 Scikit-learn 的核心概念、算法和实战应用。</p>
+            
+            <div class="feature-box">
+                <h3>Scikit-learn 核心特性：</h3>
+                <ul>
+                    <li>🔄 <strong>统一 API</strong>：所有模型遵循 fit/predict 模式</li>
+                    <li>📊 <strong>算法丰富</strong>：分类、回归、聚类、降维等</li>
+                    <li>🔧 <strong>工具完善</strong>：预处理、模型选择、评估指标</li>
+                    <li>🚀 <strong>高效性能</strong>：基于 NumPy 和 SciPy 优化</li>
+                    <li>📚 <strong>文档完善</strong>：详细文档和丰富示例</li>
+                </ul>
+            </div>
+
+            <h3>🌳 Scikit-learn 知识体系</h3>
+            <div class="tree-diagram">
+                <div class="tree-level">
+                    <div class="tree-node">Scikit-learn</div>
+                </div>
+                <div class="tree-branch">↓</div>
+                <div class="tree-level">
+                    <div class="tree-node sub">监督学习</div>
+                    <div class="tree-node sub">无监督学习</div>
+                    <div class="tree-node sub">模型选择</div>
+                    <div class="tree-node sub">数据预处理</div>
+                </div>
+                <div class="tree-branch">↓</div>
+                <div class="tree-level">
+                    <div class="tree-node leaf">分类</div>
+                    <div class="tree-node leaf">回归</div>
+                </div>
+                <div class="tree-level">
+                    <div class="tree-node leaf">聚类</div>
+                    <div class="tree-node leaf">降维</div>
+                </div>
+                <div class="tree-level">
+                    <div class="tree-node leaf">交叉验证</div>
+                    <div class="tree-node leaf">网格搜索</div>
+                </div>
+                <div class="tree-level">
+                    <div class="tree-node leaf">标准化</div>
+                    <div class="tree-node leaf">编码</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="workflow" class="content-section">
+            <h2>一、机器学习工作流程</h2>
+            <p>掌握标准的机器学习项目流程是成功的关键。</p>
+
+            <h3>🔄 完整工作流程图</h3>
+            <div class="flowchart">
+                <div class="flow-row">
+                    <div class="flow-step start">1. 数据收集</div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-row">
+                    <div class="flow-step process">2. 数据探索与可视化</div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-row">
+                    <div class="flow-step process">3. 数据预处理</div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-row">
+                    <div class="flow-step process">4. 特征工程</div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-row">
+                    <div class="flow-step decision">5. 选择模型？</div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-row">
+                    <div class="flow-step process">6. 训练模型</div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-row">
+                    <div class="flow-step decision">7. 性能达标？</div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-row">
+                    <div class="flow-step process">8. 模型调优</div>
+                    <div class="flow-step process">9. 模型评估</div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-row">
+                    <div class="flow-step end">10. 部署应用</div>
+                </div>
+            </div>
+
+            <h3>📋 各阶段详细说明</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>阶段</th>
+                        <th>主要任务</th>
+                        <th>常用工具</th>
+                        <th>输出</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1. 数据收集</strong></td>
+                        <td>获取原始数据</td>
+                        <td>Pandas, SQL, API</td>
+                        <td>原始数据集</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2. 数据探索</strong></td>
+                        <td>理解数据分布、相关性</td>
+                        <td>Matplotlib, Seaborn</td>
+                        <td>EDA 报告</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3. 数据预处理</strong></td>
+                        <td>清洗、填充、标准化</td>
+                        <td>sklearn.preprocessing</td>
+                        <td>干净数据</td>
+                    </tr>
+                    <tr>
+                        <td><strong>4. 特征工程</strong></td>
+                        <td>特征选择、构造、降维</td>
+                        <td>sklearn.feature_selection</td>
+                        <td>特征矩阵</td>
+                    </tr>
+                    <tr>
+                        <td><strong>5-6. 模型训练</strong></td>
+                        <td>选择算法、训练模型</td>
+                        <td>sklearn.ensemble, svm</td>
+                        <td>训练好的模型</td>
+                    </tr>
+                    <tr>
+                        <td><strong>7-9. 模型评估</strong></td>
+                        <td>交叉验证、调参、评估</td>
+                        <td>sklearn.model_selection</td>
+                        <td>最优模型</td>
+                    </tr>
+                    <tr>
+                        <td><strong>10. 部署</strong></td>
+                        <td>模型保存、API 服务</td>
+                        <td>joblib, pickle, Flask</td>
+                        <td>生产模型</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="api" class="content-section">
+            <h2>二、Scikit-learn API 设计</h2>
+            <p>理解 Scikit-learn 的统一 API 设计是高效使用的关键。</p>
+
+            <h3>🔄 统一 API 序列图</h3>
+            <div class="sequence-diagram">
+                <div style="display: flex; justify-content: space-around;">
+                    <div class="sequence-lifeline">
+                        <div class="sequence-box">用户代码</div>
+                        <div class="sequence-line"></div>
+                    </div>
+                    <div class="sequence-lifeline">
+                        <div class="sequence-box">Estimator</div>
+                        <div class="sequence-line">
+                            <div class="sequence-activation" style="top: 20px; height: 60px;"></div>
+                            <div class="sequence-activation" style="top: 100px; height: 60px;"></div>
+                            <div class="sequence-activation" style="top: 180px; height: 60px;"></div>
+                        </div>
+                    </div>
+                    <div class="sequence-lifeline">
+                        <div class="sequence-box">Model</div>
+                        <div class="sequence-line"></div>
+                    </div>
+                </div>
+                <div class="sequence-arrow">1. fit(X, y) ← 训练模型</div>
+                <div class="sequence-arrow">2. predict(X) ← 预测</div>
+                <div class="sequence-arrow">3. score(X, y) ← 评估</div>
+            </div>
+
+            <h3>📋 核心 API 方法</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>方法</th>
+                        <th>参数</th>
+                        <th>返回值</th>
+                        <th>说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>fit(X, y)</code></td>
+                        <td>X: 特征，y: 标签</td>
+                        <td>self</td>
+                        <td>训练模型，学习参数</td>
+                    </tr>
+                    <tr>
+                        <td><code>predict(X)</code></td>
+                        <td>X: 新样本</td>
+                        <td>预测值</td>
+                        <td>预测新样本</td>
+                    </tr>
+                    <tr>
+                        <td><code>predict_proba(X)</code></td>
+                        <td>X: 新样本</td>
+                        <td>概率数组</td>
+                        <td>预测类别概率</td>
+                    </tr>
+                    <tr>
+                        <td><code>score(X, y)</code></td>
+                        <td>X: 特征，y: 标签</td>
+                        <td>分数</td>
+                        <td>模型评分</td>
+                    </tr>
+                    <tr>
+                        <td><code>transform(X)</code></td>
+                        <td>X: 数据</td>
+                        <td>转换后数据</td>
+                        <td>数据转换</td>
+                    </tr>
+                    <tr>
+                        <td><code>fit_transform(X)</code></td>
+                        <td>X: 数据</td>
+                        <td>转换后数据</td>
+                        <td>拟合并转换</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>💻 API 使用示例</h3>
+            <pre><code class="python">from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+# 1. 准备数据
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+# 2. 创建模型
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+
+# 3. 训练模型 (fit)
+model.fit(X_train, y_train)
+
+# 4. 预测 (predict)
+y_pred = model.predict(X_test)
+
+# 5. 评估 (score)
+accuracy = model.score(X_test, y_test)
+print(f"准确率：{accuracy:.4f}")
+
+# 6. 获取特征重要性
+importances = model.feature_importances_</code></pre>
+        </section>
+
+        <section id="supervised" class="content-section">
+            <h2>三、监督学习算法</h2>
+            <p>监督学习使用标记数据训练模型，包括分类和回归两大任务。</p>
+
+            <h3>🌳 监督学习算法分类</h3>
+            <div class="tree-diagram">
+                <div class="tree-level">
+                    <div class="tree-node">监督学习</div>
+                </div>
+                <div class="tree-branch">↓</div>
+                <div class="tree-level">
+                    <div class="tree-node sub">分类算法</div>
+                    <div class="tree-node sub">回归算法</div>
+                </div>
+                <div class="tree-branch">↓</div>
+                <div class="tree-level">
+                    <div class="tree-node leaf">逻辑回归</div>
+                    <div class="tree-node leaf">决策树</div>
+                    <div class="tree-node leaf">随机森林</div>
+                    <div class="tree-node leaf">SVM</div>
+                    <div class="tree-node leaf">KNN</div>
+                    <div class="tree-node leaf">朴素贝叶斯</div>
+                </div>
+                <div class="tree-level">
+                    <div class="tree-node leaf">线性回归</div>
+                    <div class="tree-node leaf">岭回归</div>
+                    <div class="tree-node leaf">Lasso</div>
+                    <div class="tree-node leaf">决策树回归</div>
+                    <div class="tree-node leaf">随机森林回归</div>
+                </div>
+            </div>
+
+            <h3>📋 分类算法详细对比</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>算法</th>
+                        <th>类名</th>
+                        <th>优点</th>
+                        <th>缺点</th>
+                        <th>适用场景</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>逻辑回归</strong></td>
+                        <td><code>LogisticRegression</code></td>
+                        <td>简单、可解释、输出概率</td>
+                        <td>只能处理线性问题</td>
+                        <td>二分类、基线模型</td>
+                    </tr>
+                    <tr>
+                        <td><strong>决策树</strong></td>
+                        <td><code>DecisionTreeClassifier</code></td>
+                        <td>易理解、可可视化</td>
+                        <td>易过拟合</td>
+                        <td>小数据集、可解释性要求</td>
+                    </tr>
+                    <tr>
+                        <td><strong>随机森林</strong></td>
+                        <td><code>RandomForestClassifier</code></td>
+                        <td>准确率高、不易过拟合</td>
+                        <td>模型大、速度慢</td>
+                        <td>通用、默认选择</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SVM</strong></td>
+                        <td><code>SVC</code></td>
+                        <td>高维有效、核技巧</td>
+                        <td>大数据慢、参数敏感</td>
+                        <td>小样本、高维数据</td>
+                    </tr>
+                    <tr>
+                        <td><strong>KNN</strong></td>
+                        <td><code>KNeighborsClassifier</code></td>
+                        <td>简单、无需训练</td>
+                        <td>预测慢、对异常值敏感</td>
+                        <td>小数据集、基线</td>
+                    </tr>
+                    <tr>
+                        <td><strong>梯度提升</strong></td>
+                        <td><code>GradientBoostingClassifier</code></td>
+                        <td>准确率高、灵活</td>
+                        <td>参数多、需调优</td>
+                        <td>竞赛、高精度要求</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>📋 回归算法详细对比</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>算法</th>
+                        <th>类名</th>
+                        <th>正则化</th>
+                        <th>适用场景</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>线性回归</strong></td>
+                        <td><code>LinearRegression</code></td>
+                        <td>无</td>
+                        <td>基线模型</td>
+                    </tr>
+                    <tr>
+                        <td><strong>岭回归</strong></td>
+                        <td><code>Ridge</code></td>
+                        <td>L2</td>
+                        <td>多重共线性</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Lasso</strong></td>
+                        <td><code>Lasso</code></td>
+                        <td>L1</td>
+                        <td>特征选择</td>
+                    </tr>
+                    <tr>
+                        <td><strong>弹性网络</strong></td>
+                        <td><code>ElasticNet</code></td>
+                        <td>L1+L2</td>
+                        <td>相关特征多</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>💻 分类算法对比示例</h3>
+            <pre><code class="python">from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
+from sklearn.svm import SVC
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score, classification_report
+
+# 加载数据
+iris = load_iris()
+X, y = iris.data, iris.target
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# 定义多个分类器
+classifiers = {
+    '逻辑回归': LogisticRegression(max_iter=1000),
+    '决策树': RandomForestClassifier(n_estimators=10, random_state=42),
+    '随机森林': RandomForestClassifier(n_estimators=100, random_state=42),
+    'SVM': SVC(kernel='rbf', probability=True),
+    'KNN': KNeighborsClassifier(n_neighbors=5),
+    '梯度提升': GradientBoostingClassifier(n_estimators=100, random_state=42)
+}
+
+# 训练和评估
+results = {}
+for name, clf in classifiers.items():
+    clf.fit(X_train, y_train)
+    y_pred = clf.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+    results[name] = accuracy
+    print(f"{name}: {accuracy:.4f}")
+
+# 找出最佳模型
+best_model = max(results, key=results.get)
+print(f"\n最佳模型：{best_model} (准确率：{results[best_model]:.4f})")</code></pre>
+        </section>
+
+        <section id="unsupervised" class="content-section">
+            <h2>四、无监督学习算法</h2>
+            <p>无监督学习处理未标记数据，包括聚类和降维等任务。</p>
+
+            <h3>🌳 无监督学习算法分类</h3>
+            <div class="tree-diagram">
+                <div class="tree-level">
+                    <div class="tree-node">无监督学习</div>
+                </div>
+                <div class="tree-branch">↓</div>
+                <div class="tree-level">
+                    <div class="tree-node sub">聚类算法</div>
+                    <div class="tree-node sub">降维算法</div>
+                </div>
+                <div class="tree-branch">↓</div>
+                <div class="tree-level">
+                    <div class="tree-node leaf">K-Means</div>
+                    <div class="tree-node leaf">DBSCAN</div>
+                    <div class="tree-node leaf">层次聚类</div>
+                    <div class="tree-node leaf">高斯混合</div>
+                </div>
+                <div class="tree-level">
+                    <div class="tree-node leaf">PCA</div>
+                    <div class="tree-node leaf">t-SNE</div>
+                    <div class="tree-node leaf">UMAP</div>
+                    <div class="tree-node leaf">NMF</div>
+                </div>
+            </div>
+
+            <h3>📋 聚类算法详细对比</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>算法</th>
+                        <th>类名</th>
+                        <th>需要 K 值</th>
+                        <th>处理噪声</th>
+                        <th>适用场景</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>K-Means</strong></td>
+                        <td><code>KMeans</code></td>
+                        <td>是</td>
+                        <td>敏感</td>
+                        <td>球形簇、大数据</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DBSCAN</strong></td>
+                        <td><code>DBSCAN</code></td>
+                        <td>否</td>
+                        <td>好</td>
+                        <td>任意形状、有噪声</td>
+                    </tr>
+                    <tr>
+                        <td><strong>层次聚类</strong></td>
+                        <td><code>AgglomerativeClustering</code></td>
+                        <td>是</td>
+                        <td>一般</td>
+                        <td>小数据、层次结构</td>
+                    </tr>
+                    <tr>
+                        <td><strong>高斯混合</strong></td>
+                        <td><code>GaussianMixture</code></td>
+                        <td>是</td>
+                        <td>一般</td>
+                        <td>概率聚类</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>💻 聚类分析完整示例</h3>
+            <pre><code class="python">from sklearn.datasets import make_blobs
+from sklearn.cluster import KMeans, DBSCAN, AgglomerativeClustering
+from sklearn.metrics import silhouette_score
+import matplotlib.pyplot as plt
+
+# 生成聚类数据
+X, y_true = make_blobs(n_samples=300, centers=4, cluster_std=0.60, random_state=0)
+
+# 1. K-Means 聚类
+kmeans = KMeans(n_clusters=4, random_state=42, n_init=10)
+kmeans_labels = kmeans.fit_predict(X)
+kmeans_score = silhouette_score(X, kmeans_labels)
+print(f"K-Means 轮廓分数：{kmeans_score:.4f}")
+
+# 2. DBSCAN 聚类
+dbscan = DBSCAN(eps=0.3, min_samples=5)
+dbscan_labels = dbscan.fit_predict(X)
+# 去除噪声点计算轮廓分数
+mask = dbscan_labels != -1
+if mask.sum() > 1:
+    dbscan_score = silhouette_score(X[mask], dbscan_labels[mask])
+    print(f"DBSCAN 轮廓分数：{dbscan_score:.4f}")
+
+# 3. 层次聚类
+hierarchical = AgglomerativeClustering(n_clusters=4)
+hierarchical_labels = hierarchical.fit_predict(X)
+hierarchical_score = silhouette_score(X, hierarchical_labels)
+print(f"层次聚类轮廓分数：{hierarchical_score:.4f}")
+
+# 可视化比较
+fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+axes[0].scatter(X[:, 0], X[:, 1], c=kmeans_labels, cmap='viridis')
+axes[0].set_title(f'K-Means (score={kmeans_score:.3f})')
+axes[1].scatter(X[:, 0], X[:, 1], c=dbscan_labels, cmap='viridis')
+axes[1].set_title(f'DBSCAN')
+axes[2].scatter(X[:, 0], X[:, 1], c=hierarchical_labels, cmap='viridis')
+axes[2].set_title(f'层次聚类 (score={hierarchical_score:.3f})')
+plt.tight_layout()
+plt.show()</code></pre>
+        </section>
+
+        <section id="preprocessing" class="content-section">
+            <h2>五、数据预处理</h2>
+            <p>数据预处理是机器学习成功的关键步骤。</p>
+
+            <h3>🔄 预处理流程图</h3>
+            <div class="flowchart">
+                <div class="flow-row">
+                    <div class="flow-step start">原始数据</div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-row">
+                    <div class="flow-step process">缺失值处理</div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-row">
+                    <div class="flow-step process">特征缩放</div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-row">
+                    <div class="flow-step process">类别编码</div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-row">
+                    <div class="flow-step end">预处理完成</div>
+                </div>
+            </div>
+
+            <h3>📋 预处理方法对比</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>方法</th>
+                        <th>类名</th>
+                        <th>公式</th>
+                        <th>适用场景</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>标准化</strong></td>
+                        <td><code>StandardScaler</code></td>
+                        <td>(x - μ) / σ</td>
+                        <td>特征服从正态分布</td>
+                    </tr>
+                    <tr>
+                        <td><strong>归一化</strong></td>
+                        <td><code>MinMaxScaler</code></td>
+                        <td>(x - min) / (max - min)</td>
+                        <td>边界明确的数据</td>
+                    </tr>
+                    <tr>
+                        <td><strong>鲁棒标准化</strong></td>
+                        <td><code>RobustScaler</code></td>
+                        <td>(x - 中位数) / IQR</td>
+                        <td>有异常值的数据</td>
+                    </tr>
+                    <tr>
+                        <td><strong>独热编码</strong></td>
+                        <td><code>OneHotEncoder</code></td>
+                        <td>类别→二进制向量</td>
+                        <td>名义类别变量</td>
+                    </tr>
+                    <tr>
+                        <td><strong>标签编码</strong></td>
+                        <td><code>LabelEncoder</code></td>
+                        <td>类别→整数</td>
+                        <td>有序类别变量</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>💻 完整预处理示例</h3>
+            <pre><code class="python">from sklearn.preprocessing import StandardScaler, MinMaxScaler, OneHotEncoder, LabelEncoder
+from sklearn.impute import SimpleImputer
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+import pandas as pd
+import numpy as np
+
+# 创建示例数据
+data = pd.DataFrame({
+    'age': [25, 30, np.nan, 45, 50],
+    'salary': [50000, 60000, 75000, np.nan, 90000],
+    'city': ['北京', '上海', '北京', '广州', '上海'],
+    'department': ['技术', '销售', '技术', '技术', '销售'],
+    'target': [1, 0, 1, 1, 0]
+})
+
+# 1. 分离特征和标签
+X = data.drop('target', axis=1)
+y = data['target']
+
+# 2. 识别数值和类别特征
+numeric_features = ['age', 'salary']
+categorical_features = ['city', 'department']
+
+# 3. 创建数值预处理管道
+numeric_transformer = Pipeline(steps=[
+    ('imputer', SimpleImputer(strategy='median')),  # 填充缺失值
+    ('scaler', StandardScaler())  # 标准化
+])
+
+# 4. 创建类别预处理管道
+categorical_transformer = Pipeline(steps=[
+    ('imputer', SimpleImputer(strategy='constant', fill_value='missing')),
+    ('onehot', OneHotEncoder(handle_unknown='ignore'))  # 独热编码
+])
+
+# 5. 创建预处理器
+preprocessor = ColumnTransformer(
+    transformers=[
+        ('num', numeric_transformer, numeric_features),
+        ('cat', categorical_transformer, categorical_features)
+    ]
+)
+
+# 6. 应用预处理
+X_processed = preprocessor.fit_transform(X)
+
+print(f"原始形状：{X.shape}")
+print(f"处理后形状：{X_processed.shape}")
+print(f"特征名：{preprocessor.get_feature_names_out()}")</code></pre>
+        </section>
+
+        <section id="model-selection" class="content-section">
+            <h2>六、模型选择与调优</h2>
+            <p>选择合适的模型和参数是提升性能的关键。</p>
+
+            <h3>🔄 交叉验证流程图</h3>
+            <div class="flowchart">
+                <div class="flow-row">
+                    <div class="flow-step start">完整数据集</div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-row">
+                    <div class="flow-step process">K 折划分</div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-row">
+                    <div class="flow-step process">训练 K-1 折</div>
+                    <div class="flow-step process">验证 1 折</div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-row">
+                    <div class="flow-step process">重复 K 次</div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-row">
+                    <div class="flow-step end">计算平均分数</div>
+                </div>
+            </div>
+
+            <h3>📋 交叉验证方法对比</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>方法</th>
+                        <th>类名</th>
+                        <th>优点</th>
+                        <th>缺点</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>K 折交叉验证</strong></td>
+                        <td><code>KFold</code></td>
+                        <td>充分利用数据</td>
+                        <td>计算成本高</td>
+                    </tr>
+                    <tr>
+                        <td><strong>分层 K 折</strong></td>
+                        <td><code>StratifiedKFold</code></td>
+                        <td>保持类别比例</td>
+                        <td>仅用于分类</td>
+                    </tr>
+                    <tr>
+                        <td><strong>留一法</strong></td>
+                        <td><code>LeaveOneOut</code></td>
+                        <td>无偏估计</td>
+                        <td>计算量极大</td>
+                    </tr>
+                    <tr>
+                        <td><strong>自助法</strong></td>
+                        <td><code>ShuffleSplit</code></td>
+                        <td>灵活控制</td>
+                        <td>可能有重复</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>💻 网格搜索与随机搜索</h3>
+            <pre><code class="python">from sklearn.model_selection import GridSearchCV, RandomizedSearchCV, cross_val_score
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.datasets import load_iris
+import numpy as np
+
+# 加载数据
+iris = load_iris()
+X, y = iris.data, iris.target
+
+# 1. 交叉验证
+rf = RandomForestClassifier(n_estimators=100, random_state=42)
+cv_scores = cross_val_score(rf, X, y, cv=5, scoring='accuracy')
+print(f"5 折交叉验证平均分：{cv_scores.mean():.4f} (+/- {cv_scores.std():.4f})")
+
+# 2. 网格搜索（穷举）
+param_grid = {
+    'n_estimators': [50, 100, 200],
+    'max_depth': [None, 10, 20, 30],
+    'min_samples_split': [2, 5, 10],
+    'min_samples_leaf': [1, 2, 4]
+}
+
+grid_search = GridSearchCV(
+    RandomForestClassifier(random_state=42),
+    param_grid,
+    cv=5,
+    scoring='accuracy',
+    n_jobs=-1,
+    verbose=1
+)
+
+grid_search.fit(X, y)
+
+print(f"\n网格搜索最佳参数：{grid_search.best_params_}")
+print(f"最佳交叉验证分数：{grid_search.best_score_:.4f}")
+
+# 3. 随机搜索（更高效）
+param_dist = {
+    'n_estimators': np.random.randint(50, 300, 100),
+    'max_depth': [None] + list(np.random.randint(10, 50, 50)),
+    'min_samples_split': np.random.randint(2, 20, 50),
+    'min_samples_leaf': np.random.randint(1, 10, 50)
+}
+
+random_search = RandomizedSearchCV(
+    RandomForestClassifier(random_state=42),
+    param_dist,
+    n_iter=50,  # 随机搜索 50 次
+    cv=5,
+    scoring='accuracy',
+    n_jobs=-1,
+    random_state=42
+)
+
+random_search.fit(X, y)
+
+print(f"\n随机搜索最佳参数：{random_search.best_params_}")
+print(f"最佳交叉验证分数：{random_search.best_score_:.4f}")</code></pre>
+        </section>
+
+        <section id="examples" class="content-section">
+            <h2>七、实战案例</h2>
+            <p>通过实际案例掌握 Scikit-learn 的完整应用。</p>
+
+            <div class="case-study">
+                <h4>📊 案例 1：鸢尾花分类 <span class="difficulty beginner">入门</span></h4>
+                <pre><code class="python">from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report, confusion_matrix
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# 1. 加载数据
+iris = load_iris()
+X, y = iris.data, iris.target
+
+# 2. 划分训练测试集
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
+
+# 3. 训练模型
+clf = RandomForestClassifier(n_estimators=100, random_state=42)
+clf.fit(X_train, y_train)
+
+# 4. 评估
+y_pred = clf.predict(X_test)
+print(classification_report(y_test, y_pred, target_names=iris.target_names))
+
+# 5. 可视化
+cm = confusion_matrix(y_test, y_pred)
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
+plt.xlabel('预测')
+plt.ylabel('真实')
+plt.title('混淆矩阵')
+plt.show()</code></pre>
+            </div>
+
+            <div class="case-study">
+                <h4>🏠 案例 2：房价预测 <span class="difficulty intermediate">中级</span></h4>
+                <pre><code class="python">from sklearn.datasets import fetch_california_housing
+from sklearn.model_selection import cross_val_score
+from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.metrics import mean_squared_error, r2_score
+import numpy as np
+
+# 1. 加载数据
+housing = fetch_california_housing()
+X, y = housing.data, housing.target
+
+# 2. 划分数据
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# 3. 训练模型
+reg = GradientBoostingRegressor(
+    n_estimators=100,
+    learning_rate=0.1,
+    max_depth=3,
+    random_state=42
+)
+reg.fit(X_train, y_train)
+
+# 4. 评估
+y_pred = reg.predict(X_test)
+mse = mean_squared_error(y_test, y_pred)
+rmse = np.sqrt(mse)
+r2 = r2_score(y_test, y_pred)
+
+print(f"RMSE: ${rmse*100000:.2f}")
+print(f"R²: {r2:.4f}")
+
+# 5. 特征重要性
+importances = reg.feature_importances_
+for name, importance in zip(housing.feature_names, importances):
+    print(f"{name}: {importance:.4f}")</code></pre>
+            </div>
+        </section>
+
+        <div class="topic-nav">
+            <a href="data-analysis.html">← 数据分析</a>
+            <a href="ai-libraries.html">AI 第三方库 →</a>
+        </div>
+    </main>
+</body>
+</html>
