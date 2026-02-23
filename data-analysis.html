@@ -729,21 +729,24 @@ plt.show()</code></pre>
         </section>
 
         <section id="keras" class="content-section">
-            <h2>Keras</h2>
-            <p>Keras 是一个高级神经网络 API，运行在 TensorFlow、CNTK 或 Theano 之上，让深度学习变得简单。</p>
+            <h2>Keras 3.x</h2>
+            <p>Keras 3 是最新的高级神经网络 API，支持多后端（TensorFlow、PyTorch、JAX），让深度学习开发和部署更加灵活。</p>
 
             <h3>安装</h3>
-            <pre><code class="bash">pip install tensorflow
-# Keras 已集成在 TensorFlow 中</code></pre>
+            <pre><code class="bash"># 方式 1：安装独立的 Keras 3（推荐）
+pip install keras
+
+# 方式 2：使用 TensorFlow 集成的 Keras
+pip install tensorflow</code></pre>
 
             <h3>基本神经网络模型</h3>
-            <pre><code class="python">import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras import layers
+            <pre><code class="python">import keras
+from keras import layers
 
-# 创建序列模型
+# 创建序列模型（Keras 3 API）
 model = keras.Sequential([
-    layers.Dense(64, activation='relu', input_shape=(10,)),
+    layers.Input(shape=(10,)),
+    layers.Dense(64, activation='relu'),
     layers.Dense(32, activation='relu'),
     layers.Dense(1, activation='sigmoid')
 ])
@@ -755,273 +758,47 @@ model.compile(
     metrics=['accuracy']
 )
 
-# 查看模型结构
 model.summary()</code></pre>
-
-            <h3>构建分类模型</h3>
-            <pre><code class="python">import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras import layers
-
-# 函数式 API 构建
-inputs = keras.Input(shape=(784,))
-x = layers.Dense(128, activation='relu')(inputs)
-x = layers.Dropout(0.2)(x)
-x = layers.Dense(64, activation='relu')(x)
-outputs = layers.Dense(10, activation='softmax')(x)
-
-# 创建模型
-model = keras.Model(inputs=inputs, outputs=outputs)
-
-# 编译模型
-model.compile(
-    optimizer='adam',
-    loss='sparse_categorical_crossentropy',
-    metrics=['accuracy']
-)
-
-model.summary()</code></pre>
-
-            <h3>准备数据</h3>
-            <pre><code class="python">import tensorflow as tf
-from tensorflow.keras.datasets import mnist
-
-# 加载 MNIST 数据集
-(x_train, y_train), (x_test, y_test) = mnist.load_data()
-
-# 归一化数据
-x_train = x_train.astype('float32') / 255.0
-x_test = x_test.astype('float32') / 255.0
-
-# 展平图像
-x_train = x_train.reshape(-1, 784)
-x_test = x_test.reshape(-1, 784)
-
-print(f"训练集形状: {x_train.shape}")
-print(f"测试集形状: {x_test.shape}")</code></pre>
 
             <h3>训练模型</h3>
-            <pre><code class="python">import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras import layers
-
-# 创建模型
-model = keras.Sequential([
-    layers.Dense(128, activation='relu', input_shape=(784,)),
-    layers.Dropout(0.2),
-    layers.Dense(64, activation='relu'),
-    layers.Dense(10, activation='softmax')
-])
-
-# 编译模型
-model.compile(
-    optimizer='adam',
-    loss='sparse_categorical_crossentropy',
-    metrics=['accuracy']
-)
-
-# 训练模型
-history = model.fit(
-    x_train, y_train,
-    epochs=10,
-    batch_size=32,
-    validation_split=0.2,
-    verbose=1
-)</code></pre>
-
-            <h3>评估模型</h3>
-            <pre><code class="python"># 评估模型
-test_loss, test_acc = model.evaluate(x_test, y_test, verbose=2)
-print(f'\n测试准确率: {test_acc:.4f}')
-
-# 预测
-predictions = model.predict(x_test[:5])
-predicted_classes = tf.argmax(predictions, axis=1)
-print(f"预测结果: {predicted_classes.numpy()}")
-print(f"真实标签: {y_test[:5]}")</code></pre>
-
-            <h3>卷积神经网络 (CNN)</h3>
-            <pre><code class="python">import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras import layers
-
-# 创建 CNN 模型
-model = keras.Sequential([
-    layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)),
-    layers.MaxPooling2D((2, 2)),
-    layers.Conv2D(64, (3, 3), activation='relu'),
-    layers.MaxPooling2D((2, 2)),
-    layers.Conv2D(64, (3, 3), activation='relu'),
-    layers.Flatten(),
-    layers.Dense(64, activation='relu'),
-    layers.Dense(10, activation='softmax')
-])
-
-# 编译模型
-model.compile(
-    optimizer='adam',
-    loss='sparse_categorical_crossentropy',
-    metrics=['accuracy']
-)
-
-model.summary()</code></pre>
-
-            <h3>使用 CNN 处理图像</h3>
-            <pre><code class="python">import tensorflow as tf
-from tensorflow.keras.datasets import mnist
+            <pre><code class="python">import keras
+from keras.datasets import mnist
 
 # 加载数据
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
-
-# 归一化并添加通道维度
 x_train = x_train.astype('float32') / 255.0
 x_test = x_test.astype('float32') / 255.0
-x_train = x_train.reshape(-1, 28, 28, 1)
-x_test = x_test.reshape(-1, 28, 28, 1)
+x_train = x_train.reshape(-1, 784)
+x_test = x_test.reshape(-1, 784)
 
-# 训练 CNN 模型
-history = model.fit(
-    x_train, y_train,
-    epochs=5,
-    batch_size=64,
-    validation_split=0.2
-)
-
-# 评估
-test_loss, test_acc = model.evaluate(x_test, y_test, verbose=2)
-print(f'\n测试准确率: {test_acc:.4f}')</code></pre>
-
-            <h3>保存和加载模型</h3>
-            <pre><code class="python"># 保存整个模型
-model.save('my_model.keras')
-
-# 加载模型
-loaded_model = keras.models.load_model('my_model.keras')
-
-# 只保存模型权重
-model.save_weights('model_weights.weights')
-
-# 加载权重
-model.load_weights('model_weights.weights')
-
-# 保存模型架构
-json_string = model.to_json()
-
-# 从 JSON 加载架构
-from tensorflow.keras.models import model_from_json
-model_architecture = model_from_json(json_string)
-model_architecture.load_weights('model_weights.weights')</code></pre>
-
-            <h3>回调函数</h3>
-            <pre><code class="python">from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping, TensorBoard
-
-# 模型检查点
-checkpoint = ModelCheckpoint(
-    'best_model.keras',
-    monitor='val_loss',
-    save_best_only=True,
-    mode='min',
-    verbose=1
-)
-
-# 早停
-early_stopping = EarlyStopping(
-    monitor='val_loss',
-    patience=5,
-    restore_best_weights=True
-)
-
-# TensorBoard
-tensorboard = TensorBoard(log_dir='./logs')
-
-# 训练时使用回调
-history = model.fit(
-    x_train, y_train,
-    epochs=50,
-    batch_size=32,
-    validation_split=0.2,
-    callbacks=[checkpoint, early_stopping, tensorboard]
-)</code></pre>
-
-            <h3>自定义层</h3>
-            <pre><code class="python">import tensorflow as tf
-from tensorflow.keras import layers
-
-class CustomLayer(layers.Layer):
-    def __init__(self, units=32):
-        super(CustomLayer, self).__init__()
-        self.units = units
-
-    def build(self, input_shape):
-        self.w = self.add_weight(
-            shape=(input_shape[-1], self.units),
-            initializer='random_normal',
-            trainable=True
-        )
-        self.b = self.add_weight(
-            shape=(self.units,),
-            initializer='zeros',
-            trainable=True
-        )
-
-    def call(self, inputs):
-        return tf.matmul(inputs, self.w) + self.b
-
-# 使用自定义层
+# 创建并训练模型
 model = keras.Sequential([
-    CustomLayer(64),
-    layers.Activation('relu'),
+    layers.Input(shape=(784,)),
+    layers.Dense(128, activation='relu'),
+    layers.Dropout(0.2),
     layers.Dense(10, activation='softmax')
 ])
 
-model.compile(optimizer='adam', loss='sparse_categorical_crossentropy')
-model.summary()</code></pre>
-
-            <h3>迁移学习</h3>
-            <pre><code class="python">from tensorflow.keras.applications import VGG16
-from tensorflow.keras import layers, models
-
-# 加载预训练模型（不包括顶层）
-base_model = VGG16(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
-
-# 冻结基础模型
-base_model.trainable = False
-
-# 添加自定义层
-model = models.Sequential([
-    base_model,
-    layers.Flatten(),
-    layers.Dense(256, activation='relu'),
-    layers.Dropout(0.5),
-    layers.Dense(10, activation='softmax')
-])
-
-# 编译模型
 model.compile(
     optimizer='adam',
     loss='sparse_categorical_crossentropy',
     metrics=['accuracy']
 )
 
-model.summary()</code></pre>
-
-            <div class="feature-box">
-                <h3>Keras 优势：</h3>
-                <ul>
-                    <li>🎯 简单易用：API 设计简洁直观</li>
-                    <li>🔧 灵活性强：支持快速原型设计</li>
-                    <li>🚀 高性能：基于 TensorFlow 优化</li>
-                    <li>📚 丰富资源：大量预训练模型</li>
-                    <li>🌐 社区活跃：广泛的使用和支持</li>
-                </ul>
-            </div>
+history = model.fit(x_train, y_train, epochs=10, batch_size=32, validation_split=0.2)</code></pre>
 
             <div class="tip-box">
-                <strong>💡 提示：</strong>Keras 适合快速构建和训练深度学习模型，特别适合初学者和快速原型开发。
+                <strong>💡 提示：</strong>完整教程请查看 <a href="keras.html">Keras 3.x 详细页面</a>，包含 CNN、迁移学习、自定义层、多 GPU 训练等高级内容。
             </div>
 
-            <div class="topic-nav">
-                <a href="ai-libraries.html">AI 第三方库 →</a>
+            <div class="feature-box">
+                <h3>Keras 3 主要特性：</h3>
+                <ul>
+                    <li>🔄 <strong>多后端支持</strong>：可切换 TensorFlow、PyTorch 或 JAX 后端</li>
+                    <li>🚀 <strong>性能优化</strong>：自动启用 XLA 加速</li>
+                    <li>🎯 <strong>原生支持</strong>：支持原生 TensorFlow、PyTorch 和 JAX 工作流</li>
+                    <li>📦 <strong>向后兼容</strong>：完全兼容 Keras 2.x API</li>
+                </ul>
             </div>
         </section>
     </main>

@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Keras - Python 入门教程</title>
-    <link rel="stylesheet" href="styles.css">    <style>
+    <title>Keras 3.x - Python 入门教程</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
         /* 二级导航样式 */
         .nav-category {
             margin-bottom: 10px;
@@ -66,8 +66,7 @@
             color: white;
         }
     </style>
-
-    </head>
+</head>
 <body>
     <nav>
         <div class="nav-category">
@@ -143,10 +142,10 @@
             </div>
         </div>
         <div class="nav-category">
-            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>🤖 AI 库</h3>
+            <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>🤖 AI 第三方库</h3>
             <div class="nav-items">
                 <ul>
-                    <li><a href="data-analysis.html#keras">Keras</a></li>
+                    <li><a href="keras.html">Keras</a></li>
                     <li><a href="ai-libraries.html#pytorch">PyTorch</a></li>
                     <li><a href="ai-libraries.html#scikit-learn">Scikit-learn</a></li>
                     <li><a href="ai-libraries.html#transformers">Transformers</a></li>
@@ -205,27 +204,59 @@
         }
     </script>
 
-<main>
+    <main>
         <div class="topic-nav">
             <a href="matplotlib.html">← Matplotlib</a>
+            <a href="ai-libraries.html">AI 第三方库 →</a>
         </div>
 
         <section id="keras" class="content-section">
-            <h2>Keras</h2>
-            <p>Keras 是一个高级神经网络 API，运行在 TensorFlow、CNTK 或 Theano 之上，让深度学习变得简单。</p>
+            <h2>Keras 3.x</h2>
+            <p>Keras 3 是最新的高级神经网络 API，支持多后端（TensorFlow、PyTorch、JAX），让深度学习开发和部署更加灵活。Keras 3 于 2023 年发布，带来了跨框架支持和性能优化。</p>
+
+            <div class="feature-box">
+                <h3>Keras 3 主要特性：</h3>
+                <ul>
+                    <li>🔄 <strong>多后端支持</strong>：可切换 TensorFlow、PyTorch 或 JAX 后端</li>
+                    <li>🚀 <strong>性能优化</strong>：使用 <code>model.fit()</code> 时自动启用 XLA 加速</li>
+                    <li>🎯 <strong>原生支持</strong>：支持原生 TensorFlow、PyTorch 和 JAX 工作流</li>
+                    <li>📦 <strong>向后兼容</strong>：完全兼容 Keras 2.x API</li>
+                    <li>🔧 <strong>灵活部署</strong>：支持 TF SavedModel、PyTorch TorchScript 等格式</li>
+                </ul>
+            </div>
 
             <h3>安装</h3>
-            <pre><code class="bash">pip install tensorflow
-# Keras 已集成在 TensorFlow 中</code></pre>
+            <pre><code class="bash"># 方式 1：安装独立的 Keras 3（推荐）
+pip install keras
+
+# 方式 2：使用 TensorFlow 集成的 Keras
+pip install tensorflow
+
+# 设置后端（可选，默认自动检测）
+# 在代码中设置：
+# export KERAS_BACKEND="tensorflow"  # 或 "torch", "jax"</code></pre>
+
+            <h3>配置后端</h3>
+            <pre><code class="python"># 在导入 keras 之前设置后端
+import os
+os.environ["KERAS_BACKEND"] = "tensorflow"  # 或 "torch", "jax"
+
+import keras
+print(f"使用后端：{keras.backend.backend()}")
+
+# Keras 3 支持的后端：
+# - tensorflow: TensorFlow 后端
+# - torch: PyTorch 后端  
+# - jax: JAX 后端</code></pre>
 
             <h3>基本神经网络模型</h3>
-            <pre><code class="python">import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras import layers
+            <pre><code class="python">import keras
+from keras import layers
 
-# 创建序列模型
+# 创建序列模型（Keras 3 API）
 model = keras.Sequential([
-    layers.Dense(64, activation='relu', input_shape=(10,)),
+    layers.Input(shape=(10,)),  # Keras 3 推荐使用 Input
+    layers.Dense(64, activation='relu'),
     layers.Dense(32, activation='relu'),
     layers.Dense(1, activation='sigmoid')
 ])
@@ -240,12 +271,11 @@ model.compile(
 # 查看模型结构
 model.summary()</code></pre>
 
-            <h3>构建分类模型</h3>
-            <pre><code class="python">import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras import layers
+            <h3>构建分类模型（函数式 API）</h3>
+            <pre><code class="python">import keras
+from keras import layers
 
-# 函数式 API 构建
+# Keras 3 函数式 API
 inputs = keras.Input(shape=(784,))
 x = layers.Dense(128, activation='relu')(inputs)
 x = layers.Dropout(0.2)(x)
@@ -265,8 +295,8 @@ model.compile(
 model.summary()</code></pre>
 
             <h3>准备数据</h3>
-            <pre><code class="python">import tensorflow as tf
-from tensorflow.keras.datasets import mnist
+            <pre><code class="python">import keras
+from keras.datasets import mnist
 
 # 加载 MNIST 数据集
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
@@ -279,17 +309,17 @@ x_test = x_test.astype('float32') / 255.0
 x_train = x_train.reshape(-1, 784)
 x_test = x_test.reshape(-1, 784)
 
-print(f"训练集形状: {x_train.shape}")
-print(f"测试集形状: {x_test.shape}")</code></pre>
+print(f"训练集形状：{x_train.shape}")
+print(f"测试集形状：{x_test.shape}")</code></pre>
 
             <h3>训练模型</h3>
-            <pre><code class="python">import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras import layers
+            <pre><code class="python">import keras
+from keras import layers
 
 # 创建模型
 model = keras.Sequential([
-    layers.Dense(128, activation='relu', input_shape=(784,)),
+    layers.Input(shape=(784,)),
+    layers.Dense(128, activation='relu'),
     layers.Dropout(0.2),
     layers.Dense(64, activation='relu'),
     layers.Dense(10, activation='softmax')
@@ -302,34 +332,38 @@ model.compile(
     metrics=['accuracy']
 )
 
-# 训练模型
+# 训练模型（Keras 3 自动启用 XLA 加速）
 history = model.fit(
     x_train, y_train,
     epochs=10,
     batch_size=32,
     validation_split=0.2,
     verbose=1
-)</code></pre>
+)
+
+print(f"训练完成！最终训练准确率：{history.history['accuracy'][-1]:.4f}")</code></pre>
 
             <h3>评估模型</h3>
-            <pre><code class="python"># 评估模型
-test_loss, test_acc = model.evaluate(x_test, y_test, verbose=2)
-print(f'\n测试准确率: {test_acc:.4f}')
+            <pre><code class="python">import numpy as np
+
+# 评估模型
+test_loss, test_acc = model.evaluate(x_test, y_test, verbose=0)
+print(f'\n测试准确率：{test_acc:.4f}')
 
 # 预测
 predictions = model.predict(x_test[:5])
-predicted_classes = tf.argmax(predictions, axis=1)
-print(f"预测结果: {predicted_classes.numpy()}")
-print(f"真实标签: {y_test[:5]}")</code></pre>
+predicted_classes = np.argmax(predictions, axis=1)
+print(f"预测结果：{predicted_classes}")
+print(f"真实标签：{y_test[:5]}")</code></pre>
 
             <h3>卷积神经网络 (CNN)</h3>
-            <pre><code class="python">import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras import layers
+            <pre><code class="python">import keras
+from keras import layers
 
-# 创建 CNN 模型
+# 创建 CNN 模型（Keras 3）
 model = keras.Sequential([
-    layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)),
+    layers.Input(shape=(28, 28, 1)),
+    layers.Conv2D(32, (3, 3), activation='relu'),
     layers.MaxPooling2D((2, 2)),
     layers.Conv2D(64, (3, 3), activation='relu'),
     layers.MaxPooling2D((2, 2)),
@@ -349,8 +383,8 @@ model.compile(
 model.summary()</code></pre>
 
             <h3>使用 CNN 处理图像</h3>
-            <pre><code class="python">import tensorflow as tf
-from tensorflow.keras.datasets import mnist
+            <pre><code class="python">import keras
+from keras.datasets import mnist
 
 # 加载数据
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
@@ -370,32 +404,30 @@ history = model.fit(
 )
 
 # 评估
-test_loss, test_acc = model.evaluate(x_test, y_test, verbose=2)
-print(f'\n测试准确率: {test_acc:.4f}')</code></pre>
+test_loss, test_acc = model.evaluate(x_test, y_test, verbose=0)
+print(f'\n测试准确率：{test_acc:.4f}')</code></pre>
 
             <h3>保存和加载模型</h3>
-            <pre><code class="python"># 保存整个模型
+            <pre><code class="python"># 保存整个模型（Keras 3 推荐格式）
 model.save('my_model.keras')
 
 # 加载模型
 loaded_model = keras.models.load_model('my_model.keras')
 
 # 只保存模型权重
-model.save_weights('model_weights.weights')
+model.save_weights('model_weights.weights.h5')
 
 # 加载权重
-model.load_weights('model_weights.weights')
+model.load_weights('model_weights.weights.h5')
 
-# 保存模型架构
-json_string = model.to_json()
+# 保存为 SavedModel 格式（TensorFlow 部署）
+model.export('saved_model/')  # Keras 3 新 API
 
-# 从 JSON 加载架构
-from tensorflow.keras.models import model_from_json
-model_architecture = model_from_json(json_string)
-model_architecture.load_weights('model_weights.weights')</code></pre>
+# 保存为 PyTorch 格式（使用 PyTorch 后端时）
+# model.export('model.pt')</code></pre>
 
             <h3>回调函数</h3>
-            <pre><code class="python">from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping, TensorBoard
+            <pre><code class="python">from keras.callbacks import ModelCheckpoint, EarlyStopping, TensorBoard, ReduceLROnPlateau
 
 # 模型检查点
 checkpoint = ModelCheckpoint(
@@ -413,6 +445,14 @@ early_stopping = EarlyStopping(
     restore_best_weights=True
 )
 
+# 学习率衰减
+reduce_lr = ReduceLROnPlateau(
+    monitor='val_loss',
+    factor=0.5,
+    patience=3,
+    min_lr=1e-7
+)
+
 # TensorBoard
 tensorboard = TensorBoard(log_dir='./logs')
 
@@ -422,12 +462,13 @@ history = model.fit(
     epochs=50,
     batch_size=32,
     validation_split=0.2,
-    callbacks=[checkpoint, early_stopping, tensorboard]
+    callbacks=[checkpoint, early_stopping, reduce_lr, tensorboard]
 )</code></pre>
 
             <h3>自定义层</h3>
-            <pre><code class="python">import tensorflow as tf
-from tensorflow.keras import layers
+            <pre><code class="python">import keras
+from keras import layers
+import keras.ops as ops  # Keras 3 使用 ops 模块
 
 class CustomLayer(layers.Layer):
     def __init__(self, units=32):
@@ -435,6 +476,7 @@ class CustomLayer(layers.Layer):
         self.units = units
 
     def build(self, input_shape):
+        # Keras 3 使用 ops 初始化权重
         self.w = self.add_weight(
             shape=(input_shape[-1], self.units),
             initializer='random_normal',
@@ -447,7 +489,7 @@ class CustomLayer(layers.Layer):
         )
 
     def call(self, inputs):
-        return tf.matmul(inputs, self.w) + self.b
+        return ops.matmul(inputs, self.w) + self.b
 
 # 使用自定义层
 model = keras.Sequential([
@@ -459,18 +501,50 @@ model = keras.Sequential([
 model.compile(optimizer='adam', loss='sparse_categorical_crossentropy')
 model.summary()</code></pre>
 
-            <h3>迁移学习</h3>
-            <pre><code class="python">from tensorflow.keras.applications import VGG16
-from tensorflow.keras import layers, models
+            <h3>自定义模型</h3>
+            <pre><code class="python">import keras
+from keras import layers
+import keras.ops as ops
 
-# 加载预训练模型（不包括顶层）
-base_model = VGG16(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
+class CustomModel(keras.Model):
+    def __init__(self):
+        super(CustomModel, self).__init__()
+        self.dense1 = layers.Dense(128, activation='relu')
+        self.dropout = layers.Dropout(0.2)
+        self.dense2 = layers.Dense(10, activation='softmax')
+    
+    def call(self, inputs, training=False):
+        x = self.dense1(inputs)
+        x = self.dropout(x, training=training)
+        return self.dense2(x)
+
+# 创建和编译模型
+model = CustomModel()
+model.compile(
+    optimizer='adam',
+    loss='sparse_categorical_crossentropy',
+    metrics=['accuracy']
+)
+
+# 训练
+model.fit(x_train, y_train, epochs=5, batch_size=32)</code></pre>
+
+            <h3>迁移学习</h3>
+            <pre><code class="python">import keras
+from keras import layers
+
+# 加载预训练模型（Keras 3 支持多后端）
+base_model = keras.applications.VGG16(
+    weights='imagenet',
+    include_top=False,
+    input_shape=(224, 224, 3)
+)
 
 # 冻结基础模型
 base_model.trainable = False
 
 # 添加自定义层
-model = models.Sequential([
+model = keras.Sequential([
     base_model,
     layers.Flatten(),
     layers.Dense(256, activation='relu'),
@@ -485,26 +559,124 @@ model.compile(
     metrics=['accuracy']
 )
 
+model.summary()
+
+# 训练
+# model.fit(train_data, train_labels, epochs=10)
+
+# 解冻部分层进行微调
+base_model.trainable = True
+for layer in base_model.layers[:-4]:
+    layer.trainable = False
+
+model.compile(
+    optimizer=keras.optimizers.Adam(learning_rate=1e-5),
+    loss='sparse_categorical_crossentropy',
+    metrics=['accuracy']
+)</code></pre>
+
+            <h3>数据增强</h3>
+            <pre><code class="python">import keras
+from keras import layers
+
+# 创建数据增强层（Keras 3）
+data_augmentation = keras.Sequential([
+    layers.RandomFlip("horizontal"),
+    layers.RandomRotation(0.1),
+    layers.RandomZoom(0.1),
+    layers.RandomContrast(0.1),
+], name="data_augmentation")
+
+# 在模型中使用数据增强
+model = keras.Sequential([
+    layers.Input(shape=(224, 224, 3)),
+    data_augmentation,
+    layers.Rescaling(1./255),
+    layers.Conv2D(32, 3, activation='relu'),
+    layers.MaxPooling2D(),
+    layers.Conv2D(64, 3, activation='relu'),
+    layers.MaxPooling2D(),
+    layers.Flatten(),
+    layers.Dense(128, activation='relu'),
+    layers.Dense(10, activation='softmax')
+])
+
+model.compile(
+    optimizer='adam',
+    loss='sparse_categorical_crossentropy',
+    metrics=['accuracy']
+)</code></pre>
+
+            <h3>多 GPU 训练</h3>
+            <pre><code class="python">import keras
+from keras import layers
+
+# Keras 3 支持多后端，包括多 GPU
+# 使用 TensorFlow 后端时的多 GPU 策略
+
+# 数据并行策略
+strategy = tf.distribute.MirroredStrategy()
+
+with strategy.scope():
+    model = keras.Sequential([
+        layers.Input(shape=(784,)),
+        layers.Dense(128, activation='relu'),
+        layers.Dense(10, activation='softmax')
+    ])
+    model.compile(
+        optimizer='adam',
+        loss='sparse_categorical_crossentropy',
+        metrics=['accuracy']
+    )
+
+# 训练会自动分布在多个 GPU 上
+# model.fit(x_train, y_train, epochs=10, batch_size=64)</code></pre>
+
+            <h3>Keras NLP（文本处理）</h3>
+            <pre><code class="python">import keras
+from keras import layers
+
+# Keras 3 NLP 层
+inputs = keras.Input(shape=(None,), dtype="int32")
+
+# 嵌入层
+x = layers.Embedding(input_dim=10000, output_dim=128)(inputs)
+
+# LSTM 处理序列
+x = layers.LSTM(64, return_sequences=True)(x)
+x = layers.LSTM(32)(x)
+
+# 输出层
+outputs = layers.Dense(1, activation='sigmoid')(x)
+
+model = keras.Model(inputs, outputs)
+model.compile(
+    optimizer='adam',
+    loss='binary_crossentropy',
+    metrics=['accuracy']
+)
+
 model.summary()</code></pre>
 
-            <div class="feature-box">
-                <h3>Keras 优势：</h3>
-                <ul>
-                    <li>🎯 简单易用：API 设计简洁直观</li>
-                    <li>🔧 灵活性强：支持快速原型设计</li>
-                    <li>🚀 高性能：基于 TensorFlow 优化</li>
-                    <li>📚 丰富资源：大量预训练模型</li>
-                    <li>🌐 社区活跃：广泛的使用和支持</li>
-                </ul>
+            <div class="tip-box">
+                <strong>💡 提示：</strong>Keras 3 支持多后端，可以根据项目需求选择 TensorFlow、PyTorch 或 JAX，让模型开发和部署更加灵活。
             </div>
 
-            <div class="tip-box">
-                <strong>💡 提示：</strong>Keras 适合快速构建和训练深度学习模型，特别适合初学者和快速原型开发。
+            <div class="feature-box">
+                <h3>Keras 3 优势：</h3>
+                <ul>
+                    <li>🎯 <strong>简单易用</strong>：API 设计简洁直观，适合快速原型开发</li>
+                    <li>🔄 <strong>灵活性强</strong>：支持多后端，可根据需求切换</li>
+                    <li>🚀 <strong>高性能</strong>：自动 XLA 编译优化，训练速度更快</li>
+                    <li>📚 <strong>丰富资源</strong>：大量预训练模型和示例</li>
+                    <li>🌐 <strong>社区活跃</strong>：广泛的使用和支持</li>
+                </ul>
             </div>
         </section>
 
         <div class="topic-nav">
             <a href="matplotlib.html">← Matplotlib</a>
+            <a href="ai-libraries.html">AI 第三方库 →</a>
         </div>
     </main>
 </body>
