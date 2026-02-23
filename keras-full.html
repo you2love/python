@@ -764,8 +764,1204 @@ model.compile(
             </div>
         </section>
 
+        <section id="api-reference" class="content-section">
+            <h2>三、Keras API 详细参考</h2>
+            <p>深入讲解 Keras 的五大核心模块：Models、Layers、Losses、Optimizers、Metrics。</p>
+
+            <!-- Models 详细讲解 -->
+            <h3>3.1 Models - 模型模块 📦</h3>
+            <p>Models 是 Keras 的核心，用于组织和训练神经网络。</p>
+
+            <h4>🌳 Models 类层次结构</h4>
+            <div class="tree-diagram">
+                <div class="tree-level">
+                    <div class="tree-node">Module<br><small>keras</small></div>
+                </div>
+                <div class="tree-branch">↓</div>
+                <div class="tree-level">
+                    <div class="tree-node sub">Model<br><small>基类</small></div>
+                </div>
+                <div class="tree-branch">↓</div>
+                <div class="tree-level">
+                    <div class="tree-node sub">Sequential<br><small>顺序模型</small></div>
+                    <div class="tree-node sub">Functional Model<br><small>函数式模型</small></div>
+                    <div class="tree-node sub">Custom Model<br><small>自定义模型</small></div>
+                </div>
+            </div>
+
+            <h4>📋 Model 类详细 API</h4>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>类别</th>
+                        <th>方法/属性</th>
+                        <th>说明</th>
+                        <th>示例</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td rowspan="4"><strong>构建</strong></td>
+                        <td><code>__init__()</code></td>
+                        <td>初始化模型</td>
+                        <td><code>super().__init__()</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>build(input_shape)</code></td>
+                        <td>构建模型权重</td>
+                        <td><code>model.build((None, 784))</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>add(layer)</code></td>
+                        <td>添加层（Sequential）</td>
+                        <td><code>model.add(Dense(64))</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>summary()</code></td>
+                        <td>打印模型摘要</td>
+                        <td><code>model.summary()</code></td>
+                    </tr>
+                    <tr>
+                        <td rowspan="4"><strong>编译</strong></td>
+                        <td><code>compile()</code></td>
+                        <td>配置训练参数</td>
+                        <td><code>model.compile(optimizer, loss, metrics)</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>compiled_loss</code></td>
+                        <td>编译后的损失</td>
+                        <td><code>model.compiled_loss</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>compiled_metrics</code></td>
+                        <td>编译后的指标</td>
+                        <td><code>model.compiled_metrics</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>optimizer</code></td>
+                        <td>优化器</td>
+                        <td><code>model.optimizer</code></td>
+                    </tr>
+                    <tr>
+                        <td rowspan="5"><strong>训练</strong></td>
+                        <td><code>fit()</code></td>
+                        <td>训练模型</td>
+                        <td><code>model.fit(x, y, epochs=10)</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>evaluate()</code></td>
+                        <td>评估模型</td>
+                        <td><code>model.evaluate(x_test, y_test)</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>predict()</code></td>
+                        <td>模型预测</td>
+                        <td><code>model.predict(x)</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>train_on_batch()</code></td>
+                        <td>单批次训练</td>
+                        <td><code>model.train_on_batch(x, y)</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>test_on_batch()</code></td>
+                        <td>单批次测试</td>
+                        <td><code>model.test_on_batch(x, y)</code></td>
+                    </tr>
+                    <tr>
+                        <td rowspan="4"><strong>预测</strong></td>
+                        <td><code>call(inputs)</code></td>
+                        <td>前向传播</td>
+                        <td><code>model(x)</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>predict_on_batch()</code></td>
+                        <td>单批次预测</td>
+                        <td><code>model.predict_on_batch(x)</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>step_function()</code></td>
+                        <td>逐步预测</td>
+                        <td><code>model.step_function(x)</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>get_layer()</code></td>
+                        <td>获取指定层</td>
+                        <td><code>model.get_layer('dense_1')</code></td>
+                    </tr>
+                    <tr>
+                        <td rowspan="5"><strong>权重</strong></td>
+                        <td><code>get_weights()</code></td>
+                        <td>获取权重</td>
+                        <td><code>weights = model.get_weights()</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>set_weights()</code></td>
+                        <td>设置权重</td>
+                        <td><code>model.set_weights(weights)</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>save_weights()</code></td>
+                        <td>保存权重</td>
+                        <td><code>model.save_weights('model.h5')</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>load_weights()</code></td>
+                        <td>加载权重</td>
+                        <td><code>model.load_weights('model.h5')</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>trainable_weights</code></td>
+                        <td>可训练权重</td>
+                        <td><code>model.trainable_weights</code></td>
+                    </tr>
+                    <tr>
+                        <td rowspan="4"><strong>配置</strong></td>
+                        <td><code>get_config()</code></td>
+                        <td>获取配置</td>
+                        <td><code>config = model.get_config()</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>from_config()</code></td>
+                        <td>从配置创建</td>
+                        <td><code>Model.from_config(config)</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>to_json()</code></td>
+                        <td>导出 JSON</td>
+                        <td><code>json_str = model.to_json()</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>save()</code></td>
+                        <td>保存模型</td>
+                        <td><code>model.save('model.keras')</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>💻 Models 使用示例</h4>
+            <pre><code class="python">import keras
+from keras import layers, models
+
+# ========== 1. Sequential 模型 ==========
+seq_model = keras.Sequential([
+    layers.Input(shape=(784,)),
+    layers.Dense(128, activation='relu', name='dense_1'),
+    layers.Dropout(0.2),
+    layers.Dense(10, activation='softmax', name='output')
+], name='sequential_model')
+
+# ========== 2. 函数式 API ==========
+inputs = keras.Input(shape=(784,), name='input')
+x = layers.Dense(128, activation='relu', name='dense_1')(inputs)
+x = layers.Dropout(0.2, name='dropout')(x)
+outputs = layers.Dense(10, activation='softmax', name='predictions')(x)
+func_model = keras.Model(inputs=inputs, outputs=outputs, name='functional_model')
+
+# ========== 3. 自定义模型 ==========
+class CustomModel(keras.Model):
+    def __init__(self, num_classes=10):
+        super().__init__()
+        self.dense1 = layers.Dense(128, activation='relu', name='dense_1')
+        self.dropout = layers.Dropout(0.2, name='dropout')
+        self.classifier = layers.Dense(num_classes, activation='softmax', name='output')
+    
+    def call(self, inputs, training=False):
+        x = self.dense1(inputs)
+        x = self.dropout(x, training=training)
+        return self.classifier(x)
+
+custom_model = CustomModel()
+
+# ========== 4. 模型操作 ==========
+# 编译
+seq_model.compile(
+    optimizer='adam',
+    loss='sparse_categorical_crossentropy',
+    metrics=['accuracy', 'precision', 'recall']
+)
+
+# 查看模型结构
+seq_model.summary()
+seq_model.get_config()
+
+# 获取特定层
+dense_layer = seq_model.get_layer('dense_1')
+print(f"层权重形状：{dense_layer.get_weights()[0].shape}")
+
+# 保存和加载
+seq_model.save('saved_model.keras')
+loaded_model = keras.models.load_model('saved_model.keras')
+
+# 权重操作
+weights = seq_model.get_weights()
+seq_model.set_weights(weights)</code></pre>
+
+            <!-- Layers 详细讲解 -->
+            <h3>3.2 Layers - 层模块 🧱</h3>
+            <p>Layers 是构建神经网络的基本单元，Keras 提供了丰富的内置层。</p>
+
+            <h4>🌳 Layers 分类体系</h4>
+            <div class="tree-diagram">
+                <div class="tree-level">
+                    <div class="tree-node">Layer<br><small>基类</small></div>
+                </div>
+                <div class="tree-branch">↓</div>
+                <div class="tree-level">
+                    <div class="tree-node sub">核心层</div>
+                    <div class="tree-node sub">卷积层</div>
+                    <div class="tree-node sub">池化层</div>
+                    <div class="tree-node sub">RNN 层</div>
+                    <div class="tree-node sub">正则化层</div>
+                </div>
+                <div class="tree-branch">↓</div>
+                <div class="tree-level">
+                    <div class="tree-node leaf">Dense</div>
+                    <div class="tree-node leaf">Activation</div>
+                    <div class="tree-node leaf">Dropout</div>
+                </div>
+                <div class="tree-level">
+                    <div class="tree-node leaf">Conv1D</div>
+                    <div class="tree-node leaf">Conv2D</div>
+                    <div class="tree-node leaf">Conv3D</div>
+                </div>
+                <div class="tree-level">
+                    <div class="tree-node leaf">MaxPool1D</div>
+                    <div class="tree-node leaf">MaxPool2D</div>
+                    <div class="tree-node leaf">AvgPool2D</div>
+                </div>
+                <div class="tree-level">
+                    <div class="tree-node leaf">SimpleRNN</div>
+                    <div class="tree-node leaf">LSTM</div>
+                    <div class="tree-node leaf">GRU</div>
+                </div>
+                <div class="tree-level">
+                    <div class="tree-node leaf">BatchNorm</div>
+                    <div class="tree-node leaf">LayerNorm</div>
+                    <div class="tree-node leaf">Dropout</div>
+                </div>
+            </div>
+
+            <h4>📋 核心层详细 API</h4>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>层类型</th>
+                        <th>类名</th>
+                        <th>关键参数</th>
+                        <th>输入形状</th>
+                        <th>输出形状</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Dense</strong></td>
+                        <td><code>layers.Dense</code></td>
+                        <td><code>units, activation, use_bias</code></td>
+                        <td><code>(..., input_dim)</code></td>
+                        <td><code>(..., units)</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dropout</strong></td>
+                        <td><code>layers.Dropout</code></td>
+                        <td><code>rate, noise_shape</code></td>
+                        <td><code>任意</code></td>
+                        <td><code>同输入</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Activation</strong></td>
+                        <td><code>layers.Activation</code></td>
+                        <td><code>activation</code></td>
+                        <td><code>任意</code></td>
+                        <td><code>同输入</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Flatten</strong></td>
+                        <td><code>layers.Flatten</code></td>
+                        <td><code>data_format</code></td>
+                        <td><code>(..., h, w, c)</code></td>
+                        <td><code>(..., h*w*c)</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Reshape</strong></td>
+                        <td><code>layers.Reshape</code></td>
+                        <td><code>target_shape</code></td>
+                        <td><code>任意</code></td>
+                        <td><code>target_shape</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>BatchNorm</strong></td>
+                        <td><code>layers.BatchNormalization</code></td>
+                        <td><code>axis, momentum, epsilon</code></td>
+                        <td><code>任意</code></td>
+                        <td><code>同输入</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>LayerNorm</strong></td>
+                        <td><code>layers.LayerNormalization</code></td>
+                        <td><code>axis, epsilon</code></td>
+                        <td><code>任意</code></td>
+                        <td><code>同输入</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Embedding</strong></td>
+                        <td><code>layers.Embedding</code></td>
+                        <td><code>input_dim, output_dim</code></td>
+                        <td><code>(batch, seq_len)</code></td>
+                        <td><code>(batch, seq_len, dim)</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>📋 卷积层详细 API</h4>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>层类型</th>
+                        <th>类名</th>
+                        <th>关键参数</th>
+                        <th>输入形状</th>
+                        <th>输出形状</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Conv1D</strong></td>
+                        <td><code>layers.Conv1D</code></td>
+                        <td><code>filters, kernel_size, strides, padding</code></td>
+                        <td><code>(batch, steps, channels)</code></td>
+                        <td><code>(batch, new_steps, filters)</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Conv2D</strong></td>
+                        <td><code>layers.Conv2D</code></td>
+                        <td><code>filters, kernel_size, strides, padding</code></td>
+                        <td><code>(batch, h, w, channels)</code></td>
+                        <td><code>(batch, new_h, new_w, filters)</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Conv3D</strong></td>
+                        <td><code>layers.Conv3D</code></td>
+                        <td><code>filters, kernel_size, strides</code></td>
+                        <td><code>(batch, d, h, w, c)</code></td>
+                        <td><code>(batch, new_d, new_h, new_w, f)</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>DepthwiseConv2D</strong></td>
+                        <td><code>layers.DepthwiseConv2D</code></td>
+                        <td><code>kernel_size, depth_multiplier</code></td>
+                        <td><code>(batch, h, w, c)</code></td>
+                        <td><code>(batch, new_h, new_w, c*multiplier)</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>SeparableConv2D</strong></td>
+                        <td><code>layers.SeparableConv2D</code></td>
+                        <td><code>filters, kernel_size</code></td>
+                        <td><code>(batch, h, w, c)</code></td>
+                        <td><code>(batch, new_h, new_w, filters)</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>📋 池化层详细 API</h4>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>层类型</th>
+                        <th>类名</th>
+                        <th>关键参数</th>
+                        <th>功能</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>MaxPooling1D</strong></td>
+                        <td><code>layers.MaxPooling1D</code></td>
+                        <td><code>pool_size, strides</code></td>
+                        <td>1D 最大池化</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MaxPooling2D</strong></td>
+                        <td><code>layers.MaxPooling2D</code></td>
+                        <td><code>pool_size, strides</code></td>
+                        <td>2D 最大池化</td>
+                    </tr>
+                    <tr>
+                        <td><strong>AveragePooling2D</strong></td>
+                        <td><code>layers.AveragePooling2D</code></td>
+                        <td><code>pool_size, strides</code></td>
+                        <td>2D 平均池化</td>
+                    </tr>
+                    <tr>
+                        <td><strong>GlobalMaxPooling2D</strong></td>
+                        <td><code>layers.GlobalMaxPooling2D</code></td>
+                        <td><code>data_format</code></td>
+                        <td>全局最大池化</td>
+                    </tr>
+                    <tr>
+                        <td><strong>GlobalAveragePooling2D</strong></td>
+                        <td><code>layers.GlobalAveragePooling2D</code></td>
+                        <td><code>data_format</code></td>
+                        <td>全局平均池化</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>📋 RNN 层详细 API</h4>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>层类型</th>
+                        <th>类名</th>
+                        <th>关键参数</th>
+                        <th>特点</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>SimpleRNN</strong></td>
+                        <td><code>layers.SimpleRNN</code></td>
+                        <td><code>units, activation</code></td>
+                        <td>基础 RNN，易梯度消失</td>
+                    </tr>
+                    <tr>
+                        <td><strong>LSTM</strong></td>
+                        <td><code>layers.LSTM</code></td>
+                        <td><code>units, return_sequences</code></td>
+                        <td>长短期记忆，处理长序列</td>
+                    </tr>
+                    <tr>
+                        <td><strong>GRU</strong></td>
+                        <td><code>layers.GRU</code></td>
+                        <td><code>units, return_sequences</code></td>
+                        <td>LSTM 简化版，更快</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Bidirectional</strong></td>
+                        <td><code>layers.Bidirectional</code></td>
+                        <td><code>layer, merge_mode</code></td>
+                        <td>双向 RNN</td>
+                    </tr>
+                    <tr>
+                        <td><strong>RNN</strong></td>
+                        <td><code>layers.RNN</code></td>
+                        <td><code>cell, return_sequences</code></td>
+                        <td>自定义 RNN 单元</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>💻 Layers 使用示例</h4>
+            <pre><code class="python">import keras
+from keras import layers
+import keras.ops as ops
+
+# ========== 1. 核心层 ==========
+x = layers.Input(shape=(100,))
+x = layers.Dense(64, activation='relu', kernel_initializer='he_normal')(x)
+x = layers.BatchNormalization()(x)
+x = layers.Dropout(0.3)(x)
+x = layers.Activation('relu')(x)
+
+# ========== 2. 卷积层 ==========
+# 1D 卷积（文本/序列）
+conv1d = layers.Conv1D(
+    filters=128,
+    kernel_size=3,
+    strides=1,
+    padding='same',
+    activation='relu',
+    kernel_initializer='he_normal'
+)
+
+# 2D 卷积（图像）
+conv2d = layers.Conv2D(
+    filters=64,
+    kernel_size=(3, 3),
+    strides=(1, 1),
+    padding='same',
+    activation='relu',
+    kernel_regularizer=keras.regularizers.l2(0.01)
+)
+
+# 深度可分离卷积
+sep_conv = layers.SeparableConv2D(
+    filters=128,
+    kernel_size=(3, 3),
+    padding='same',
+    depth_multiplier=1
+)
+
+# ========== 3. 池化层 ==========
+max_pool = layers.MaxPooling2D(pool_size=(2, 2), strides=(2, 2))
+avg_pool = layers.AveragePooling2D(pool_size=(2, 2))
+global_pool = layers.GlobalAveragePooling2D()
+
+# ========== 4. RNN 层 ==========
+# LSTM
+lstm = layers.LSTM(
+    units=128,
+    return_sequences=True,
+    dropout=0.2,
+    recurrent_dropout=0.2
+)
+
+# 双向 LSTM
+bi_lstm = layers.Bidirectional(
+    layers.LSTM(64, return_sequences=True),
+    merge_mode='concat'
+)
+
+# GRU
+gru = layers.GRU(
+    units=64,
+    return_sequences=False,
+    reset_after=True
+)
+
+# ========== 5. 自定义层 ==========
+class GELU(layers.Layer):
+    """GELU 激活函数"""
+    def __init__(self):
+        super().__init__()
+    
+    def call(self, inputs):
+        return 0.5 * inputs * (1 + ops.tanh(ops.sqrt(2 / ops.pi) * (inputs + 0.044715 * ops.power(inputs, 3))))
+
+# 使用自定义层
+x = layers.Dense(128)(inputs)
+x = GELU()(x)
+
+# ========== 6. 完整模型示例 ==========
+def create_cnn_block(filters, kernel_size=3, pool_size=2):
+    """创建可复用的 CNN 块"""
+    return keras.Sequential([
+        layers.Conv2D(filters, kernel_size, padding='same', activation='relu'),
+        layers.BatchNormalization(),
+        layers.Conv2D(filters, kernel_size, padding='same', activation='relu'),
+        layers.BatchNormalization(),
+        layers.MaxPooling2D(pool_size),
+        layers.Dropout(0.25)
+    ])
+
+# 使用函数创建模型
+inputs = layers.Input(shape=(224, 224, 3))
+x = create_cnn_block(32)(inputs)
+x = create_cnn_block(64)(x)
+x = create_cnn_block(128)(x)
+x = layers.GlobalAveragePooling2D()(x)
+x = layers.Dense(256, activation='relu')(x)
+outputs = layers.Dense(10, activation='softmax')(x)
+model = keras.Model(inputs, outputs)</code></pre>
+
+            <!-- Losses 详细讲解 -->
+            <h3>3.3 Losses - 损失函数 📉</h3>
+            <p>损失函数衡量模型预测与真实值的差距，指导模型优化方向。</p>
+
+            <h4>🌳 Losses 分类体系</h4>
+            <div class="tree-diagram">
+                <div class="tree-level">
+                    <div class="tree-node">Losses</div>
+                </div>
+                <div class="tree-branch">↓</div>
+                <div class="tree-level">
+                    <div class="tree-node sub">分类损失</div>
+                    <div class="tree-node sub">回归损失</div>
+                    <div class="tree-node sub">排序损失</div>
+                    <div class="tree-node sub">对比损失</div>
+                </div>
+                <div class="tree-branch">↓</div>
+                <div class="tree-level">
+                    <div class="tree-node leaf">Categorical<br>Crossentropy</div>
+                    <div class="tree-node leaf">Sparse<br>Categorical</div>
+                    <div class="tree-node leaf">Binary<br>Crossentropy</div>
+                </div>
+                <div class="tree-level">
+                    <div class="tree-node leaf">MSE</div>
+                    <div class="tree-node leaf">MAE</div>
+                    <div class="tree-node leaf">Huber</div>
+                </div>
+                <div class="tree-level">
+                    <div class="tree-node leaf">Ranking</div>
+                </div>
+                <div class="tree-level">
+                    <div class="tree-node leaf">Contrastive</div>
+                    <div class="tree-node leaf">Triplet</div>
+                </div>
+            </div>
+
+            <h4>📋 损失函数详细 API</h4>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>损失类型</th>
+                        <th>类名</th>
+                        <th>公式</th>
+                        <th>适用场景</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>分类交叉熵</strong></td>
+                        <td><code>CategoricalCrossentropy</code></td>
+                        <td><code>-Σ y_true * log(y_pred)</code></td>
+                        <td>多分类（one-hot 标签）</td>
+                    </tr>
+                    <tr>
+                        <td><strong>稀疏分类交叉熵</strong></td>
+                        <td><code>SparseCategoricalCrossentropy</code></td>
+                        <td><code>-log(y_pred[y_true])</code></td>
+                        <td>多分类（整数标签）</td>
+                    </tr>
+                    <tr>
+                        <td><strong>二元交叉熵</strong></td>
+                        <td><code>BinaryCrossentropy</code></td>
+                        <td><code>-(y*log(p) + (1-y)*log(1-p))</code></td>
+                        <td>二分类/多标签</td>
+                    </tr>
+                    <tr>
+                        <td><strong>均方误差</strong></td>
+                        <td><code>MeanSquaredError</code></td>
+                        <td><code>(y_pred - y_true)²</code></td>
+                        <td>回归问题</td>
+                    </tr>
+                    <tr>
+                        <td><strong>平均绝对误差</strong></td>
+                        <td><code>MeanAbsoluteError</code></td>
+                        <td><code>|y_pred - y_true|</code></td>
+                        <td>回归问题（鲁棒）</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Huber 损失</strong></td>
+                        <td><code>Huber</code></td>
+                        <td><code>0.5*e² (|e|≤δ), δ*|e|-0.5*δ² (|e|>δ)</code></td>
+                        <td>回归（抗异常值）</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hinge 损失</strong></td>
+                        <td><code>Hinge</code></td>
+                        <td><code>max(0, 1 - y_true * y_pred)</code></td>
+                        <td>SVM 分类</td>
+                    </tr>
+                    <tr>
+                        <td><strong>余弦相似度</strong></td>
+                        <td><code>CosineSimilarity</code></td>
+                        <td><code>1 - cos(θ)</code></td>
+                        <td>向量相似度</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>💻 Losses 使用示例</h4>
+            <pre><code class="python">import keras
+from keras import losses
+import keras.ops as ops
+
+# ========== 1. 分类损失 ==========
+# 多分类（one-hot 标签）
+cce = losses.CategoricalCrossentropy(from_logits=False, label_smoothing=0.1)
+y_true = [[0, 1, 0], [0, 0, 1]]
+y_pred = [[0.1, 0.8, 0.1], [0.2, 0.3, 0.5]]
+loss_value = cce(y_true, y_pred)
+
+# 多分类（整数标签）
+sce = losses.SparseCategoricalCrossentropy(from_logits=False)
+y_true_int = [1, 2]
+loss_value = sce(y_true_int, y_pred)
+
+# 二分类
+bce = losses.BinaryCrossentropy(from_logits=False)
+y_true_bin = [0, 1]
+y_pred_bin = [0.1, 0.9]
+loss_value = bce(y_true_bin, y_pred_bin)
+
+# ========== 2. 回归损失 ==========
+# MSE
+mse = losses.MeanSquaredError()
+y_true_reg = [1.0, 2.0, 3.0]
+y_pred_reg = [1.1, 1.9, 3.2]
+mse_value = mse(y_true_reg, y_pred_reg)
+
+# MAE
+mae = losses.MeanAbsoluteError()
+mae_value = mae(y_true_reg, y_pred_reg)
+
+# Huber（抗异常值）
+huber = losses.Huber(delta=1.0)
+huber_value = huber(y_true_reg, y_pred_reg)
+
+# ========== 3. 自定义损失 ==========
+class FocalLoss(losses.Loss):
+    """Focal Loss - 处理类别不平衡"""
+    def __init__(self, alpha=0.25, gamma=2.0):
+        super().__init__()
+        self.alpha = alpha
+        self.gamma = gamma
+    
+    def call(self, y_true, y_pred):
+        bce = ops.binary_crossentropy(y_true, y_pred)
+        p_t = y_true * y_pred + (1 - y_true) * (1 - y_pred)
+        factor = self.alpha * ops.power(1 - p_t, self.gamma)
+        return ops.mean(factor * bce)
+
+class DiceLoss(losses.Loss):
+    """Dice Loss - 图像分割"""
+    def __init__(self, smooth=1.0):
+        super().__init__()
+        self.smooth = smooth
+    
+    def call(self, y_true, y_pred):
+        intersection = ops.sum(y_true * y_pred, axis=[1, 2, 3])
+        union = ops.sum(y_true, axis=[1, 2, 3]) + ops.sum(y_pred, axis=[1, 2, 3])
+        dice = (2. * intersection + self.smooth) / (union + self.smooth)
+        return ops.mean(1 - dice)
+
+# 使用自定义损失
+model.compile(
+    optimizer='adam',
+    loss=FocalLoss(alpha=0.25, gamma=2.0),
+    metrics=['accuracy']
+)
+
+# ========== 4. 损失函数选择指南 ==========
+loss_guide = {
+    '二分类': 'BinaryCrossentropy',
+    '多分类（one-hot）': 'CategoricalCrossentropy',
+    '多分类（整数标签）': 'SparseCategoricalCrossentropy',
+    '回归（正态分布）': 'MeanSquaredError',
+    '回归（有异常值）': 'Huber 或 MeanAbsoluteError',
+    '类别不平衡': 'FocalLoss',
+    '图像分割': 'DiceLoss',
+    '多标签分类': 'BinaryCrossentropy',
+}</code></pre>
+
+            <!-- Optimizers 详细讲解 -->
+            <h3>3.4 Optimizers - 优化器 ⚡</h3>
+            <p>优化器根据损失函数的梯度更新模型权重，是训练过程的核心。</p>
+
+            <h4>🌳 Optimizers 分类体系</h4>
+            <div class="tree-diagram">
+                <div class="tree-level">
+                    <div class="tree-node">Optimizers</div>
+                </div>
+                <div class="tree-branch">↓</div>
+                <div class="tree-level">
+                    <div class="tree-node sub">一阶优化器</div>
+                    <div class="tree-node sub">自适应优化器</div>
+                    <div class="tree-node sub">二阶优化器</div>
+                </div>
+                <div class="tree-branch">↓</div>
+                <div class="tree-level">
+                    <div class="tree-node leaf">SGD</div>
+                    <div class="tree-node leaf">SGD+Momentum</div>
+                </div>
+                <div class="tree-level">
+                    <div class="tree-node leaf">Adam</div>
+                    <div class="tree-node leaf">AdamW</div>
+                    <div class="tree-node leaf">RMSprop</div>
+                    <div class="tree-node leaf">Adagrad</div>
+                </div>
+                <div class="tree-level">
+                    <div class="tree-node leaf">L-BFGS</div>
+                </div>
+            </div>
+
+            <h4>📋 优化器详细 API</h4>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>优化器</th>
+                        <th>类名</th>
+                        <th>关键参数</th>
+                        <th>特点</th>
+                        <th>适用场景</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>SGD</strong></td>
+                        <td><code>optimizers.SGD</code></td>
+                        <td><code>lr, momentum, nesterov</code></td>
+                        <td>简单，需调参</td>
+                        <td>CNN、小数据集</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Adam</strong></td>
+                        <td><code>optimizers.Adam</code></td>
+                        <td><code>lr, beta1, beta2, epsilon</code></td>
+                        <td>自适应，收敛快</td>
+                        <td>默认选择，RNN</td>
+                    </tr>
+                    <tr>
+                        <td><strong>AdamW</strong></td>
+                        <td><code>optimizers.AdamW</code></td>
+                        <td><code>lr, weight_decay</code></td>
+                        <td>Adam+ 权重衰减</td>
+                        <td>Transformer</td>
+                    </tr>
+                    <tr>
+                        <td><strong>RMSprop</strong></td>
+                        <td><code>optimizers.RMSprop</code></td>
+                        <td><code>lr, rho, epsilon</code></td>
+                        <td>适合 RNN</td>
+                        <td>RNN、LSTM</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Adagrad</strong></td>
+                        <td><code>optimizers.Adagrad</code></td>
+                        <td><code>lr, epsilon</code></td>
+                        <td>适合稀疏数据</td>
+                        <td>NLP、推荐</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Adadelta</strong></td>
+                        <td><code>optimizers.Adadelta</code></td>
+                        <td><code>lr, rho, epsilon</code></td>
+                        <td>无需手动调 lr</td>
+                        <td>深度网络</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Nadam</strong></td>
+                        <td><code>optimizers.Nadam</code></td>
+                        <td><code>lr, beta1, beta2</code></td>
+                        <td>Adam+Nesterov</td>
+                        <td>通用</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>💻 Optimizers 使用示例</h4>
+            <pre><code class="python">import keras
+from keras import optimizers
+from keras.optimizers import schedules
+
+# ========== 1. 基础优化器 ==========
+# SGD（带动量）
+sgd = optimizers.SGD(
+    learning_rate=0.01,
+    momentum=0.9,
+    nesterov=True,
+    weight_decay=0.0001
+)
+
+# Adam（推荐默认）
+adam = optimizers.Adam(
+    learning_rate=0.001,
+    beta_1=0.9,
+    beta_2=0.999,
+    epsilon=1e-7,
+    weight_decay=0.01,  # Keras 3 支持
+    amsgrad=False
+)
+
+# AdamW（Transformer 推荐）
+adamw = optimizers.AdamW(
+    learning_rate=0.001,
+    weight_decay=0.05,
+    beta_1=0.9,
+    beta_2=0.95
+)
+
+# RMSprop（RNN 推荐）
+rmsprop = optimizers.RMSprop(
+    learning_rate=0.001,
+    rho=0.9,
+    epsilon=1e-7,
+    centered=True
+)
+
+# ========== 2. 学习率调度器 ==========
+# 分段常数衰减
+piecewise_lr = schedules.PiecewiseConstantDecay(
+    boundaries=[5000, 10000],
+    values=[0.1, 0.01, 0.001]
+)
+
+# 指数衰减
+exp_lr = schedules.ExponentialDecay(
+    initial_learning_rate=0.001,
+    decay_steps=1000,
+    decay_rate=0.96,
+    staircase=True
+)
+
+# 余弦退火
+cosine_lr = schedules.CosineDecay(
+    initial_learning_rate=0.001,
+    decay_steps=10000,
+    alpha=0.0  # 最小学习率比例
+)
+
+# 带预热的余弦退火
+cosine_restart = schedules.CosineDecayRestarts(
+    initial_learning_rate=0.001,
+    t_mul=2.0,  # 周期倍数
+    m_mul=0.9,  # 最小 lr 比例
+    alpha=0.0
+)
+
+# 使用调度器
+optimizer = optimizers.SGD(learning_rate=piecewise_lr)
+
+# ========== 3. 自定义优化器 ==========
+class Lookahead(optimizers.Optimizer):
+    """Lookahead 优化器包装器"""
+    def __init__(self, optimizer, k=5, alpha=0.5):
+        super().__init__()
+        self.optimizer = optimizer
+        self.k = k
+        self.alpha = alpha
+        self.step_counter = 0
+    
+    def update_step(self, gradient, variable):
+        self.optimizer.update_step(gradient, variable)
+        self.step_counter += 1
+        
+        if self.step_counter >= self.k:
+            # 更新慢权重
+            for var in self.variables:
+                var.assign(var + self.alpha * (var - var.fast_weight))
+            self.step_counter = 0
+
+# ========== 4. 优化器选择指南 ==========
+optimizer_guide = {
+    'CNN 图像分类': 'Adam 或 SGD+Momentum',
+    'RNN/LSTM': 'Adam 或 RMSprop',
+    'Transformer': 'AdamW',
+    '小数据集': 'SGD+Momentum',
+    '大数据集': 'Adam',
+    '稀疏数据': 'Adagrad 或 Adam',
+    '需要泛化性好': 'SGD',
+    '快速原型': 'Adam',
+}
+
+# ========== 5. 完整训练示例 ==========
+model.compile(
+    optimizer=optimizers.AdamW(
+        learning_rate=schedules.CosineDecay(0.001, 10000),
+        weight_decay=0.05
+    ),
+    loss='sparse_categorical_crossentropy',
+    metrics=['accuracy']
+)</code></pre>
+
+            <!-- Metrics 详细讲解 -->
+            <h3>3.5 Metrics - 评估指标 📊</h3>
+            <p>评估指标用于衡量模型性能，与损失函数不同，指标不参与梯度计算。</p>
+
+            <h4>🌳 Metrics 分类体系</h4>
+            <div class="tree-diagram">
+                <div class="tree-level">
+                    <div class="tree-node">Metrics</div>
+                </div>
+                <div class="tree-branch">↓</div>
+                <div class="tree-level">
+                    <div class="tree-node sub">分类指标</div>
+                    <div class="tree-node sub">回归指标</div>
+                    <div class="tree-node sub">排序指标</div>
+                    <div class="tree-node sub">概率指标</div>
+                </div>
+                <div class="tree-branch">↓</div>
+                <div class="tree-level">
+                    <div class="tree-node leaf">Accuracy</div>
+                    <div class="tree-node leaf">Precision</div>
+                    <div class="tree-node leaf">Recall</div>
+                    <div class="tree-node leaf">F1Score</div>
+                </div>
+                <div class="tree-level">
+                    <div class="tree-node leaf">MAE</div>
+                    <div class="tree-node leaf">MSE</div>
+                    <div class="tree-node leaf">RMSE</div>
+                    <div class="tree-node leaf">R²</div>
+                </div>
+                <div class="tree-level">
+                    <div class="tree-node leaf">AUC</div>
+                    <div class="tree-node leaf">PR AUC</div>
+                </div>
+            </div>
+
+            <h4>📋 指标详细 API</h4>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>指标类型</th>
+                        <th>类名</th>
+                        <th>公式</th>
+                        <th>适用场景</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>准确率</strong></td>
+                        <td><code>CategoricalAccuracy</code></td>
+                        <td><code>correct / total</code></td>
+                        <td>分类（平衡数据）</td>
+                    </tr>
+                    <tr>
+                        <td><strong>精确率</strong></td>
+                        <td><code>Precision</code></td>
+                        <td><code>TP / (TP + FP)</code></td>
+                        <td>关注查准率</td>
+                    </tr>
+                    <tr>
+                        <td><strong>召回率</strong></td>
+                        <td><code>Recall</code></td>
+                        <td><code>TP / (TP + FN)</code></td>
+                        <td>关注查全率</td>
+                    </tr>
+                    <tr>
+                        <td><strong>F1 分数</strong></td>
+                        <td><code>F1Score</code></td>
+                        <td><code>2 * P * R / (P + R)</code></td>
+                        <td>平衡查准查全</td>
+                    </tr>
+                    <tr>
+                        <td><strong>AUC</strong></td>
+                        <td><code>AUC</code></td>
+                        <td><code>ROC 曲线下面积</code></td>
+                        <td>不平衡数据</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MAE</strong></td>
+                        <td><code>MeanAbsoluteError</code></td>
+                        <td><code>|y_pred - y_true|</code></td>
+                        <td>回归</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MSE</strong></td>
+                        <td><code>MeanSquaredError</code></td>
+                        <td><code>(y_pred - y_true)²</code></td>
+                        <td>回归（惩罚大误差）</td>
+                    </tr>
+                    <tr>
+                        <td><strong>R²</strong></td>
+                        <td><code>RSquare</code></td>
+                        <td><code>1 - SS_res / SS_tot</code></td>
+                        <td>回归拟合度</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>💻 Metrics 使用示例</h4>
+            <pre><code class="python">import keras
+from keras import metrics
+import numpy as np
+
+# ========== 1. 分类指标 ==========
+# 准确率
+acc = metrics.CategoricalAccuracy()
+acc.update_state(y_true=[[0, 1, 0], [0, 0, 1]],
+                 y_pred=[[0.1, 0.8, 0.1], [0.2, 0.3, 0.5]])
+print(f"准确率：{acc.result().numpy():.4f}")
+acc.reset_state()
+
+# 稀疏准确率
+sparse_acc = metrics.SparseCategoricalAccuracy()
+sparse_acc.update_state(y_true=[1, 2],
+                        y_pred=[[0.1, 0.8, 0.1], [0.2, 0.3, 0.5]])
+
+# 精确率、召回率、F1
+precision = metrics.Precision()
+recall = metrics.Recall()
+f1 = metrics.F1Score(num_classes=10)
+
+precision.update_state(y_true, y_pred)
+recall.update_state(y_true, y_pred)
+
+print(f"精确率：{precision.result().numpy():.4f}")
+print(f"召回率：{recall.result().numpy():.4f}")
+
+# AUC（不平衡数据推荐）
+auc = metrics.AUC(curve='ROC')
+auc.update_state(y_true, y_pred)
+print(f"AUC: {auc.result().numpy():.4f}")
+
+# PR AUC（正样本很少时）
+pr_auc = metrics.AUC(curve='PR')
+
+# ========== 2. 回归指标 ==========
+# MAE
+mae = metrics.MeanAbsoluteError()
+mae.update_state([1, 2, 3], [1.1, 1.9, 3.2])
+print(f"MAE: {mae.result().numpy():.4f}")
+
+# MSE
+mse = metrics.MeanSquaredError()
+mse.update_state([1, 2, 3], [1.1, 1.9, 3.2])
+print(f"MSE: {mse.result().numpy():.4f}")
+
+# RMSE（自定义）
+class RMSE(metrics.MeanSquaredError):
+    def result(self):
+        return ops.sqrt(super().result())
+
+rmse = RMSE()
+
+# R²（决定系数）
+r2 = metrics.RSquare()
+r2.update_state(y_true, y_pred)
+print(f"R²: {r2.result().numpy():.4f}")
+
+# ========== 3. 多标签指标 ==========
+# 多标签精确率
+ml_precision = metrics.Precision(
+    thresholds=5,
+    num_thresholds=10,
+    class_id=None  # 所有类别平均
+)
+
+# Top-K 准确率
+top5_acc = metrics.SparseTopKCategoricalAccuracy(k=5)
+
+# ========== 4. 混淆矩阵 ==========
+conf_matrix = metrics.ConfusionMatrix(
+    num_classes=10,
+    class_names=['class_0', 'class_1', ...]
+)
+conf_matrix.update_state(y_true, y_pred)
+print(f"混淆矩阵:\n{conf_matrix.result().numpy()}")
+
+# ========== 5. 自定义指标 ==========
+class MatthewsCorrelationCoefficient(metrics.Metric):
+    """MCC - 平衡分类指标"""
+    def __init__(self, num_classes=2, name='mcc'):
+        super().__init__(name=name)
+        self.num_classes = num_classes
+        self.conf_matrix = metrics.ConfusionMatrix(num_classes)
+    
+    def update_state(self, y_true, y_pred, sample_weight=None):
+        self.conf_matrix.update_state(y_true, y_pred)
+    
+    def result(self):
+        cm = self.conf_matrix.result()
+        # MCC 计算公式
+        # ... 实现略
+        return mcc_value
+    
+    def reset_state(self):
+        self.conf_matrix.reset_state()
+
+# ========== 6. 模型中使用多个指标 ==========
+model.compile(
+    optimizer='adam',
+    loss='sparse_categorical_crossentropy',
+    metrics=[
+        'accuracy',  # 简写
+        metrics.Precision(name='precision'),
+        metrics.Recall(name='recall'),
+        metrics.AUC(name='auc'),
+        metrics.F1Score(num_classes=10, name='f1')
+    ]
+)
+
+# 训练时查看所有指标
+history = model.fit(x_train, y_train, validation_split=0.1)
+print(history.history.keys())
+# 输出：['loss', 'accuracy', 'precision', 'recall', 'auc', ...]</code></pre>
+        </section>
+
         <section id="layers" class="content-section">
-            <h2>三、常用层 (Layers) 详解</h2>
+            <h2>四、常用层 (Layers) 详解</h2>
             <p>Keras 提供了丰富的内置层，覆盖各种深度学习任务需求。</p>
 
             <h3>3.1 核心层</h3>
@@ -941,10 +2137,10 @@ rnn_model = Sequential([
         </section>
 
         <section id="models" class="content-section">
-            <h2>四、模型构建方法</h2>
+            <h2>五、模型构建方法</h2>
             <p>Keras 提供三种模型构建方式，从简单到复杂，满足不同需求。</p>
 
-            <h3>4.1 Sequential 模型（最简单）</h3>
+            <h3>5.1 Sequential 模型（最简单）</h3>
             <p>适用于简单的层堆叠，线性结构。</p>
             <pre><code class="python">from keras import Sequential, layers
 
@@ -963,7 +2159,7 @@ model.add(layers.Dense(10, activation='softmax'))
 
 model.summary()</code></pre>
 
-            <h3>4.2 函数式 API（推荐）</h3>
+            <h3>5.2 函数式 API（推荐）</h3>
             <p>适用于复杂结构：多输入/多输出、共享层、残差连接等。</p>
             <pre><code class="python">import keras
 from keras import layers
@@ -989,7 +2185,7 @@ output2 = layers.Dense(1, name='reg_output')(merged)
 
 model = keras.Model(inputs=[input1, input2], outputs=[output1, output2])</code></pre>
 
-            <h3>4.3 自定义模型（最灵活）</h3>
+            <h3>5.3 自定义模型（最灵活）</h3>
             <p>继承 <code>keras.Model</code> 类，完全控制前向传播。</p>
             <pre><code class="python">import keras
 from keras import layers
@@ -1037,10 +2233,10 @@ model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=
         </section>
 
         <section id="training" class="content-section">
-            <h2>五、模型训练完整流程</h2>
+            <h2>六、模型训练完整流程</h2>
             <p>从数据准备到模型评估，掌握完整的训练流程。</p>
 
-            <h3>5.1 数据准备</h3>
+            <h3>6.1 数据准备</h3>
             <pre><code class="python">import keras
 import numpy as np
 from keras.datasets import mnist
@@ -1061,7 +2257,7 @@ y_test_cat = to_categorical(y_test, 10)
 
 print(f"训练集：{x_train.shape}, 测试集：{x_test.shape}")</code></pre>
 
-            <h3>5.2 编译模型</h3>
+            <h3>6.2 编译模型</h3>
             <pre><code class="python">from keras import Sequential, layers, optimizers, losses, metrics
 
 # 构建模型
@@ -1088,7 +2284,7 @@ model.compile(
     ]
 )</code></pre>
 
-            <h3>5.3 训练模型</h3>
+            <h3>6.3 训练模型</h3>
             <pre><code class="python">from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau, TensorBoard
 
 # 定义回调
@@ -1131,7 +2327,7 @@ history = model.fit(
 
 print(f"训练完成！最终准确率：{history.history['accuracy'][-1]:.4f}")</code></pre>
 
-            <h3>5.4 评估和预测</h3>
+            <h3>6.4 评估和预测</h3>
             <pre><code class="python">import numpy as np
 
 # 评估模型
@@ -1154,9 +2350,9 @@ print(classification_report(y_test, y_pred_classes))</code></pre>
         </section>
 
         <section id="advanced" class="content-section">
-            <h2>六、高级主题</h2>
+            <h2>七、高级主题</h2>
 
-            <h3>6.1 迁移学习</h3>
+            <h3>7.1 迁移学习</h3>
             <pre><code class="python">import keras
 from keras import layers
 
@@ -1201,7 +2397,7 @@ model.compile(
     metrics=['accuracy']
 )</code></pre>
 
-            <h3>6.2 数据增强</h3>
+            <h3>7.2 数据增强</h3>
             <pre><code class="python">from keras import Sequential, layers
 
 # 数据增强层
@@ -1222,7 +2418,7 @@ model = Sequential([
     # ... 更多层
 ])</code></pre>
 
-            <h3>6.3 自定义训练循环</h3>
+            <h3>7.3 自定义训练循环</h3>
             <pre><code class="python">import keras
 import keras.ops as ops
 
@@ -1252,7 +2448,7 @@ for epoch in range(epochs):
     print(f"Epoch {epoch+1}: loss={loss:.4f}, acc={acc:.4f}")
     train_acc_metric.reset_states()</code></pre>
 
-            <h3>6.4 模型导出和部署</h3>
+            <h3>7.4 模型导出和部署</h3>
             <pre><code class="python"># 保存为 Keras 格式
 model.save('model.keras')
 loaded_model = keras.models.load_model('model.keras')
@@ -1274,7 +2470,7 @@ reconstructed = keras.Model.from_config(config)</code></pre>
         </section>
 
         <section id="comparison" class="content-section">
-            <h2>七、Keras 2 vs Keras 3</h2>
+            <h2>八、Keras 2 vs Keras 3</h2>
             <table class="comparison-table">
                 <thead>
                     <tr>
@@ -1324,7 +2520,7 @@ reconstructed = keras.Model.from_config(config)</code></pre>
         </section>
 
         <section id="best-practices" class="content-section">
-            <h2>八、最佳实践</h2>
+            <h2>九、最佳实践</h2>
             
             <div class="feature-box">
                 <h3>✅ 推荐做法：</h3>
@@ -1351,7 +2547,7 @@ reconstructed = keras.Model.from_config(config)</code></pre>
         </section>
 
         <section id="examples" class="content-section">
-            <h2>九、实战案例</h2>
+            <h2>十、实战案例</h2>
             <p>通过实际项目案例，掌握 Keras 在真实场景中的应用。</p>
 
             <!-- 案例 1: 手写数字识别 -->
@@ -1903,10 +3099,10 @@ plt.show()</code></pre>
         </section>
 
         <section id="deployment" class="content-section">
-            <h2>十、模型部署</h2>
+            <h2>十一、模型部署</h2>
             <p>将训练好的模型部署到生产环境。</p>
 
-            <h3>10.1 保存和加载</h3>
+            <h3>11.1 保存和加载</h3>
             <pre><code class="python">import keras
 
 # 保存整个模型（推荐）
@@ -1928,7 +3124,7 @@ json_config = model.to_json()
 # 从配置重建
 reconstructed = keras.Model.from_config(config)</code></pre>
 
-            <h3>10.2 导出格式对比</h3>
+            <h3>11.2 导出格式对比</h3>
             <table class="comparison-table">
                 <thead>
                     <tr>
@@ -1966,7 +3162,7 @@ reconstructed = keras.Model.from_config(config)</code></pre>
                 </tbody>
             </table>
 
-            <h3>10.3 TensorFlow Serving 部署</h3>
+            <h3>11.3 TensorFlow Serving 部署</h3>
             <pre><code class="python"># 1. 导出为 SavedModel
 model.export('saved_model/1')
 
@@ -1990,7 +3186,7 @@ response = requests.post(
 )
 predictions = response.json()['predictions']</code></pre>
 
-            <h3>10.4 Web 应用部署（Flask）</h3>
+            <h3>11.4 Web 应用部署（Flask）</h3>
             <pre><code class="python">from flask import Flask, request, jsonify
 import keras
 import numpy as np
@@ -2024,7 +3220,7 @@ if __name__ == '__main__':
         </section>
 
         <section id="resources" class="content-section">
-            <h2>十一、学习资源</h2>
+            <h2>十二、学习资源</h2>
             
             <div class="feature-box">
                 <h3>📚 官方文档</h3>
