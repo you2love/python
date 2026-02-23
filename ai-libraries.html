@@ -224,14 +224,14 @@
 
         <section id="pytorch" class="content-section">
             <h2>PyTorch</h2>
-            <p>PyTorch 是由 Facebook AI 研究院开发的开源深度学习框架，以其动态计算图和易用性而闻名，是当前最流行的深度学习框架之一。</p>
+            <p>PyTorch 是由 Meta AI 开发的开源深度学习框架，以其动态计算图和易用性而闻名，是当前最流行的深度学习框架之一。PyTorch 2.0+ 引入了 torch.compile() 编译优化，性能提升显著。</p>
 
             <h3>安装</h3>
             <pre><code class="bash"># CPU 版本
 pip install torch
 
-# GPU 版本 (CUDA 11.8)
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118</code></pre>
+# GPU 版本 (CUDA 12.4)
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124</code></pre>
 
             <h3>张量基础</h3>
             <pre><code class="python">import torch
@@ -376,19 +376,21 @@ y_train = y_train.to(device)
 # 后续训练会自动在 GPU 上进行</code></pre>
 
             <h3>保存和加载模型</h3>
-            <pre><code class="python"># 保存模型参数
+            <pre><code class="python"># 保存模型参数（推荐方式）
 torch.save(model.state_dict(), 'model.pth')
 
-# 加载模型参数
+# 加载模型参数（PyTorch 2.0+ 推荐 weights_only=True）
 model = NeuralNetwork(784, 128, 10)
-model.load_state_dict(torch.load('model.pth'))
+model.load_state_dict(torch.load('model.pth', weights_only=True))
 model.eval()
 
-# 保存整个模型
-torch.save(model, 'complete_model.pth')
+# 使用 safetensors 格式保存（更安全）
+from safetensors.torch import save_file, load_file
+save_file(model.state_dict(), 'model.safetensors')
 
-# 加载整个模型
-model = torch.load('complete_model.pth')</code></pre>
+# 加载 safetensors 格式
+state_dict = load_file('model.safetensors')
+model.load_state_dict(state_dict)</code></pre>
 
             <div class="tip-box">
                 <strong>💡 提示：</strong>PyTorch 的动态计算图让调试更简单，非常适合研究和快速原型开发。
@@ -465,14 +467,16 @@ print(f"逻辑回归准确率：{accuracy_score(y_test, lr_pred):.4f}")
 print(classification_report(y_test, rf_pred))</code></pre>
 
             <h3>回归算法</h3>
-            <pre><code class="python">from sklearn.datasets import load_boston
+            <pre><code class="python">from sklearn.datasets import fetch_california_housing
 from sklearn.linear_model import LinearRegression, Ridge, Lasso
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.metrics import mean_squared_error, r2_score
 
-# 加载数据
-boston = load_boston()
-X, y = boston.data, boston.target
+# 加载加州房价数据集（替代已移除的 boston 数据集）
+california = fetch_california_housing()
+X, y = california.data, california.target
+
+print(f"数据集大小：{X.shape[0]} 个样本，{X.shape[1]} 个特征")
 
 # 划分数据
 X_train, X_test, y_train, y_test = train_test_split(
@@ -879,8 +883,8 @@ plt.show()</code></pre>
 # 打开摄像头
 cap = cv2.VideoCapture(0)
 
-# 创建跟踪器
-tracker = cv2.TrackerKCF_create()
+# 创建跟踪器（使用 MOSSE，KCF 在 OpenCV 4.9+ 中已移除）
+tracker = cv2.TrackerMOSSE_create()
 
 # 读取第一帧
 ret, frame = cap.read()
@@ -894,22 +898,22 @@ tracker.init(frame, bbox)
 
 while True:
     ret, frame = cap.read()
-    
+
     if not ret:
         break
-    
+
     # 更新跟踪器
     success, bbox = tracker.update(frame)
-    
+
     if success:
         x, y, w, h = [int(v) for v in bbox]
         cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
     else:
-        cv2.putText(frame, "Lost", (50, 50), 
+        cv2.putText(frame, "Lost", (50, 50),
                     cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
-    
+
     cv2.imshow('Tracking', frame)
-    
+
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
@@ -917,7 +921,7 @@ cap.release()
 cv2.destroyAllWindows()</code></pre>
 
             <div class="tip-box">
-                <strong>💡 提示：</strong>OpenCV 与深度学习框架结合使用效果更佳，如使用 PyTorch 检测对象后用 OpenCV 绘制结果。
+                <strong>💡 提示：</strong>OpenCV 与深度学习框架结合使用效果更佳，如使用 PyTorch 检测对象后用 OpenCV 绘制结果。OpenCV 4.9+ 推荐使用 MOSSE 或 CSRT 跟踪器。
             </div>
         </section>
 
@@ -968,13 +972,13 @@ formatted = prompt.format(
 
 print(formatted)</code></pre>
 
-            <h3>链 (Chain)</h3>
+            <h3>链 (Chain) - LCEL 方式</h3>
             <pre><code class="python">from langchain_openai import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
-from langchain.chains import LLMChain
+from langchain_core.output_parsers import StrOutputParser
 
-# 初始化 LLM
-llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0.7)
+# 初始化 LLM（2026 年推荐模型）
+llm = ChatOpenAI(model="gpt-4o", temperature=0.7)
 
 # 创建提示模板
 prompt = ChatPromptTemplate.from_messages([
@@ -982,12 +986,20 @@ prompt = ChatPromptTemplate.from_messages([
     ("human", "请解释：{topic}")
 ])
 
-# 创建链
-chain = LLMChain(llm=llm, prompt=prompt)
+# 使用 LCEL（LangChain Expression Language）创建链
+chain = prompt | llm | StrOutputParser()
 
 # 执行链
-response = chain.run(profession="Python 开发者", topic="异步编程")
-print(response)</code></pre>
+response = chain.invoke({"profession": "Python 开发者", "topic": "异步编程"})
+print(response)
+
+# 批量执行
+responses = chain.batch([
+    {"profession": "数据科学家", "topic": "机器学习"},
+    {"profession": "前端工程师", "topic": "React"}
+])
+for r in responses:
+    print(r)</code></pre>
 
             <h3>文档加载</h3>
             <pre><code class="python">from langchain_community.document_loaders import (
@@ -1053,54 +1065,88 @@ for i, result in enumerate(results):
     print(f"\n相关片段 {i+1}:")
     print(result.page_content[:200])</code></pre>
 
-            <h3>检索问答链</h3>
+            <h3>检索问答链（RAG）</h3>
             <pre><code class="python">from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_chroma import Chroma
-from langchain.chains import RetrievalQA
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.runnables import RunnablePassthrough
 
-# 初始化组件
-llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0.7)
-embeddings = OpenAIEmbeddings()
-vectorstore = Chroma(persist_directory="./chroma_db", 
+# 初始化组件（2026 年推荐模型）
+llm = ChatOpenAI(model="gpt-4o", temperature=0.7)
+embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
+vectorstore = Chroma(persist_directory="./chroma_db",
                      embedding_function=embeddings)
 
-# 创建检索 QA 链
-qa_chain = RetrievalQA.from_chain_type(
-    llm=llm,
-    chain_type="stuff",
-    retriever=vectorstore.as_retriever(search_kwargs={"k": 3}),
-    return_source_documents=True
+# 创建检索器
+retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
+
+# 创建提示模板
+template = """基于以下上下文回答问题：
+
+{context}
+
+问题：{question}
+答案："""
+
+prompt = ChatPromptTemplate.from_template(template)
+
+# 使用 LCEL 创建 RAG 链
+rag_chain = (
+    {"context": retriever, "question": RunnablePassthrough()}
+    | prompt
+    | llm
+    | StrOutputParser()
 )
 
 # 提问
 query = "文档中如何定义人工智能？"
-result = qa_chain.invoke({"query": query})
+result = rag_chain.invoke(query)
 
-print(f"答案：{result['result']}")
-print(f"\n参考来源：{len(result['source_documents'])} 个文档")</code></pre>
+print(f"答案：{result}")</code></pre>
 
-            <h3>Agent</h3>
-            <pre><code class="python">from langchain.agents import load_tools, initialize_agent
-from langchain.agents import AgentType
-from langchain_openai import ChatOpenAI
+            <h3>Agent（智能体）</h3>
+            <pre><code class="python">from langchain_openai import ChatOpenAI
+from langchain.agents import create_tool_calling_agent, AgentExecutor
+from langchain_community.tools import DuckDuckGoSearchRun
+from langchain.tools import Tool
+from langchain.prompts import ChatPromptTemplate
+import operator
 
-# 初始化 LLM
-llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+# 初始化 LLM（2026 年推荐模型）
+llm = ChatOpenAI(model="gpt-4o", temperature=0)
 
-# 加载工具
-tools = load_tools(["serpapi", "llm-math"], llm=llm)
+# 定义工具
+search = DuckDuckGoSearchRun()
+tools = [
+    Tool(
+        name="Search",
+        func=search.run,
+        description="当你需要回答关于当前事件或事实的问题时使用此工具"
+    ),
+]
 
-# 初始化 Agent
-agent = initialize_agent(
-    tools, 
-    llm, 
-    agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
-    verbose=True
+# 创建提示模板
+prompt = ChatPromptTemplate.from_messages([
+    ("system", "你是一个有帮助的 AI 助手"),
+    ("human", "{input}"),
+    ("placeholder", "{agent_scratchpad}")
+])
+
+# 创建 Agent
+agent = create_tool_calling_agent(llm, tools, prompt)
+
+# 创建 Agent 执行器
+agent_executor = AgentExecutor(
+    agent=agent,
+    tools=tools,
+    verbose=True,
+    handle_parsing_errors=True
 )
 
 # 运行 Agent
-response = agent.run("2026 年中国 GDP 增长率是多少？乘以 2 是多少？")
-print(response)</code></pre>
+response = agent_executor.invoke({"input": "2026 年人工智能领域有什么重大突破？"})
+print(response["output"])</code></pre>
 
             <div class="tip-box">
                 <strong>💡 提示：</strong>LangChain 支持多种 LLM 提供商和向量数据库，可以灵活构建各种 AI 应用。
@@ -1109,40 +1155,57 @@ print(response)</code></pre>
 
         <section id="llama-index" class="content-section">
             <h2>LlamaIndex</h2>
-            <p>LlamaIndex 是一个数据框架，用于将私有或领域特定数据与大型语言模型 (LLM) 连接，构建 RAG (检索增强生成) 应用。</p>
+            <p>LlamaIndex 是一个数据框架，用于将私有或领域特定数据与大型语言模型 (LLM) 连接，构建 RAG (检索增强生成) 应用。2026 年版本已完全重构，支持工作流和应用构建。</p>
 
             <h3>安装</h3>
-            <pre><code class="bash">pip install llama-index
+            <pre><code class="bash"># 核心包
+pip install llama-index-core
+
+# OpenAI 支持
 pip install llama-index-llms-openai
 pip install llama-index-embeddings-openai
+
+# 向量数据库
 pip install llama-index-vector-stores-chroma</code></pre>
 
-            <h3>基本使用</h3>
+            <h3>基本使用（2026 API）</h3>
             <pre><code class="python">from llama_index.core import VectorStoreIndex, SimpleDirectoryReader
+from llama_index.llms.openai import OpenAI
+from llama_index.embeddings.openai import OpenAIEmbedding
 
 # 加载文档
 documents = SimpleDirectoryReader("./data").load_data()
+print(f"加载了 {len(documents)} 个文档")
 
 # 创建索引
-index = VectorStoreIndex.from_documents(documents)
+index = VectorStoreIndex.from_documents(
+    documents,
+    embed_model=OpenAIEmbedding(model="text-embedding-3-large"),
+    llm=OpenAI(model="gpt-4o")
+)
 
 # 创建查询引擎
 query_engine = index.as_query_engine()
 
 # 查询
 response = query_engine.query("文档的主要内容是什么？")
-print(response)</code></pre>
+print(f"回答：{response}")
+
+# 获取源文档
+if response.source_nodes:
+    print(f"\n参考来源：{len(response.source_nodes)} 个")</code></pre>
 
             <h3>自定义设置</h3>
             <pre><code class="python">from llama_index.core import Settings
 from llama_index.llms.openai import OpenAI
 from llama_index.embeddings.openai import OpenAIEmbedding
 
-# 配置全局设置
-Settings.llm = OpenAI(model="gpt-4", temperature=0.7)
-Settings.embed_model = OpenAIEmbedding(model="text-embedding-3-small")
+# 配置全局设置（2026 年推荐）
+Settings.llm = OpenAI(model="gpt-4o", temperature=0.7)
+Settings.embed_model = OpenAIEmbedding(model="text-embedding-3-large")
 Settings.chunk_size = 512
 Settings.chunk_overlap = 50
+Settings.num_output = 1024
 
 # 加载文档并创建索引
 documents = SimpleDirectoryReader("./data").load_data()

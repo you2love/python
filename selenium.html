@@ -213,6 +213,9 @@
         <section id="selenium" class="content-section">
             <h2>Selenium</h2>
             <p>Selenium 是一个自动化测试工具，可以模拟浏览器操作，适合爬取动态网页。</p>
+            <div class="tip-box">
+                <strong>💡 提示：</strong>Selenium 4.6+ 已支持自动管理浏览器驱动，无需手动下载 chromedriver。
+            </div>
 
             <h3>安装</h3>
             <pre><code class="bash">pip install selenium</code></pre>
@@ -221,10 +224,12 @@
             <pre><code class="python">from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.service import Service
 import time
 
-# 创建浏览器驱动（需要先下载对应浏览器的驱动）
-driver = webdriver.Chrome()  # 或 webdriver.Firefox()
+# 创建浏览器驱动（Selenium 4.6+ 自动管理驱动）
+service = Service()
+driver = webdriver.Chrome(service=service)  # 或 webdriver.Firefox(service=service)
 
 try:
     # 打开网页
@@ -254,8 +259,11 @@ finally:
             <h3>元素定位</h3>
             <pre><code class="python">from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
 
-driver = webdriver.Chrome()
+# 创建浏览器驱动（Selenium 4.6+ 自动管理驱动）
+service = Service()
+driver = webdriver.Chrome(service=service)
 driver.get('https://example.com')
 
 # 通过 ID
@@ -288,8 +296,11 @@ driver.quit()</code></pre>
             <pre><code class="python">from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.chrome.service import Service
 
-driver = webdriver.Chrome()
+# 创建浏览器驱动（Selenium 4.6+ 自动管理驱动）
+service = Service()
+driver = webdriver.Chrome(service=service)
 driver.get('https://example.com')
 
 # 点击按钮
@@ -325,8 +336,11 @@ driver.quit()</code></pre>
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.service import Service
 
-driver = webdriver.Chrome()
+# 创建浏览器驱动（Selenium 4.6+ 自动管理驱动）
+service = Service()
+driver = webdriver.Chrome(service=service)
 driver.get('https://example.com')
 
 # 显式等待
@@ -353,8 +367,11 @@ driver.quit()</code></pre>
             <h3>处理弹窗和 iframe</h3>
             <pre><code class="python">from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
 
-driver = webdriver.Chrome()
+# 创建浏览器驱动（Selenium 4.6+ 自动管理驱动）
+service = Service()
+driver = webdriver.Chrome(service=service)
 driver.get('https://example.com')
 
 # 处理 Alert 弹窗
@@ -385,13 +402,15 @@ driver.quit()</code></pre>
             <h3>无头模式</h3>
             <pre><code class="python">from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 
 # 配置无头模式
-chrome_options = Options()
-chrome_options.add_argument('--headless')
-chrome_options.add_argument('--disable-gpu')
+options = Options()
+options.add_argument('--headless=new')  # 新版无头模式
+options.add_argument('--disable-gpu')
 
-driver = webdriver.Chrome(options=chrome_options)
+service = Service()
+driver = webdriver.Chrome(service=service, options=options)
 driver.get('https://example.com')
 print(driver.title)
 driver.quit()</code></pre>

@@ -382,8 +382,12 @@ plt.close()</code></pre>
             <h3>自定义样式</h3>
             <pre><code class="python">import matplotlib.pyplot as plt
 
-# 设置样式
-plt.style.use('seaborn')
+# 设置样式（matplotlib 3.8+ 使用 seaborn-v0_8）
+plt.style.use('seaborn-v0_8')
+
+# 或使用内置样式
+# plt.style.use('ggplot')
+# plt.style.use('dark_background')
 
 # 自定义图表
 fig, ax = plt.subplots(figsize=(10, 6))
