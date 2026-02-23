@@ -57,7 +57,7 @@
             background: #764ba2;
             color: white;
         }
-        
+
         /* 架构图样式 */
         .architecture-diagram {
             background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
@@ -108,6 +108,124 @@
             gap: 15px;
             margin: 20px 0;
         }
+        
+        /* 树图样式 */
+        .tree-diagram {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+            overflow-x: auto;
+        }
+        .tree-node {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin: 5px;
+            min-width: 120px;
+            text-align: center;
+        }
+        .tree-node.sub {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            font-size: 0.9em;
+        }
+        .tree-node.leaf {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            font-size: 0.85em;
+        }
+        .tree-branch {
+            text-align: center;
+            color: #667eea;
+            font-size: 1.2em;
+            margin: 5px 0;
+        }
+        .tree-level {
+            text-align: center;
+            margin: 10px 0;
+        }
+        
+        /* 流程图样式 */
+        .flowchart {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+        .flow-step {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border: 2px solid #764ba2;
+            border-radius: 8px;
+            padding: 15px 25px;
+            margin: 10px;
+            min-width: 150px;
+            font-weight: 600;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .flow-step.start {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            border: none;
+        }
+        .flow-step.process {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+        }
+        .flow-step.decision {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            border-radius: 20px;
+        }
+        .flow-step.end {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+            color: white;
+            border: none;
+            border-radius: 20px;
+        }
+        .flow-arrow {
+            text-align: center;
+            font-size: 1.5em;
+            color: #667eea;
+            margin: 10px 0;
+        }
+        .flow-row {
+            text-align: center;
+            margin: 10px 0;
+        }
+        
+        /* 实战案例样式 */
+        .case-study {
+            background: white;
+            border-left: 4px solid #667eea;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .case-study h4 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        .case-study .difficulty {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+        .case-study .difficulty.beginner { background: #28a745; }
+        .case-study .difficulty.intermediate { background: #ffc107; color: #333; }
+        .case-study .difficulty.advanced { background: #dc3545; }
         
         /* 类卡片样式 */
         .class-card {
@@ -1228,6 +1346,710 @@ reconstructed = keras.Model.from_config(config)</code></pre>
                     <li>避免过大的学习率导致训练不稳定</li>
                     <li>避免在没有 BatchNorm 时使用 bias</li>
                     <li>避免在测试时忘记设置 <code>training=False</code></li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="examples" class="content-section">
+            <h2>九、实战案例</h2>
+            <p>通过实际项目案例，掌握 Keras 在真实场景中的应用。</p>
+
+            <!-- 案例 1: 手写数字识别 -->
+            <div class="case-study">
+                <h4>📝 案例 1：MNIST 手写数字识别 <span class="difficulty beginner">入门</span></h4>
+                <p>使用 CNN 识别手写数字，准确率可达 99% 以上。</p>
+                
+                <h5>🌳 模型架构图</h5>
+                <div class="tree-diagram">
+                    <div class="tree-level">
+                        <div class="tree-node">输入层<br><small>28×28×1</small></div>
+                    </div>
+                    <div class="tree-branch">↓</div>
+                    <div class="tree-level">
+                        <div class="tree-node sub">Conv2D<br><small>32 滤波器</small></div>
+                        <div class="tree-node sub">Conv2D<br><small>32 滤波器</small></div>
+                    </div>
+                    <div class="tree-branch">↓</div>
+                    <div class="tree-level">
+                        <div class="tree-node sub">MaxPooling<br><small>2×2</small></div>
+                        <div class="tree-node leaf">Dropout<br><small>0.25</small></div>
+                    </div>
+                    <div class="tree-branch">↓</div>
+                    <div class="tree-level">
+                        <div class="tree-node sub">Conv2D<br><small>64 滤波器</small></div>
+                        <div class="tree-node sub">Conv2D<br><small>64 滤波器</small></div>
+                    </div>
+                    <div class="tree-branch">↓</div>
+                    <div class="tree-level">
+                        <div class="tree-node sub">MaxPooling<br><small>2×2</small></div>
+                        <div class="tree-node leaf">Dropout<br><small>0.25</small></div>
+                    </div>
+                    <div class="tree-branch">↓</div>
+                    <div class="tree-level">
+                        <div class="tree-node">Flatten</div>
+                    </div>
+                    <div class="tree-branch">↓</div>
+                    <div class="tree-level">
+                        <div class="tree-node sub">Dense<br><small>128 神经元</small></div>
+                        <div class="tree-node leaf">Dropout<br><small>0.5</small></div>
+                    </div>
+                    <div class="tree-branch">↓</div>
+                    <div class="tree-level">
+                        <div class="tree-node">输出层<br><small>10 类别</small></div>
+                    </div>
+                </div>
+
+                <h5>💻 完整代码</h5>
+                <pre><code class="python">import keras
+from keras import Sequential, layers
+from keras.datasets import mnist
+from keras.callbacks import EarlyStopping, ReduceLROnPlateau
+import numpy as np
+
+# 1. 加载和预处理数据
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
+x_train = x_train.astype('float32') / 255.0
+x_test = x_test.astype('float32') / 255.0
+x_train = x_train.reshape(-1, 28, 28, 1)
+x_test = x_test.reshape(-1, 28, 28, 1)
+
+# 2. 构建模型
+model = Sequential([
+    layers.Input(shape=(28, 28, 1)),
+    
+    # 卷积块 1
+    layers.Conv2D(32, (3, 3), activation='relu', padding='same'),
+    layers.Conv2D(32, (3, 3), activation='relu', padding='same'),
+    layers.MaxPooling2D((2, 2)),
+    layers.Dropout(0.25),
+    
+    # 卷积块 2
+    layers.Conv2D(64, (3, 3), activation='relu', padding='same'),
+    layers.Conv2D(64, (3, 3), activation='relu', padding='same'),
+    layers.MaxPooling2D((2, 2)),
+    layers.Dropout(0.25),
+    
+    # 分类头
+    layers.Flatten(),
+    layers.Dense(128, activation='relu'),
+    layers.Dropout(0.5),
+    layers.Dense(10, activation='softmax')
+])
+
+# 3. 编译模型
+model.compile(
+    optimizer='adam',
+    loss='sparse_categorical_crossentropy',
+    metrics=['accuracy']
+)
+
+# 4. 训练
+callbacks = [
+    EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True),
+    ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=5)
+]
+
+history = model.fit(
+    x_train, y_train,
+    batch_size=128,
+    epochs=20,
+    validation_split=0.1,
+    callbacks=callbacks
+)
+
+# 5. 评估
+test_loss, test_acc = model.evaluate(x_test, y_test)
+print(f"测试准确率：{test_acc:.4f}")
+
+# 6. 预测可视化
+predictions = model.predict(x_test[:10])
+for i, pred in enumerate(predictions):
+    print(f"样本{i}: 预测={np.argmax(pred)}, 真实={y_test[i]}")</code></pre>
+            </div>
+
+            <!-- 案例 2: 电影评论情感分析 -->
+            <div class="case-study">
+                <h4>🎬 案例 2：IMDB 电影评论情感分析 <span class="difficulty intermediate">中级</span></h4>
+                <p>使用 LSTM 处理文本序列，判断评论是正面还是负面。</p>
+                
+                <h5>🌳 模型架构图</h5>
+                <div class="tree-diagram">
+                    <div class="tree-level">
+                        <div class="tree-node">输入层<br><small>序列长度 200</small></div>
+                    </div>
+                    <div class="tree-branch">↓</div>
+                    <div class="tree-level">
+                        <div class="tree-node sub">Embedding<br><small>10000×128</small></div>
+                    </div>
+                    <div class="tree-branch">↓</div>
+                    <div class="tree-level">
+                        <div class="tree-node sub">SpatialDropout1D<br><small>0.2</small></div>
+                    </div>
+                    <div class="tree-branch">↓</div>
+                    <div class="tree-level">
+                        <div class="tree-node sub">LSTM<br><small>64 单元</small></div>
+                        <div class="tree-node leaf">Dropout<br><small>0.2</small></div>
+                    </div>
+                    <div class="tree-branch">↓</div>
+                    <div class="tree-level">
+                        <div class="tree-node sub">Dense<br><small>32 神经元</small></div>
+                        <div class="tree-node leaf">Dropout<br><small>0.3</small></div>
+                    </div>
+                    <div class="tree-branch">↓</div>
+                    <div class="tree-level">
+                        <div class="tree-node">输出层<br><small>1 神经元 (sigmoid)</small></div>
+                    </div>
+                </div>
+
+                <h5>💻 完整代码</h5>
+                <pre><code class="python">import keras
+from keras import Sequential, layers
+from keras.datasets import imdb
+from keras.preprocessing.sequence import pad_sequences
+
+# 1. 加载数据
+max_words = 10000
+max_len = 200
+
+(x_train, y_train), (x_test, y_test) = imdb.load_data(num_words=max_words)
+x_train = pad_sequences(x_train, maxlen=max_len)
+x_test = pad_sequences(x_test, maxlen=max_len)
+
+# 2. 构建模型
+model = Sequential([
+    layers.Input(shape=(max_len,)),
+    layers.Embedding(max_words, 128),
+    layers.SpatialDropout1D(0.2),
+    layers.LSTM(64, dropout=0.2, recurrent_dropout=0.2),
+    layers.Dense(32, activation='relu'),
+    layers.Dropout(0.3),
+    layers.Dense(1, activation='sigmoid')
+])
+
+# 3. 编译和训练
+model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+
+history = model.fit(
+    x_train, y_train,
+    batch_size=128,
+    epochs=10,
+    validation_split=0.1,
+    callbacks=[
+        keras.callbacks.EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
+    ]
+)
+
+# 4. 评估
+test_loss, test_acc = model.evaluate(x_test, y_test)
+print(f"测试准确率：{test_acc:.4f}")
+
+# 5. 预测新评论
+def predict_sentiment(text):
+    # 简化版：实际需要使用分词器
+    print(f"评论：{text[:50]}...")
+    return "正面" if model.predict([text])[0][0] > 0.5 else "负面"
+
+print(predict_sentiment("This movie was absolutely amazing!"))</code></pre>
+            </div>
+
+            <!-- 案例 3: ResNet 迁移学习 -->
+            <div class="case-study">
+                <h4>🔄 案例 3：ResNet 迁移学习图像分类 <span class="difficulty advanced">高级</span></h4>
+                <p>使用预训练 ResNet50 进行图像分类，支持自定义类别。</p>
+                
+                <h5>🔄 训练流程图</h5>
+                <div class="flowchart">
+                    <div class="flow-row">
+                        <div class="flow-step start">开始</div>
+                    </div>
+                    <div class="flow-arrow">↓</div>
+                    <div class="flow-row">
+                        <div class="flow-step process">加载预训练 ResNet50</div>
+                    </div>
+                    <div class="flow-arrow">↓</div>
+                    <div class="flow-row">
+                        <div class="flow-step process">冻结基础模型</div>
+                    </div>
+                    <div class="flow-arrow">↓</div>
+                    <div class="flow-row">
+                        <div class="flow-step process">添加自定义分类头</div>
+                    </div>
+                    <div class="flow-arrow">↓</div>
+                    <div class="flow-row">
+                        <div class="flow-step decision">训练顶层？</div>
+                    </div>
+                    <div class="flow-arrow">↓</div>
+                    <div class="flow-row">
+                        <div class="flow-step process">解冻部分层</div>
+                        <div class="flow-step process">微调训练</div>
+                    </div>
+                    <div class="flow-arrow">↓</div>
+                    <div class="flow-row">
+                        <div class="flow-step end">保存模型</div>
+                    </div>
+                </div>
+
+                <h5>💻 完整代码</h5>
+                <pre><code class="python">import keras
+from keras import layers, applications, callbacks
+import tensorflow as tf
+
+# 1. 数据准备
+img_size = 224
+batch_size = 32
+
+train_ds = tf.keras.utils.image_dataset_from_directory(
+    'data/train',
+    image_size=(img_size, img_size),
+    batch_size=batch_size
+)
+
+val_ds = tf.keras.utils.image_dataset_from_directory(
+    'data/val',
+    image_size=(img_size, img_size),
+    batch_size=batch_size
+)
+
+# 数据增强
+data_augmentation = keras.Sequential([
+    layers.RandomFlip('horizontal'),
+    layers.RandomRotation(0.1),
+    layers.RandomZoom(0.1),
+    layers.RandomContrast(0.1),
+])
+
+# 2. 构建模型（使用函数式 API）
+inputs = keras.Input(shape=(img_size, img_size, 3))
+x = data_augmentation(inputs)
+x = applications.resnet.preprocess_input(x)
+
+# 加载预训练模型
+base_model = applications.ResNet50(
+    include_top=False,
+    weights='imagenet',
+    input_shape=(img_size, img_size, 3)
+)
+base_model.trainable = False  # 冻结
+
+x = base_model(x, training=False)
+x = layers.GlobalAveragePooling2D()(x)
+x = layers.BatchNormalization()(x)
+x = layers.Dense(256, activation='relu')(x)
+x = layers.Dropout(0.5)(x)
+outputs = layers.Dense(10, activation='softmax')(x)  # 10 个类别
+
+model = keras.Model(inputs, outputs)
+
+# 3. 编译模型
+model.compile(
+    optimizer='adam',
+    loss='sparse_categorical_crossentropy',
+    metrics=['accuracy', keras.metrics.Precision(), keras.metrics.Recall()]
+)
+
+# 4. 训练顶层
+callbacks_list = [
+    callbacks.EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True),
+    callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=5, min_lr=1e-7),
+    callbacks.ModelCheckpoint('best_model.keras', save_best_only=True, monitor='val_loss', mode='min')
+]
+
+history = model.fit(
+    train_ds,
+    validation_data=val_ds,
+    epochs=20,
+    callbacks=callbacks_list
+)
+
+# 5. 微调：解冻部分层
+base_model.trainable = True
+for layer in base_model.layers[:-40]:
+    layer.trainable = False
+
+model.compile(
+    optimizer=keras.optimizers.Adam(learning_rate=1e-5),
+    loss='sparse_categorical_crossentropy',
+    metrics=['accuracy']
+)
+
+# 继续训练
+history_fine = model.fit(
+    train_ds,
+    validation_data=val_ds,
+    epochs=30,
+    callbacks=callbacks_list
+)
+
+# 6. 保存和导出
+model.save('final_model.keras')
+model.export('saved_model/')
+print("模型训练完成并保存！")</code></pre>
+            </div>
+
+            <!-- 案例 4: 时间序列预测 -->
+            <div class="case-study">
+                <h4>📈 案例 4：LSTM 时间序列预测 <span class="difficulty intermediate">中级</span></h4>
+                <p>使用 LSTM 预测股票价格或任何时间序列数据。</p>
+                
+                <h5>💻 完整代码</h5>
+                <pre><code class="python">import keras
+from keras import Sequential, layers
+import numpy as np
+import pandas as pd
+
+# 1. 准备时间序列数据
+def create_sequences(data, seq_length=60):
+    """创建序列样本"""
+    X, y = [], []
+    for i in range(len(data) - seq_length):
+        X.append(data[i:i+seq_length])
+        y.append(data[i+seq_length])
+    return np.array(X), np.array(y)
+
+# 示例：生成模拟数据
+np.random.seed(42)
+data = np.cumsum(np.random.randn(1000)) + 100  # 随机游走
+data = (data - data.mean()) / data.std()  # 标准化
+
+# 创建序列
+seq_length = 60
+X, y = create_sequences(data, seq_length)
+
+# 划分训练测试集
+split = int(0.8 * len(X))
+X_train, X_test = X[:split], X[split:]
+y_train, y_test = y[:split], y[split:]
+
+# 重塑为 [samples, timesteps, features]
+X_train = X_train.reshape(-1, seq_length, 1)
+X_test = X_test.reshape(-1, seq_length, 1)
+
+# 2. 构建 LSTM 模型
+model = Sequential([
+    layers.Input(shape=(seq_length, 1)),
+    layers.LSTM(50, return_sequences=True),
+    layers.Dropout(0.2),
+    layers.LSTM(50),
+    layers.Dropout(0.2),
+    layers.Dense(25, activation='relu'),
+    layers.Dense(1)  # 回归输出
+])
+
+# 3. 编译模型
+model.compile(
+    optimizer=keras.optimizers.Adam(learning_rate=0.001),
+    loss='mse',
+    metrics=['mae']
+)
+
+# 4. 训练
+history = model.fit(
+    X_train, y_train,
+    batch_size=32,
+    epochs=50,
+    validation_split=0.1,
+    callbacks=[
+        keras.callbacks.EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True),
+        keras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=5)
+    ]
+)
+
+# 5. 评估
+test_loss, test_mae = model.evaluate(X_test, y_test)
+print(f"测试 MAE: {test_mae:.4f}")
+
+# 6. 预测
+predictions = model.predict(X_test)
+
+# 7. 可视化
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(12, 6))
+plt.plot(y_test[:100], label='真实值')
+plt.plot(predictions[:100].flatten(), label='预测值', alpha=0.7)
+plt.legend()
+plt.title('时间序列预测')
+plt.show()</code></pre>
+            </div>
+
+            <!-- 案例 5: 自编码器异常检测 -->
+            <div class="case-study">
+                <h4>🔍 案例 5：自编码器异常检测 <span class="difficulty advanced">高级</span></h4>
+                <p>使用自编码器检测异常数据点，适用于欺诈检测、故障诊断等场景。</p>
+                
+                <h5>🌳 模型架构图</h5>
+                <div class="tree-diagram">
+                    <div class="tree-level">
+                        <div class="tree-node">输入层<br><small>原始特征</small></div>
+                    </div>
+                    <div class="tree-branch">↓ 编码器</div>
+                    <div class="tree-level">
+                        <div class="tree-node sub">Dense<br><small>64</small></div>
+                        <div class="tree-node sub">Dense<br><small>32</small></div>
+                        <div class="tree-node sub">Dense<br><small>16</small></div>
+                    </div>
+                    <div class="tree-branch">↓ 瓶颈</div>
+                    <div class="tree-level">
+                        <div class="tree-node">潜在空间<br><small>8 维</small></div>
+                    </div>
+                    <div class="tree-branch">↓ 解码器</div>
+                    <div class="tree-level">
+                        <div class="tree-node sub">Dense<br><small>16</small></div>
+                        <div class="tree-node sub">Dense<br><small>32</small></div>
+                        <div class="tree-node sub">Dense<br><small>64</small></div>
+                    </div>
+                    <div class="tree-branch">↓</div>
+                    <div class="tree-level">
+                        <div class="tree-node">输出层<br><small>重构输入</small></div>
+                    </div>
+                </div>
+
+                <h5>💻 完整代码</h5>
+                <pre><code class="python">import keras
+from keras import layers, Model
+import numpy as np
+from sklearn.preprocessing import StandardScaler
+
+# 1. 准备数据（使用正常数据训练）
+np.random.seed(42)
+n_samples = 1000
+n_features = 20
+
+# 生成正常数据
+X_normal = np.random.randn(n_samples, n_features) * 0.5 + 1
+
+# 生成异常数据（用于测试）
+X_anomaly = np.random.randn(100, n_features) * 2 + 3
+
+# 标准化
+scaler = StandardScaler()
+X_normal_scaled = scaler.fit_transform(X_normal)
+X_anomaly_scaled = scaler.transform(X_anomaly)
+
+# 2. 构建自编码器
+input_dim = X_normal.shape[1]
+
+# 编码器
+encoder_input = layers.Input(shape=(input_dim,))
+x = layers.Dense(64, activation='relu')(encoder_input)
+x = layers.BatchNormalization()(x)
+x = layers.Dropout(0.3)(x)
+x = layers.Dense(32, activation='relu')(x)
+x = layers.BatchNormalization()(x)
+x = layers.Dense(16, activation='relu')(x)
+encoded = layers.Dense(8, activation='relu')(x)  # 瓶颈层
+
+# 解码器
+x = layers.Dense(16, activation='relu')(encoded)
+x = layers.BatchNormalization()(x)
+x = layers.Dense(32, activation='relu')(x)
+x = layers.BatchNormalization()(x)
+x = layers.Dense(64, activation='relu')(x)
+decoded = layers.Dense(input_dim, activation='linear')(x)
+
+# 创建模型
+autoencoder = Model(encoder_input, decoded)
+autoencoder.compile(
+    optimizer=keras.optimizers.Adam(learning_rate=0.001),
+    loss='mse'
+)
+
+autoencoder.summary()
+
+# 3. 训练（只用正常数据）
+history = autoencoder.fit(
+    X_normal_scaled, X_normal_scaled,
+    batch_size=32,
+    epochs=100,
+    validation_split=0.1,
+    callbacks=[
+        keras.callbacks.EarlyStopping(monitor='val_loss', patience=15, restore_best_weights=True),
+        keras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=10)
+    ]
+)
+
+# 4. 计算重构误差
+reconstructed_normal = autoencoder.predict(X_normal_scaled)
+reconstructed_anomaly = autoencoder.predict(X_anomaly_scaled)
+
+# 计算 MSE 误差
+mse_normal = np.mean(np.square(X_normal_scaled - reconstructed_normal), axis=1)
+mse_anomaly = np.mean(np.square(X_anomaly_scaled - reconstructed_anomaly), axis=1)
+
+# 5. 设置异常阈值
+threshold = np.percentile(mse_normal, 95)  # 95% 分位数
+print(f"异常阈值：{threshold:.4f}")
+
+# 6. 异常检测
+def is_anomaly(mse, threshold):
+    return mse > threshold
+
+print(f"正常数据误报率：{np.mean(is_anomaly(mse_normal, threshold)):.2%}")
+print(f"异常数据检出率：{np.mean(is_anomaly(mse_anomaly, threshold)):.2%}")
+
+# 7. 可视化
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(10, 6))
+plt.hist(mse_normal, bins=50, alpha=0.7, label='正常数据')
+plt.hist(mse_anomaly, bins=50, alpha=0.7, label='异常数据')
+plt.axvline(threshold, color='red', linestyle='--', label=f'阈值：{threshold:.4f}')
+plt.xlabel('重构误差 (MSE)')
+plt.ylabel('频数')
+plt.legend()
+plt.title('自编码器异常检测')
+plt.show()</code></pre>
+            </div>
+        </section>
+
+        <section id="deployment" class="content-section">
+            <h2>十、模型部署</h2>
+            <p>将训练好的模型部署到生产环境。</p>
+
+            <h3>10.1 保存和加载</h3>
+            <pre><code class="python">import keras
+
+# 保存整个模型（推荐）
+model.save('my_model.keras')
+
+# 加载模型
+loaded_model = keras.models.load_model('my_model.keras')
+
+# 保存权重
+model.save_weights('model.weights.h5')
+
+# 加载权重
+model.load_weights('model.weights.h5')
+
+# 仅保存架构
+config = model.get_config()
+json_config = model.to_json()
+
+# 从配置重建
+reconstructed = keras.Model.from_config(config)</code></pre>
+
+            <h3>10.2 导出格式对比</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>格式</th>
+                        <th>用途</th>
+                        <th>优点</th>
+                        <th>代码</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>.keras</strong></td>
+                        <td>Keras 原生格式</td>
+                        <td>完整保存模型和权重</td>
+                        <td><code>model.save('model.keras')</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>SavedModel</strong></td>
+                        <td>TensorFlow 部署</td>
+                        <td>支持 TF Serving、TF Lite</td>
+                        <td><code>model.export('saved_model/')</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>ONNX</strong></td>
+                        <td>跨平台部署</td>
+                        <td>支持多种推理引擎</td>
+                        <td><code>tf2onnx.convert.from_keras()</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>TorchScript</strong></td>
+                        <td>PyTorch 后端</td>
+                        <td>PyTorch 生态部署</td>
+                        <td><code>model.export('model.pt')</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>10.3 TensorFlow Serving 部署</h3>
+            <pre><code class="python"># 1. 导出为 SavedModel
+model.export('saved_model/1')
+
+# 2. 使用 Docker 运行 TF Serving
+# docker run -p 8501:8501 \
+#   --mount type=bind,source=$(pwd)/saved_model,target=/models/my_model \
+#   -e MODEL_NAME=my_model -t tensorflow/serving
+
+# 3. 调用服务
+import requests
+import json
+
+data = json.dumps({
+    "signature_name": "serving_default",
+    "instances": [[0.1, 0.2, 0.3, ...]]  # 输入数据
+})
+
+response = requests.post(
+    'http://localhost:8501/v1/models/my_model:predict',
+    data=data
+)
+predictions = response.json()['predictions']</code></pre>
+
+            <h3>10.4 Web 应用部署（Flask）</h3>
+            <pre><code class="python">from flask import Flask, request, jsonify
+import keras
+import numpy as np
+
+app = Flask(__name__)
+
+# 加载模型
+model = keras.models.load_model('my_model.keras')
+
+@app.route('/predict', methods=['POST'])
+def predict():
+    try:
+        data = request.json['data']
+        data = np.array(data)
+        
+        # 预处理
+        data = data.reshape(1, -1)  # 根据模型调整
+        
+        # 预测
+        prediction = model.predict(data)[0]
+        
+        return jsonify({
+            'prediction': prediction.tolist(),
+            'class': int(np.argmax(prediction))
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=5000)</code></pre>
+        </section>
+
+        <section id="resources" class="content-section">
+            <h2>十一、学习资源</h2>
+            
+            <div class="feature-box">
+                <h3>📚 官方文档</h3>
+                <ul>
+                    <li><a href="https://keras.io/" target="_blank">Keras 官网</a> - 最新文档和 API 参考</li>
+                    <li><a href="https://www.tensorflow.org/" target="_blank">TensorFlow 官网</a> - TensorFlow 后端文档</li>
+                    <li><a href="https://pytorch.org/" target="_blank">PyTorch 官网</a> - PyTorch 后端文档</li>
+                </ul>
+            </div>
+
+            <div class="feature-box">
+                <h3>🎓 在线课程</h3>
+                <ul>
+                    <li>Deep Learning Specialization (Coursera)</li>
+                    <li>Fast.ai Practical Deep Learning</li>
+                    <li>TensorFlow Developer Certificate</li>
+                </ul>
+            </div>
+
+            <div class="feature-box">
+                <h3>💻 实战项目</h3>
+                <ul>
+                    <li>Kaggle 竞赛 - 实践深度学习</li>
+                    <li>GitHub 开源项目 - 学习优秀代码</li>
+                    <li>个人项目 - 解决实际问题</li>
                 </ul>
             </div>
         </section>
