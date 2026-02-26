@@ -6,7 +6,16 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>爬虫技术 - Python 入门教程</title>
-    <link rel="stylesheet" href="styles.css">    <style>
+    <link rel="stylesheet" href="styles.css">
+    <script src="lib/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: { useMaxWidth: true, htmlLabels: true, curve: 'basis' },
+            sequence: { useMaxWidth: true, diagramMarginX: 50, actorMargin: 50 }
+        });
+    </script>    <style>
         /* 二级导航样式 */
         .nav-category {
             margin-bottom: 10px;
@@ -221,6 +230,52 @@
     </script>
 
 <main>
+        <section id="intro" class="content-section">
+            <h2>🕷️ 爬虫技术概述</h2>
+            <p>网页爬虫（Web Scraping）是一种自动获取网页内容的技术。Python 提供了丰富的爬虫库和工具。</p>
+            
+            <div class="mermaid-container">
+                <h4>🔄 爬虫基本工作流程</h4>
+                <div class="mermaid">
+                    flowchart TD
+                        A[确定目标URL] --> B[发送HTTP请求]
+                        B --> C{请求成功?}
+                        C -->|是| D[获取网页内容]
+                        C -->|否| E[记录错误]
+                        E --> F[等待重试]
+                        F --> B
+                        D --> G[解析HTML/XML]
+                        G --> H[提取目标数据]
+                        H --> I{需要更多页面?}
+                        I -->|是| J[获取下一页URL]
+                        J --> B
+                        I -->|否| K[保存数据]
+                        K --> L[结束]
+                        style C fill:#f093fb,color:#fff
+                        style I fill:#f093fb,color:#fff
+                </div>
+            </div>
+            
+            <div class="mermaid-container">
+                <h4>🛠️ 爬虫工具对比</h4>
+                <div class="mermaid">
+                    flowchart TB
+                        A[Python爬虫工具] --> B[静态页面]
+                        A --> C[动态页面]
+                        A --> D[框架]
+                        B --> B1[Requests]
+                        B --> B2[BeautifulSoup]
+                        B --> B3[lxml]
+                        C --> C1[Selenium]
+                        C --> C2[Playwright]
+                        C --> C3[Pyppeteer]
+                        D --> D1[Scrapy]
+                        D --> D2[PySpider]
+                        style A fill:#667eea,color:#fff
+                </div>
+            </div>
+        </section>
+        
         <section id="beautifulsoup" class="content-section">
             <h2>BeautifulSoup</h2>
             <p>BeautifulSoup 是一个 Python 库，用于从 HTML 或 XML 文件中提取数据，非常适合网页爬虫。</p>

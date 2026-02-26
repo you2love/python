@@ -6,7 +6,16 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>系统运维 - Python 入门教程</title>
-    <link rel="stylesheet" href="styles.css">    <style>
+    <link rel="stylesheet" href="styles.css">
+    <script src="lib/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: { useMaxWidth: true, htmlLabels: true, curve: 'basis' },
+            sequence: { useMaxWidth: true, diagramMarginX: 50, actorMargin: 50 }
+        });
+    </script>    <style>
         /* 二级导航样式 */
         .nav-category {
             margin-bottom: 10px;
@@ -224,6 +233,57 @@
         <section id="advanced" class="content-section">
             <h2>高级特性</h2>
             <p>Python 提供了许多强大的高级特性，可以让代码更简洁、更优雅。</p>
+            
+            <div class="mermaid-container">
+                <h4>🔧 装饰器执行流程</h4>
+                <div class="mermaid">
+                    flowchart TD
+                        A[定义装饰器函数] --> B[定义被装饰函数]
+                        B --> C[调用装饰器]
+                        C --> D[装饰器返回wrapper函数]
+                        D --> E[调用wrapper]
+                        E --> F[执行前操作]
+                        F --> G[调用原函数]
+                        G --> H[执行后操作]
+                        H --> I[返回结果]
+                        style C fill:#f093fb,color:#fff
+                </div>
+            </div>
+            
+            <div class="mermaid-container">
+                <h4>⚡ 异步编程执行流程</h4>
+                <div class="mermaid">
+                    flowchart TD
+                        A[定义async函数] --> B[创建事件循环]
+                        B --> C[创建Task任务]
+                        C --> D[await等待协程]
+                        D --> E{等待完成?}
+                        E -->|是| F[获取结果]
+                        E -->|否| G[切换执行其他任务]
+                        G --> D
+                        F --> H[事件循环结束]
+                        style E fill:#f093fb,color:#fff
+                </div>
+            </div>
+            
+            <div class="mermaid-container">
+                <h4>🔄 同步 vs 异步对比</h4>
+                <div class="mermaid">
+                    flowchart LR
+                        subgraph 同步
+                            A1[任务1开始] --> A2[任务1结束]
+                            A2 --> A3[任务2开始]
+                            A3 --> A4[任务2结束]
+                        end
+                        subgraph 异步
+                            B1[任务1开始] --> B2[任务2开始]
+                            B2 --> B3[任务1结束]
+                            B3 --> B4[任务2结束]
+                        end
+                        style 同步 fill:#e8f5e9
+                        style 异步 fill:#e3f2fd
+                </div>
+            </div>
 
             <h3>列表推导式</h3>
             <pre><code class="python"># 传统方式

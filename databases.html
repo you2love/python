@@ -6,7 +6,17 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>数据存储 - Python 入门教程</title>
-    <link rel="stylesheet" href="styles.css">    <style>
+    <link rel="stylesheet" href="styles.css">
+    <script src="lib/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: { useMaxWidth: true, htmlLabels: true, curve: 'basis' },
+            sequence: { useMaxWidth: true, diagramMarginX: 50, actorMargin: 50 },
+            classDiagram: { useMaxWidth: true }
+        });
+    </script>    <style>
         /* 二级导航样式 */
         .nav-category {
             margin-bottom: 10px;
@@ -221,6 +231,48 @@
     </script>
 
 <main>
+        <section id="intro" class="content-section">
+            <h2>💾 数据库技术概述</h2>
+            <p>Python 提供了丰富的数据库支持，包括关系型数据库和 NoSQL 数据库。</p>
+            
+            <div class="mermaid-container">
+                <h4>🗃️ 数据库类型分类</h4>
+                <div class="mermaid">
+                    mindmap
+                        root((数据库))
+                            关系型数据库
+                                MySQL
+                                PostgreSQL
+                                SQLite
+                                Oracle
+                            NoSQL数据库
+                                MongoDB[文档数据库]
+                                Redis[键值数据库]
+                                Cassandra[列式数据库]
+                                Neo4j[图数据库]
+                </div>
+            </div>
+            
+            <div class="mermaid-container">
+                <h4>🔄 CRUD 操作流程</h4>
+                <div class="mermaid">
+                    flowchart LR
+                        A[应用程序] --> B[建立连接]
+                        B --> C{操作类型}
+                        C -->|Create| D[INSERT 插入]
+                        C -->|Read| E[SELECT 查询]
+                        C -->|Update| F[UPDATE 更新]
+                        C -->|Delete| G[DELETE 删除]
+                        D --> H[提交事务]
+                        E --> H
+                        F --> H
+                        G --> H
+                        H --> I[关闭连接]
+                        style C fill:#f093fb,color:#fff
+                </div>
+            </div>
+        </section>
+        
         <section id="sqlalchemy" class="content-section">
             <h2>SQLAlchemy</h2>
             <p>SQLAlchemy 是 Python 中最流行的 SQL 工具包和 ORM（对象关系映射）库，提供了强大的数据库操作功能。</p>
