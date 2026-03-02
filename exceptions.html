@@ -236,66 +236,87 @@
 
         <section id="exceptions" class="content-section">
             <h2>异常处理</h2>
-            <p>异常处理可以让程序在遇到错误时优雅地处理，而不是直接崩溃。</p>
+            <p>良好的异常处理让程序健壮，而非裸奔。</p>
 
-            <h3>基本异常处理</h3>
-            <pre><code class="python">try:
-    result = 10 / 0
-except ZeroDivisionError:
-    print("错误：不能除以零")
-
+            <h3>try/except 核心用法</h3>
+            <pre><code class="python"># 基本结构
 try:
-    number = int(input("请输入一个数字："))
-    print(f"你输入的数字是：{number}")
+    risky_operation()
+except SomeError:
+    handle_error()
+
+# 捕获具体异常
+try:
+    x = int(user_input)
 except ValueError:
-    print("错误：请输入有效的数字")
+    print("输入无效")
+
+# 捕获多个异常
+try:
+    data = json.loads(raw)
+except (ValueError, KeyError) as e:
+    print(f"解析失败: {e}")
+
+# 捕获所有异常（慎用）
+try:
+    do_something()
 except Exception as e:
-    print(f"发生了未知错误：{e}")</code></pre>
+    print(f"未知错误: {e}")</code></pre>
 
             <h3>else 和 finally</h3>
-            <pre><code class="python">try:
-    file = open('example.txt', 'r')
-    content = file.read()
-except FileNotFoundError:
-    print("文件不存在")
+            <pre><code class="python"># else: 仅在无异常时执行
+try:
+    result = divide(a, b)
+except ZeroDivisionError:
+    print("除零错误")
 else:
-    # 没有异常时执行
-    print(f"文件内容：{content}")
-finally:
-    # 无论是否有异常都会执行
-    print("操作完成")
-    if 'file' in locals():
-        file.close()</code></pre>
+    print(f"结果: {result}")  # 仅无异常时执行
 
-            <h3>抛出异常</h3>
-            <pre><code class="python">def calculate_age(birth_year):
-    current_year = 2026
-    age = current_year - birth_year
-    
+# finally: 无论怎样都执行（资源清理）
+try:
+    f = open("file.txt")
+    data = f.read()
+finally:
+    f.close()  # 总是执行</code></pre>
+
+            <h3>raise 抛出异常</h3>
+            <pre><code class="python"># 主动抛出异常
+def validate_age(age):
     if age < 0:
-        raise ValueError("出生年份不能大于当前年份")
-    
+        raise ValueError("年龄不能为负")
+    if age > 150:
+        raise ValueError("年龄超出合理范围")
     return age
 
+# 重新抛出异常
 try:
-    age = calculate_age(2030)
-except ValueError as e:
-    print(f"错误：{e}")</code></pre>
+    validate_age(200)
+except ValueError:
+    log_error()
+    raise  # 重新抛出</code></pre>
 
             <h3>自定义异常</h3>
-            <pre><code class="python">class InvalidAgeError(Exception):
-    """自定义异常"""
-    pass
+            <pre><code class="python"># 定义业务异常
+class APIError(Exception):
+    def __init__(self, code, message):
+        self.code = code
+        super().__init__(message)
 
-def set_age(age):
-    if age < 0 or age > 150:
-        raise InvalidAgeError("年龄必须在 0 到 150 之间")
-    return age
+# 使用
+raise APIError(404, "资源不存在")</code></pre>
 
-try:
-    set_age(200)
-except InvalidAgeError as e:
-    print(f"捕获到自定义异常：{e}")</code></pre>
+            <h3>上下文管理器 (推荐)</h3>
+            <pre><code class="python"># 自动资源管理，finally 都不需要写
+with open("file.txt") as f:
+    data = f.read()
+# 文件自动关闭
+
+# 多个资源
+with open("a.txt") as f1, open("b.txt") as f2:
+    pass</code></pre>
+
+            <div class="tip-box">
+                <strong>⚠️ 最佳实践：</strong>不要用 except Exception 捕获所有异常，让具体异常传播；只在能正确处理时才捕获。</div>
         </section>
 
         <div class="topic-nav">

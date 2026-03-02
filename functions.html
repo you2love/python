@@ -236,39 +236,86 @@
 
         <section id="functions" class="content-section">
             <h2>函数</h2>
-            <p>函数是可重复使用的代码块，使用 def 关键字定义：</p>
-            <pre><code class="python"># 定义函数
-def greet(name):
-    """向用户打招呼"""
-    return f"你好, {name}!"
+            <p>函数是 Python 中的核心概念，掌握函数式编程能大幅提升代码质量。</p>
 
-# 调用函数
-message = greet("Python")
-print(message)  # 输出: 你好, Python!
+            <h3>函数定义与调用</h3>
+            <pre><code class="python">def greet(name: str) -> str:
+    """带类型提示的函数"""
+    return f"Hello, {name}!"
 
-# 带默认参数的函数
-def introduce(name, age=18):
-    print(f"我是 {name}，今年 {age} 岁")
+# 调用
+result = greet("Python")
+print(result)  # Hello, Python!</code></pre>
 
-introduce("小明")           # 我是小明，今年 18 岁
-introduce("小红", 20)      # 我是小红，今年 20 岁
+            <h3>参数类型全解</h3>
+            <pre><code class="python"># 位置参数 vs 关键字参数
+def f(a, b, c=10): pass
+f(1, 2)           # 位置
+f(a=1, b=2)       # 关键字
+f(1, b=2)         # 混合
 
-# 返回多个值
-def calculate(a, b):
-    return a + b, a - b
+# *args **kwargs - 可变参数
+def sum_all(*args, **kwargs):
+    print(args)    # (1, 2, 3) 元组
+    print(kwargs)  # {"x": 1, "y": 2} 字典
 
-sum_result, diff_result = calculate(10, 5)
-print(sum_result)   # 15
-print(diff_result)  # 5</code></pre>
+sum_all(1, 2, 3, x=1, y=2)
 
-            <h3>内置函数</h3>
-            <pre><code class="python"># 常用内置函数
-print(len("Hello"))      # 5 - 字符串长度
-print(max([1, 5, 3]))    # 5 - 最大值
-print(min([1, 5, 3]))    # 1 - 最小值
-print(sum([1, 2, 3]))    # 6 - 求和
-print(abs(-5))           # 5 - 绝对值
-print(round(3.14159, 2)) # 3.14 - 四舍五入</code></pre>
+# 仅关键字参数 (Python 3+)
+def f(*, key=None):  # 必须用关键字传参
+    print(key)
+f(key="value")</code></pre>
+
+            <h3>返回值与多返回值</h3>
+            <pre><code class="python"># 返回多个值 - 实际返回 tuple
+def stats(numbers):
+    return sum(numbers), len(numbers), sum(numbers)/len(numbers)
+
+total, count, avg = stats([1, 2, 3])
+
+# 提前返回
+def find_user(users, id):
+    for u in users:
+        if u["id"] == id:
+            return u
+    return None</code></pre>
+
+            <h3>Lambda 匿名函数</h3>
+            <pre><code class="python"># 单行简单函数
+square = lambda x: x ** 2
+print(square(5))  # 25
+
+# 配合内置函数
+nums = [1, 2, 3, 4, 5]
+squares = list(map(lambda x: x**2, nums))
+evens = list(filter(lambda x: x%2==0, nums))
+
+# sorted 配合 lambda
+users = [{"name": "Bob", "age": 30}, {"name": "Alice", "age": 25}]
+sorted_users = sorted(users, key=lambda x: x["age"])</code></pre>
+
+            <h3>高阶函数</h3>
+            <pre><code class="python"># 函数作为参数
+def apply(func, value):
+    return func(value)
+
+apply(lambda x: x*2, 5)  # 10
+
+# 函数作为返回值
+def multiplier(n):
+    return lambda x: x * n
+
+double = multiplier(2)
+print(double(5))  # 10
+
+# 偏函数
+from functools import partial
+def power(base, exp): return base ** exp
+square = partial(power, exp=2)
+print(square(5))  # 25</code></pre>
+
+            <div class="tip-box">
+                <strong>💡 技巧：</strong>过度使用 lambda 会降低可读性，复杂逻辑还是用 def 定义函数。</div>
         </section>
 
         <div class="topic-nav">
