@@ -235,16 +235,52 @@
         </div>
 
         <section id="intro" class="content-section">
-            <h2>什么是 Python？</h2>
-            <p>Python 是一种高级编程语言，由 Guido van Rossum 于 1991 年创建。它以其简洁、易读的语法而闻名，非常适合初学者学习编程。</p>
+            <h2>为什么选择 Python？</h2>
+            <p>Python 是一门"_executable pseudocode"（可执行的伪代码），让开发者能用更少的代码表达更多逻辑。</p>
+
             <div class="feature-box">
-                <h3>Python 的特点：</h3>
+                <h3>Python 的核心优势：</h3>
                 <ul>
-                    <li>✅ 简单易学，语法清晰</li>
-                    <li>✅ 功能强大，应用广泛</li>
-                    <li>✅ 跨平台，可在 Windows、Mac、Linux 上运行</li>
-                    <li>✅ 拥有丰富的第三方库</li>
-                    <li>✅ 免费开源</li>
+                    <li><strong>简洁高效</strong>：一行代码完成列表过滤，用其他语言可能需要 10+ 行</li>
+                    <li><strong>生态丰富</strong>：PyPI 已有 40万+ 包，涵盖 AI、Web、数据分析、自动化</li>
+                    <li><strong>多范式</strong>：支持面向对象、函数式、过程式编程</li>
+                    <li><strong>胶水语言</strong>：轻松集成 C/C++/Java/.NET，调用其他语言实现的库</li>
+                    <li><strong>社区活跃</strong>：Google、Meta、Netflix、Dropbox 等大厂核心业务都在用</li>
+                </ul>
+            </div>
+
+            <h3>一行代码领略 Python 之美</h3>
+            <pre><code class="language-python"># 列表推导式 - 简洁又高效
+squares = [x**2 for x in range(10)]
+
+# 快速排序 - 仅用 3 行
+def qsort(arr):
+    return qsort([x for x in arr[1:] if x <= arr[0]]) + [arr[0]] + \
+           qsort([x for x in arr[1:] if x > arr[0]]) if arr else []
+
+# 文件读取 - with 自动管理资源
+with open('data.txt') as f:
+    content = f.read()</code></pre>
+
+            <h3>Python 能做什么？</h3>
+            <ul>
+                <li><strong>Web 开发</strong>：Django、FastAPI、Flask</li>
+                <li><strong>数据科学</strong>：Pandas、NumPy、Matplotlib</li>
+                <li><strong>AI/ML</strong>：TensorFlow、PyTorch、Keras、Transformers</li>
+                <li><strong>自动化脚本</strong>：文件处理、爬虫、测试自动化</li>
+                <li><strong>DevOps</strong>：Ansible、SaltStack、Fabric</li>
+            </ul>
+
+            <div class="feature-box">
+                <h3>Python 之禅 (The Zen of Python)</h3>
+                <pre><code class="language-python">import this</code></pre>
+                <p>在 Python REPL 中运行 <code>import this</code>，你会看到 Tim Peters 编写的 Python 设计哲学：</p>
+                <ul>
+                    <li>Beautiful is better than ugly.</li>
+                    <li>Explicit is better than implicit.</li>
+                    <li>Simple is better than complex.</li>
+                    <li>Complex is better than complicated.</li>
+                    <li>Readability counts.</li>
                 </ul>
             </div>
         </section>

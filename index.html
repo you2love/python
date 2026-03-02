@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="light">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Python 入门教程</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- Prism.js 语法高亮 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
     <script src="lib/mermaid.min.js"></script>
     <script>
-        mermaid.initialize({ 
+        mermaid.initialize({
             startOnLoad: true,
             theme: 'default',
             flowchart: { useMaxWidth: true, htmlLabels: true, curve: 'basis' },
@@ -17,160 +18,214 @@
         });
     </script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
-
         /* 首页特殊样式 */
         .homepage-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 40px 20px 40px 310px;
+            padding: 40px 20px;
         }
 
         .hero-section {
             text-align: center;
             color: white;
             margin-bottom: 50px;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
         }
 
         .hero-section h1 {
-            font-size: 3.5em;
+            font-size: 3rem;
             margin-bottom: 15px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
         }
 
         .hero-section p {
-            font-size: 1.3em;
+            font-size: 1.25rem;
             opacity: 0.95;
+            position: relative;
         }
 
         .categories-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
             margin-bottom: 40px;
         }
 
         .category-card {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
-            padding: 30px;
+            padding: 28px;
             text-align: center;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        [data-theme="dark"] .category-card {
+            background: rgba(31, 41, 55, 0.95);
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
         }
 
         .category-card:hover {
             transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            border-color: rgba(102, 126, 234, 0.5);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+            border-color: rgba(102, 126, 234, 0.4);
+        }
+
+        .category-card:hover::before {
+            transform: scaleX(1);
         }
 
         .category-card .icon {
-            font-size: 3em;
-            margin-bottom: 15px;
+            font-size: 2.75rem;
+            margin-bottom: 16px;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .category-card:hover .icon {
+            transform: scale(1.1);
         }
 
         .category-card h3 {
             color: #667eea;
-            font-size: 1.5em;
+            font-size: 1.35rem;
             margin-bottom: 10px;
+            font-weight: 600;
         }
 
         .category-card p {
-            color: #666;
-            font-size: 0.95em;
+            color: #6b7280;
+            font-size: 0.9rem;
             margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        [data-theme="dark"] .category-card p {
+            color: #d1d5db;
         }
 
         .category-card a {
             display: inline-block;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 12px 35px;
+            padding: 12px 32px;
             border-radius: 30px;
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.35);
+            border: none;
         }
 
         .category-card a:hover {
             transform: scale(1.05);
             box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+            color: white;
         }
 
         .feature-section {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
-            padding: 40px;
+            padding: 36px;
             margin-top: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        [data-theme="dark"] .feature-section {
+            background: rgba(31, 41, 55, 0.95);
         }
 
         .feature-section h3 {
             color: #764ba2;
-            font-size: 1.8em;
-            margin-bottom: 25px;
+            font-size: 1.6rem;
+            margin-bottom: 24px;
             text-align: center;
+            font-weight: 600;
         }
 
         .feature-list {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 18px;
         }
 
         .feature-item {
             display: flex;
             align-items: flex-start;
-            padding: 15px;
-            background: linear-gradient(135deg, #667eea10 0%, #764ba210 100%);
+            padding: 16px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.06) 0%, rgba(118, 75, 162, 0.06) 100%);
             border-radius: 12px;
             transition: all 0.3s ease;
         }
 
         .feature-item:hover {
-            transform: translateX(5px);
-            background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
+            transform: translateX(6px);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.12) 0%, rgba(118, 75, 162, 0.12) 100%);
         }
 
         .feature-item .emoji {
-            font-size: 1.5em;
-            margin-right: 15px;
+            font-size: 1.4rem;
+            margin-right: 14px;
+            flex-shrink: 0;
         }
 
         .feature-item .content h4 {
             color: #667eea;
-            font-size: 1.1em;
-            margin-bottom: 5px;
+            font-size: 1rem;
+            margin-bottom: 4px;
+            font-weight: 600;
         }
 
         .feature-item .content p {
-            color: #666;
-            font-size: 0.9em;
+            color: #6b7280;
+            font-size: 0.85rem;
             margin: 0;
         }
 
+        [data-theme="dark"] .feature-item .content p {
+            color: #d1d5db;
+        }
+
+        /* 移动端样式 */
         @media (max-width: 768px) {
             .hero-section h1 {
-                font-size: 2.5em;
+                font-size: 2.25rem;
             }
 
             .hero-section p {
-                font-size: 1.1em;
+                font-size: 1rem;
+            }
+
+            .homepage-container {
+                padding: 30px 16px;
             }
 
             .categories-grid {
@@ -180,73 +235,41 @@
             .feature-list {
                 grid-template-columns: 1fr;
             }
-        }
 
-        /* 二级导航样式 */
-        .nav-category {
-            margin-bottom: 10px;
-        }
-
-        .nav-category > h3 {
-            color: #764ba2;
-            font-size: 1em;
-            margin-bottom: 8px;
-            padding-left: 8px;
-            border-left: 3px solid #667eea;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            transition: all 0.3s ease;
-        }
-
-        .nav-category > h3:hover {
-            background: rgba(102, 126, 234, 0.1);
-            border-left-color: #764ba2;
-        }
-
-        .nav-toggle {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 18px;
-            height: 18px;
-            margin-right: 8px;
-            background: rgba(102, 126, 234, 0.1);
-            border-radius: 4px;
-            font-size: 14px;
-            color: #667eea;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            user-select: none;
-        }
-
-        .nav-category > h3:hover .nav-toggle {
-            background: #667eea;
-            color: white;
-        }
-
-        .nav-items {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-
-        .nav-items.expanded {
-            max-height: 500px;
-        }
-
-        .nav-category.expanded > h3 .nav-toggle {
-            transform: rotate(45deg);
-            background: #764ba2;
-            color: white;
+            .feature-section {
+                padding: 24px 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <nav>
-        <div class="nav-category">
+    <!-- 移动端导航切换按钮 -->
+    <button class="nav-toggle-btn" onclick="toggleMobileNav()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <!-- 遮罩层 -->
+    <div class="nav-overlay" onclick="closeMobileNav()"></div>
+
+    <nav id="mainNav">
+        <div class="nav-header">
+            <div class="logo">
+                <div class="logo-icon">🐍</div>
+                <span>Python 教程</span>
+            </div>
+        </div>
+
+        <!-- 主题切换 -->
+        <div class="theme-toggle" onclick="toggleTheme()">
+            <span>主题模式</span>
+            <span class="toggle-icon" id="themeIcon">🌙</span>
+        </div>
+
+        <div class="nav-category expanded">
             <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>📚 基础入门</h3>
-            <div class="nav-items">
+            <div class="nav-items expanded">
                 <ul>
                     <li><a href="basics.html">简介</a></li>
                     <li><a href="basics.html#installation">安装</a></li>
@@ -264,9 +287,9 @@
                 </ul>
             </div>
         </div>
-        <div class="nav-category">
+        <div class="nav-category expanded">
             <h3 onclick="toggleNav(this)"><span class="nav-toggle">+</span>📁 文件操作</h3>
-            <div class="nav-items">
+            <div class="nav-items expanded">
                 <ul>
                     <li><a href="file-management.html">文件操作</a></li>
                     <li><a href="file-management.html#directory">目录操作</a></li>
@@ -382,16 +405,61 @@
             const category = header.parentElement;
             const items = category.querySelector('.nav-items');
             const toggle = header.querySelector('.nav-toggle');
-            
+
             category.classList.toggle('expanded');
             items.classList.toggle('expanded');
-            
+
             if (items.classList.contains('expanded')) {
                 toggle.textContent = '−';
             } else {
                 toggle.textContent = '+';
             }
         }
+
+        // 主题切换
+        function toggleTheme() {
+            const html = document.documentElement;
+            const themeIcon = document.getElementById('themeIcon');
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            themeIcon.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+        }
+
+        // 加载保存的主题
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            document.getElementById('themeIcon').textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+        }
+
+        // 移动端导航切换
+        function toggleMobileNav() {
+            const nav = document.getElementById('mainNav');
+            const btn = document.querySelector('.nav-toggle-btn');
+            const overlay = document.querySelector('.nav-overlay');
+
+            nav.classList.toggle('open');
+            btn.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        function closeMobileNav() {
+            const nav = document.getElementById('mainNav');
+            const btn = document.querySelector('.nav-toggle-btn');
+            const overlay = document.querySelector('.nav-overlay');
+
+            nav.classList.remove('open');
+            btn.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTheme();
+        });
     </script>
 
     <div class="homepage-container">

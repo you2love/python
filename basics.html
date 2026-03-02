@@ -242,253 +242,168 @@
 
 <main>
         <section id="intro" class="content-section">
-            <h2>什么是 Python？</h2>
-            <p>Python 是一种高级编程语言，由 Guido van Rossum 于 1991 年创建。它以其简洁、易读的语法而闻名，非常适合初学者学习编程。</p>
-            <div class="feature-box">
-                <h3>Python 的特点：</h3>
-                <ul>
-                    <li>✅ 简单易学，语法清晰</li>
-                    <li>✅ 功能强大，应用广泛</li>
-                    <li>✅ 跨平台，可在 Windows、Mac、Linux 上运行</li>
-                    <li>✅ 拥有丰富的第三方库</li>
-                    <li>✅ 免费开源</li>
-                </ul>
-            </div>
-            
+            <h2>Python 基础速览</h2>
+            <p>本页面涵盖 Python 开发必备的核心知识，适合有编程基础的开发者快速上手。</p>
+
             <div class="mermaid-container">
-                <h4>🗺️ Python 学习路径</h4>
+                <h4>🗺️ Python 知识体系</h4>
                 <div class="mermaid">
                     flowchart LR
-                        A[📚 基础入门] --> B[📁 文件操作]
-                        B --> C[🌐 网络编程]
-                        C --> D[🕷️ 爬虫技术]
-                        D --> E[📊 数据分析]
-                        E --> F[🤖 AI/机器学习]
-                        A --> G[💾 数据库]
-                        G --> H[🔧 系统运维]
-                        H --> I[🛠️ 实战项目]
-                        F --> I
+                        A[基础语法] --> B[数据结构]
+                        B --> C[函数&面向对象]
+                        C --> D[模块&包]
+                        D --> E[实战技能]
+                        E --> F[Web/数据/AI]
                         style A fill:#11998e,color:#fff
                         style B fill:#667eea,color:#fff
                         style C fill:#764ba2,color:#fff
                         style D fill:#f093fb,color:#fff
                         style E fill:#4facfe,color:#fff
                         style F fill:#00f2fe,color:#333
-                        style G fill:#38ef7d,color:#333
-                        style H fill:#eb3349,color:#fff
-                        style I fill:#f45c43,color:#fff
                 </div>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 建议：</strong>边学边练，在 Python REPL (<code>python</code>) 或 Jupyter Notebook 中尝试代码示例。
             </div>
         </section>
 
         <section id="installation" class="content-section">
             <h2>安装 Python</h2>
-            <h3>Windows 系统</h3>
-            <ol>
-                <li>访问 <a href="https://www.python.org/downloads/" target="_blank">Python 官网</a></li>
-                <li>下载最新版本的 Python 安装包</li>
-                <li>运行安装程序，勾选 "Add Python to PATH"</li>
-                <li>点击 "Install Now" 完成安装</li>
-            </ol>
+            <div class="tip-box">
+                <strong>💡 2026 建议：</strong>使用 <code>pyenv</code> 管理多版本，避免系统 Python 冲突。
+            </div>
 
-            <h3>macOS 系统</h3>
-            <ol>
-                <li>使用 Homebrew 安装：<code>brew install python</code></li>
-                <li>或从 Python 官网下载安装包</li>
-            </ol>
+            <h3>快速安装（推荐）</h3>
+            <pre><code class="bash"># macOS
+brew install python@3.14
 
-            <h3>Linux 系统</h3>
-            <p>大多数 Linux 系统已预装 Python。如需安装：</p>
-            <pre><code>sudo apt-get install python3  # Ubuntu/Debian
-sudo yum install python3      # CentOS/RHEL</code></pre>
+# Linux (Ubuntu/Debian)
+sudo apt update && sudo apt install python3.14 python3.14-venv python3.14-dev
 
-            <h3>验证安装</h3>
-            <p>在终端或命令提示符中输入：</p>
-            <pre><code>python --version
-# 或
-python3 --version</code></pre>
+# Windows - 从 python.org 下载或使用 winget
+winget install Python.Python.3.14</code></pre>
+
+            <h3>pyenv 多版本管理</h3>
+            <pre><code class="bash"># 安装 pyenv
+curl https://pyenv.run | bash
+
+# 安装多个版本
+pyenv install 3.14.0
+pyenv install 3.13.0
+
+# 项目切换版本
+cd myproject
+pyenv local 3.13.0  # 自动创建 .python-version
+
+# 验证
+python --version</code></pre>
         </section>
 
         <section id="basics" class="content-section">
             <h2>基础语法</h2>
-            <h3>Hello World</h3>
-            <p>第一个 Python 程序：</p>
-            <pre><code class="python">print("Hello, World!")</code></pre>
 
-            <h3>注释</h3>
-            <p>Python 使用 # 符号表示单行注释：</p>
-            <pre><code class="python"># 这是一个注释
-print("Hello")  # 这也是注释
+            <h3>Hello World 与注释</h3>
+            <pre><code class="python">print("Hello, World!")  # 输出
 
+# 多行注释用三引号
 """
-这是多行注释
-可以跨越多行
+这是文档字符串
+也是多行注释
 """</code></pre>
 
-            <h3>缩进</h3>
-            <p>Python 使用缩进来表示代码块，通常使用 4 个空格：</p>
+            <h3>缩进 - Python 的灵魂</h3>
             <pre><code class="python">if True:
-    print("这是缩进的代码块")
-    print("同样缩进")
-print("这是外层代码")</code></pre>
+    print("缩进表示代码块")
+    if False:
+        print("嵌套缩进")
+print("这是外层")  # 缩进错误会导致 IndentationError
+
+# PEP 8: 使用 4 空格，禁止 Tab 混用
+# 用编辑器配置：tab-width = 4, insert spaces</code></pre>
+
+            <div class="tip-box">
+                <strong>⚠️ 注意：</strong>缩进是 Python 语法的一部分，缩进不一致会报错。推荐使用空格而非 Tab。</div>
         </section>
 
         <section id="variables" class="content-section">
             <h2>变量</h2>
-            <p>变量是存储数据的容器。在 Python 中，不需要声明变量类型：</p>
-            <pre><code class="python"># 变量赋值
-name = "张三"
-age = 25
-height = 1.75
-is_student = True
+            <p>Python 是动态类型语言，变量无需声明类型：</p>
+            <pre><code class="python"># 基础类型
+name = "张三"      # str
+age = 25           # int
+height = 1.75      # float
+is_active = True   # bool
 
-# 打印变量
-print(name)      # 输出: 张三
-print(age)       # 输出: 25
-print(height)    # 输出: 1.75
-print(is_student) # 输出: True</code></pre>
+# 变量命名规范
+user_name = "valid"    # 小写+下划线
+UserName = "Pascal"   # 类名用 PascalCase
+CONSTANT = 3.14       # 常量用全大写
 
-            <div class="tip-box">
-                <strong>💡 提示：</strong>变量名可以包含字母、数字和下划线，但不能以数字开头。
-            </div>
+# 链式赋值
+a = b = c = 0
+
+# 多元解包
+x, y, z = 1, 2, 3
+first, *rest = [1, 2, 3, 4]  # first=1, rest=[2,3,4]</code></pre>
         </section>
 
         <section id="datatypes" class="content-section">
             <h2>数据类型</h2>
-            
-            <div class="mermaid-container">
-                <h4>📊 Python 数据类型分类</h4>
-                <div class="mermaid">
-                    mindmap
-                        root((Python<br/>数据类型))
-                            数值类型
-                                int[整数]
-                                float[浮点数]
-                                complex[复数]
-                            序列类型
-                                str[字符串]
-                                list[列表]
-                                tuple[元组]
-                                range[范围]
-                            映射类型
-                                dict[字典]
-                            集合类型
-                                set[集合]
-                                frozenset[冻结集合]
-                            布尔类型
-                                bool[布尔值]
-                            空类型
-                                None[None]
-                </div>
-            </div>
-            
-            <h3>基本数据类型</h3>
-            <pre><code class="python"># 整数
-x = 10
-y = -5
 
-# 浮点数
-pi = 3.14159
-price = 19.99
+            <h3>核心数据类型一览</h3>
+            <pre><code class="python"># 数值
+x = 10        # int
+y = 3.14      # float
+z = 1+2j      # complex 复数
 
-# 字符串
-message = "Hello"
-name = 'Python'
+# 字符串 - 不可变
+s = "hello"
+s = 'world'
+s = """多行
+字符串"""
+
+# 列表 - 可变，有序
+nums = [1, 2, 3]
+nums.append(4)
+nums[0] = 0
+
+# 元组 - 不可变，有序
+point = (10, 20)
+x, y = point  # 解包
+
+# 字典 - 可变，键值对
+user = {"name": "张三", "age": 25}
+user["city"] = "北京"
+
+# 集合 - 无序，不重复
+unique = {1, 2, 3}
+unique.add(4)
+unique.add(1)  # 重复无效
 
 # 布尔值
 is_valid = True
 is_empty = False
-
-# 列表
-fruits = ["苹果", "香蕉", "橙子"]
-numbers = [1 3, , 2,4, 5]
-
-# 字典
-person = {
-    "name": "张三",
-    "age": 25,
-    "city": "北京"
-}
-
-# 元组
-coordinates = (10, 20)
-
-# 集合
-unique_numbers = {1, 2, 3, 3, 2, 1}  # {1, 2, 3}</code></pre>
-
-            <table class="info-table">
-                <thead>
-                    <tr>
-                        <th>类型</th>
-                        <th>示例</th>
-                        <th>可变性</th>
-                        <th>说明</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>int</code></td>
-                        <td><code>10, -5, 0</code></td>
-                        <td>不可变</td>
-                        <td>整数类型</td>
-                    </tr>
-                    <tr>
-                        <td><code>float</code></td>
-                        <td><code>3.14, -0.5</code></td>
-                        <td>不可变</td>
-                        <td>浮点数类型</td>
-                    </tr>
-                    <tr>
-                        <td><code>str</code></td>
-                        <td><code>"hello"</code></td>
-                        <td>不可变</td>
-                        <td>字符串类型</td>
-                    </tr>
-                    <tr>
-                        <td><code>list</code></td>
-                        <td><code>[1, 2, 3]</code></td>
-                        <td>可变</td>
-                        <td>有序列表</td>
-                    </tr>
-                    <tr>
-                        <td><code>tuple</code></td>
-                        <td><code>(1, 2, 3)</code></td>
-                        <td>不可变</td>
-                        <td>有序元组</td>
-                    </tr>
-                    <tr>
-                        <td><code>dict</code></td>
-                        <td><code>{"a": 1}</code></td>
-                        <td>可变</td>
-                        <td>键值对映射</td>
-                    </tr>
-                    <tr>
-                        <td><code>set</code></td>
-                        <td><code>{1, 2, 3}</code></td>
-                        <td>可变</td>
-                        <td>无序集合</td>
-                    </tr>
-                    <tr>
-                        <td><code>bool</code></td>
-                        <td><code>True, False</code></td>
-                        <td>不可变</td>
-                        <td>布尔值</td>
-                    </tr>
-                </tbody>
-            </table>
+bool(0)  # False
+bool([])  # False
+bool("")  # False</code></pre>
 
             <h3>类型转换</h3>
-            <pre><code class="python"># 转换为整数
-x = int("42")        # 42
-y = int(3.14)        # 3
+            <pre><code class="python">int("42")     # "42" -> 42
+float("3.14") # "3.14" -> 3.14
+str(42)       # 42 -> "42"
+bool(1)       # True
+list("abc")   # ['a', 'b', 'c']
+set([1,2,2])  # {1, 2}</code></pre>
 
-# 转换为浮点数
-a = float("3.14")    # 3.14
-b = float(5)         # 5.0
-
-# 转换为字符串
-s = str(42)          # "42"
-t = str(3.14)        # "3.14"</code></pre>
+            <div class="feature-box">
+                <h3>可变 vs 不可变：</h3>
+                <ul>
+                    <li><strong>不可变</strong>：int, float, str, tuple, frozenset</li>
+                    <li><strong>可变</strong>：list, dict, set</li>
+                </ul>
+                <p>⚠️ 函数参数传递时注意：可变对象在函数内修改会影响外部</p>
+            </div>
         </section>
 
         <section id="controlflow" class="content-section">
