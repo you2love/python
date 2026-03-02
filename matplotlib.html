@@ -235,25 +235,39 @@
         </div>
 
         <section id="matplotlib" class="content-section">
-            <h2>Matplotlib</h2>
-            <p>Matplotlib 是 Python 中最流行的数据可视化库，可以创建各种静态、动态和交互式图表。</p>
+            <h2>Matplotlib 数据可视化</h2>
 
             <h3>安装</h3>
             <pre><code class="bash">pip install matplotlib</code></pre>
 
-            <h3>基本折线图</h3>
+            <h3>基础图表</h3>
             <pre><code class="python">import matplotlib.pyplot as plt
 
-# 数据
-x = [1, 2, 3, 4, 5]
-y = [2, 4, 6, 8, 10]
+# 折线图
+plt.plot([1,2,3], [4,5,6])
+plt.title("标题")
+plt.xlabel("X轴")
+plt.ylabel("Y轴")
+plt.show()
 
-# 创建图表
-plt.figure(figsize=(10, 6))
-plt.plot(x, y, marker='o', linestyle='-', color='blue', label='数据')
+# 散点图
+plt.scatter([1,2,3], [4,5,6])
 
-# 添加标题和标签
-plt.title('折线图示例', fontsize=16)
+# 柱状图
+plt.bar([1,2,3], [4,5,6])</code></pre>
+
+            <h3>子图</h3>
+            <pre><code class="python">fig, axes = plt.subplots(2, 2)
+axes[0,0].plot([1,2], [3,4])
+axes[0,1].bar([1,2], [3,4])
+plt.show()</code></pre>
+
+            <h3>样式设置</h3>
+            <pre><code class="python">plt.style.use('ggplot')
+plt.rcParams['font.size'] = 12
+
+# 保存图片
+plt.savefig('plot.png', dpi=300)</code></pre>
 plt.xlabel('X 轴', fontsize=12)
 plt.ylabel('Y 轴', fontsize=12)
 

@@ -235,25 +235,48 @@
         </div>
 
         <section id="mongodb" class="content-section">
-            <h2>MongoDB</h2>
-            <p>MongoDB 是一个流行的 NoSQL 文档数据库，PyMongo 是 Python 的 MongoDB 驱动程序。</p>
+            <h2>MongoDB 文档数据库</h2>
 
             <h3>安装</h3>
             <pre><code class="bash">pip install pymongo</code></pre>
 
-            <h3>连接数据库</h3>
+            <h3>连接</h3>
             <pre><code class="python">from pymongo import MongoClient
 
-# 连接到 MongoDB
-client = MongoClient('mongodb://localhost:27017/')
+client = MongoClient("mongodb://localhost:27017/")
+db = client["test_db"]
+collection = db["users"]</code></pre>
 
-# 或使用连接字符串
-# client = MongoClient('mongodb://username:password@localhost:27017/')
+            <h3>CRUD 操作</h3>
+            <pre><code class="python"># 插入
+collection.insert_one({"name": "张三", "age": 25})
+collection.insert_many([
+    {"name": "李四", "age": 30},
+    {"name": "王五", "age": 28}
+])
 
-# 获取数据库
-db = client['test_db']
+# 查询
+collection.find_one({"name": "张三"})
+for user in collection.find({"age": {"$gt": 25}}):
+    print(user)
 
-# 或使用属性访问
+# 更新
+collection.update_one({"name": "张三"}, {"$set": {"age": 26}})
+
+# 删除
+collection.delete_one({"name": "张三"})</code></pre>
+
+            <h3>高级查询</h3>
+            <pre><code class="python"># 条件查询
+collection.find({"age": {"$gt": 20, "$lt": 30}})
+collection.find({"name": {"$regex": "^张"}})
+
+# 排序分页
+collection.find().sort("age", -1).skip(0).limit(10)
+
+# 聚合
+pipeline = [{"$group": {"_id": "$city", "count": {"$sum": 1}}}]
+list(collection.aggregate(pipeline))</code></pre>
 # db = client.test_db
 
 print(f"数据库列表: {client.list_database_names()}")</code></pre>

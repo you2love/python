@@ -235,25 +235,52 @@
         </div>
 
         <section id="sqlalchemy" class="content-section">
-            <h2>SQLAlchemy</h2>
-            <p>SQLAlchemy 是 Python 中最流行的 SQL 工具包和 ORM（对象关系映射）库，提供了强大的数据库操作功能。</p>
+            <h2>SQLAlchemy ORM</h2>
 
             <h3>安装</h3>
-            <pre><code class="bash">pip install sqlalchemy</code></pre>
+            <pre><code class="bash">pip install sqlalchemy pymysql</code></pre>
 
-            <h3>Core 模式（SQL 表达式语言）</h3>
-            <pre><code class="python">from sqlalchemy import create_engine, text
+            <h3>基本使用</h3>
+            <pre><code class="python">from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
-# 创建数据库引擎
-engine = create_engine('sqlite:///example.db')
+engine = create_engine("sqlite:///app.db")
+Session = sessionmaker(bind=engine)
+session = Session()
 
-# 执行原生 SQL
-with engine.connect() as conn:
-    result = conn.execute(text("SELECT 'Hello, SQLAlchemy!'"))
-    print(result.fetchone())
+# 定义模型
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
+
+class User(Base):
+    __tablename__ = 'users'
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
 
 # 创建表
-with engine.connect() as conn:
+Base.metadata.create_all(engine)
+
+# 增删改查
+user = User(name="张三")
+session.add(user)
+session.commit()
+
+# 查询
+session.query(User).filter_by(name="张三").first()</code></pre>
+
+            <h3>关系</h3>
+            <pre><code class="python">from sqlalchemy import ForeignKey
+from sqlalchemy.orm import relationship
+
+class Post(Base):
+    __tablename__ = 'posts'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.id'))
+    user = relationship("User", back_populates="posts")
+
+User.posts = relationship("Post", back_populates="user")</code></pre>
     conn.execute(text("""
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,

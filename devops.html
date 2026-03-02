@@ -231,34 +231,85 @@
 
 <main>
         <section id="advanced" class="content-section">
-            <h2>高级特性</h2>
-            <p>Python 提供了许多强大的高级特性，可以让代码更简洁、更优雅。</p>
-            
-            <div class="mermaid-container">
-                <h4>🔧 装饰器执行流程</h4>
-                <div class="mermaid">
-                    flowchart TD
-                        A[定义装饰器函数] --> B[定义被装饰函数]
-                        B --> C[调用装饰器]
-                        C --> D[装饰器返回wrapper函数]
-                        D --> E[调用wrapper]
-                        E --> F[执行前操作]
-                        F --> G[调用原函数]
-                        G --> H[执行后操作]
-                        H --> I[返回结果]
-                        style C fill:#f093fb,color:#fff
-                </div>
-            </div>
-            
-            <div class="mermaid-container">
-                <h4>⚡ 异步编程执行流程</h4>
-                <div class="mermaid">
-                    flowchart TD
-                        A[定义async函数] --> B[创建事件循环]
-                        B --> C[创建Task任务]
-                        C --> D[await等待协程]
-                        D --> E{等待完成?}
-                        E -->|是| F[获取结果]
+            <h2>Python 高级特性</h2>
+        </section>
+
+        <section id="decorator" class="content-section">
+            <h3>装饰器</h3>
+            <pre><code class="python"># 装饰器本质：闭包
+def timer(func):
+    def wrapper(*args, **kwargs):
+        import time
+        start = time.time()
+        result = func(*args, **kwargs)
+        print(f"耗时: {time.time() - start:.2f}s")
+        return result
+    return wrapper
+
+@timer
+def slow_func():
+    import time
+    time.sleep(1)
+    return "done"
+
+slow_func()</code></pre>
+
+            <h3>带参数的装饰器</h3>
+            <pre><code class="python">def retry(times=3):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            for _ in range(times):
+                try:
+                    return func(*args, **kwargs)
+                except:
+                    continue
+            return None
+        return wrapper
+    return decorator
+
+@retry(times=5)
+def fetch():
+    pass</code></pre>
+        </section>
+
+        <section id="async" class="content-section">
+            <h3>异步编程</h3>
+            <pre><code class="python">import asyncio
+
+async def main():
+    # 并发任务
+    results = await asyncio.gather(
+        asyncio.sleep(1, result="a"),
+        asyncio.sleep(1, result="b")
+    )
+    print(results)  # ['a', 'b']
+
+asyncio.run(main())</code></pre>
+        </section>
+
+        <section id="context-manager" class="content-section">
+            <h3>上下文管理器</h3>
+            <pre><code class="python"># 类方式
+class File:
+    def __enter__(self):
+        self.f = open("file.txt")
+        return self.f
+    def __exit__(self, *args):
+        self.f.close()
+
+# with 使用
+with File() as f:
+    f.read()
+
+# 或用 contextlib
+from contextlib import contextmanager
+@contextmanager
+def timer():
+    import time
+    start = time.time()
+    yield
+    print(f"耗时: {time.time() - start:.2f}")</code></pre>
+        </section>
                         E -->|否| G[切换执行其他任务]
                         G --> D
                         F --> H[事件循环结束]

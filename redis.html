@@ -235,25 +235,48 @@
         </div>
 
         <section id="redis" class="content-section">
-            <h2>Redis</h2>
-            <p>Redis 是一个高性能的键值对数据库，常用于缓存、消息队列、排行榜等场景。</p>
+            <h2>Redis 内存数据库</h2>
 
             <h3>安装</h3>
             <pre><code class="bash">pip install redis</code></pre>
 
-            <h3>连接 Redis</h3>
+            <h3>连接</h3>
             <pre><code class="python">import redis
 
-# 连接到 Redis
-r = redis.Redis(
-    host='localhost',
-    port=6379,
-    db=0,
-    decode_responses=True  # 自动解码为字符串
-)
+r = redis.Redis(host='localhost', port=6379, decode_responses=True)
+r.ping()  # True</code></pre>
 
-# 测试连接
-print(f"Redis 连接状态: {r.ping()}")</code></pre>
+            <h3>基本操作</h3>
+            <pre><code class="python"># 字符串
+r.set("name", "张三")
+r.get("name")
+
+# 哈希
+r.hset("user:1", "name", "张三")
+r.hget("user:1", "name")
+r.hgetall("user:1")
+
+# 列表
+r.lpush("queue", "task1")
+r.rpop("queue")
+
+# 集合
+r.sadd("tags", "python", "redis")
+r.smembers("tags")
+
+# 有序集合
+r.zadd("leaderboard", {"Alice": 100, "Bob": 90})</code></pre>
+
+            <h3>常用场景</h3>
+            <pre><code class="python"># 缓存
+r.setex("key", 3600, "value")  # 1小时过期
+
+# 计数器
+r.incr("page_views")
+r.decr("count")
+
+# 分布式锁
+r.set("lock", "1", nx=True, ex=10)  # 10秒锁</code></pre></code></pre>
 
             <h3>字符串操作</h3>
             <pre><code class="python">import redis
