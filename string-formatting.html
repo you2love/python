@@ -236,19 +236,35 @@
 
         <section id="stringformat" class="content-section">
             <h2>字符串格式化</h2>
-            <p>Python 提供了多种字符串格式化方法，让字符串拼接更加灵活和易读。</p>
 
-            <h3>f-string（推荐，Python 3.6+，3.14 优化）</h3>
-            <pre><code class="python"># 基本使用
-name = "张三"
+            <h3>f-string 推荐</h3>
+            <pre><code class="python">name = "张三"
 age = 25
-print(f"姓名: {name}, 年龄: {age}")
+
+# 基本
+f"姓名: {name}, 年龄: {age}"
 
 # 表达式
-print(f"明年年龄: {age + 1}")
+f"明年: {age + 1}"
 
-# 格式化数字
-price = 1234.5678
+# 格式化
+f"{3.14159:.2f}"  # 3.14
+f"{1000:,}"        # 1,000
+f"{0.5:.0%}"      # 50%
+
+# 对齐
+f"{name:<10}"     # 左对齐
+f"{name:>10}"     # 右对齐
+f"{name:^10}"     # 居中</code></pre>
+
+            <h3>format 方法</h3>
+            <pre><code class="python">"姓名: {}, 年龄: {}".format("张三", 25)
+"姓名: {name}, 年龄: {age}".format(name="张三", age=25)</code></pre>
+
+            <h3>模板字符串</h3>
+            <pre><code class="python">from string import Template
+t = Template("姓名: $name")
+t.substitute(name="张三")</code></pre>
 print(f"价格: {price:.2f}")  # 保留两位小数
 print(f"百分比: {0.1234:.2%}")  # 百分比
 

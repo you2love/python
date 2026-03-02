@@ -236,19 +236,35 @@
         </div>
 
         <section id="aiohttp" class="content-section">
-            <h2>aiohttp</h2>
-            <p>aiohttp 是一个异步 HTTP 客户端/服务器库，基于 asyncio，适合高并发场景。</p>
+            <h2>aiohttp 异步 HTTP</h2>
 
             <h3>安装</h3>
             <pre><code class="bash">pip install aiohttp</code></pre>
 
-            <h3>基本 GET 请求</h3>
+            <h3>客户端</h3>
             <pre><code class="python">import aiohttp
 import asyncio
 
-async def fetch(url):
+async def fetch():
     async with aiohttp.ClientSession() as session:
-        async with session.get(url) as response:
+        async with session.get("https://api.github.com") as r:
+            data = await r.json()
+            print(data)
+
+asyncio.run(fetch())</code></pre>
+
+            <h3>POST 请求</h3>
+            <pre><code class="python">async def post():
+    async with aiohttp.ClientSession() as session:
+        async with session.post(url, json={"key": "value"}) as r:
+            return await r.json()</code></pre>
+
+            <h3>并发请求</h3>
+            <pre><code class="python">async def fetch_all(urls):
+    async with aiohttp.ClientSession() as session:
+        tasks = [session.get(url) for url in urls]
+        responses = await asyncio.gather(*tasks)
+        return [await r.json() for r in responses]</code></pre>
             return await response.text()
 
 async def main():

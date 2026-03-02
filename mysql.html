@@ -236,19 +236,42 @@
 
         <section id="mysql" class="content-section">
             <h2>MySQL</h2>
-            <p>MySQL 是最流行的开源关系型数据库管理系统之一。Python 提供了多种方式连接和操作 MySQL。</p>
 
             <h3>安装驱动</h3>
-            <pre><code class="bash"># 方法1：使用 PyMySQL
-pip install pymysql
+            <pre><code class="bash">pip install pymysql</code></pre>
 
-# 方法2：使用 mysql-connector-python（官方驱动）
-pip install mysql-connector-python
+            <h3>基本操作</h3>
+            <pre><code class="python">import pymysql
 
-# 方法3：使用 MySQLdb
-pip install mysqlclient</code></pre>
+conn = pymysql.connect(
+    host="localhost",
+    user="root",
+    password="password",
+    database="test"
+)
 
-            <h3>使用 PyMySQL</h3>
+# 查询
+with conn.cursor() as cursor:
+    cursor.execute("SELECT * FROM users WHERE id = %s", (1,))
+    result = cursor.fetchone()
+
+# 增删改
+with conn.cursor() as cursor:
+    cursor.execute("INSERT INTO users (name) VALUES (%s)", ("张三",))
+    conn.commit()
+
+conn.close()</code></pre>
+
+            <h3>连接池</h3>
+            <pre><code class="python">from DBUtils.PooledDB import PooledDB
+import pymysql
+
+pool = PooledDB(pymysql, 5, host='localhost', user='root', 
+                password='password', database='test')
+
+conn = pool.connection()
+# 使用连接
+conn.close()</code></pre>
             <pre><code class="python">import pymysql
 
 # 创建连接
