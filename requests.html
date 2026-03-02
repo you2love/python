@@ -236,8 +236,8 @@
         </div>
 
         <section id="requests" class="content-section">
-            <h2>Requests</h2>
-            <p>Requests 是 Python 中最流行的 HTTP 库，简单易用，功能强大。</p>
+            <h2>Requests - HTTP 必备库</h2>
+            <p>Python 最流行的 HTTP 客户端库。</p>
 
             <h3>安装</h3>
             <pre><code class="bash">pip install requests</code></pre>
@@ -245,40 +245,57 @@
             <h3>GET 请求</h3>
             <pre><code class="python">import requests
 
-# 基本 GET 请求
-response = requests.get('https://api.github.com')
-print(f"状态码: {response.status_code}")
-print(f"内容: {response.text[:100]}...")
+# 基本请求
+r = requests.get("https://api.github.com")
+print(r.status_code, r.json())
 
-# 带参数的 GET 请求
-params = {
-    'q': 'python',
-    'sort': 'stars'
-}
-response = requests.get('https://api.github.com/search/repositories', params=params)
-print(f"URL: {response.url}")
-data = response.json()
-print(f"找到 {data['total_count']} 个仓库")
+# URL 参数
+r = requests.get("https://api.github.com/search/repos",
+                  params={"q": "python", "sort": "stars"})
 
-# 添加请求头
-headers = {
-    'User-Agent': 'MyApp/1.0',
-    'Authorization': 'Bearer YOUR_TOKEN'
-}
-response = requests.get('https://api.github.com/user', headers=headers)</code></pre>
+# 请求头
+r = requests.get("https://api.github.com/user",
+                 headers={"Authorization": "token xxx"})</code></pre>
 
             <h3>POST 请求</h3>
-            <pre><code class="python">import requests
+            <pre><code class="python"># JSON 请求
+r = requests.post(url, json={"name": "test"})
 
-# 发送 JSON 数据
-data = {
-    'name': '张三',
-    'age': 25
-}
-response = requests.post('https://httpbin.org/post', json=data)
-print(response.json())
+# 表单数据
+r = requests.post(url, data={"key": "value"})
 
-# 发送表单数据
+# 多部分文件上传
+r = requests.post(url, files={"file": open("test.txt", "rb")})</code></pre>
+
+            <h3>响应处理</h3>
+            <pre><code class="python">r = requests.get(url)
+
+r.status_code    # 状态码
+r.text           # 文本内容
+r.json()         # JSON 解析
+r.headers        # 响应头
+r.cookies       # cookies
+
+# 常用判断
+r.raise_for_status()  # 状态码异常时抛出</code></pre>
+
+            <h3>Session 会话</h3>
+            <pre><code class="python"># 保持 cookie
+session = requests.Session()
+session.headers.update({"Authorization": "token xxx"})
+r = session.get(url)  # 自动携带认证</code></pre>
+
+            <h3>超时与重试</h3>
+            <pre><code class="python">from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
+
+session = requests.Session()
+retry = Retry(total=3, backoff_factor=0.5)
+adapter = HTTPAdapter(max_retries=retry)
+session.mount("http://", adapter)
+session.mount("https://", adapter)
+
+r = requests.get(url, timeout=10)</code></pre>
 form_data = {
     'username': 'admin',
     'password': '123456'

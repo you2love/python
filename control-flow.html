@@ -236,45 +236,74 @@
 
         <section id="controlflow" class="content-section">
             <h2>控制流</h2>
-            <h3>条件语句</h3>
-            <pre><code class="python">age = 18
 
+            <h3>条件语句</h3>
+            <pre><code class="python"># if/elif/else
+age = 18
 if age >= 18:
-    print("成年人")
+    status = "成人"
 elif age >= 13:
-    print("青少年")
+    status = "青少年"
 else:
-    print("儿童")</code></pre>
+    status = "儿童"
+
+# 三元表达式
+status = "成人" if age >= 18 else "未成年"</code></pre>
 
             <h3>循环</h3>
-            <h4>for 循环</h4>
-            <pre><code class="python"># 遍历列表
-fruits = ["苹果", "香蕉", "橙子"]
-for fruit in fruits:
-    print(fruit)
-
-# 使用 range()
+            <pre><code class="python"># for 循环
 for i in range(5):
-    print(i)  # 输出: 0, 1, 2, 3, 4</code></pre>
+    print(i)  # 0,1,2,3,4
 
-            <h4>while 循环</h4>
-            <pre><code class="python">count = 0
-while count < 5:
-    print(count)
-    count += 1</code></pre>
+# 遍历
+for item in [1, 2, 3]:
+    print(item)
 
-            <h3>break 和 continue</h3>
+# enumerate 获取索引
+for i, v in enumerate(['a', 'b', 'c']):
+    print(f"{i}: {v}")</code></pre>
+
+            <h3>break/continue/else</h3>
             <pre><code class="python"># break - 跳出循环
 for i in range(10):
     if i == 5:
         break
-    print(i)  # 输出: 0, 1, 2, 3, 4
+    print(i)
 
-# continue - 跳过当前迭代
+# continue - 跳过
 for i in range(5):
     if i == 2:
         continue
-    print(i)  # 输出: 0, 1, 3, 4</code></pre>
+    print(i)  # 0,1,3,4
+
+# for-else: 循环正常结束（未break）时执行
+for n in range(2, 10):
+    for x in range(2, n):
+        if n % x == 0:
+            break
+    else:
+        print(f"{n} 是质数")</code></pre>
+
+            <h3>match 语句 (Python 3.10+)</h3>
+            <pre><code class="python"># 模式匹配
+def http_status(status):
+    match status:
+        case 200:
+            return "OK"
+        case 404:
+            return "Not Found"
+        case 500:
+            return "Server Error"
+        case _:
+            return "Unknown"
+
+# 解包模式
+point = (1, 2)
+match point:
+    case (0, 0):
+        print("原点")
+    case (x, y):
+        print(f"点 ({x}, {y})")</code></pre>
         </section>
 
         <div class="topic-nav">
