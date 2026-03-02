@@ -235,40 +235,69 @@
         </div>
 
         <section id="pandas" class="content-section">
-            <h2>Pandas</h2>
-            <p>Pandas 是 Python 中数据分析的核心库，提供了 DataFrame 和 Series 数据结构，让数据处理变得简单高效。</p>
-            
-            <div class="mermaid-container">
-                <h4>📊 Pandas 数据处理流程</h4>
-                <div class="mermaid">
-                    flowchart TD
-                        A[导入数据] --> B[读取文件]
-                        B --> C[CSV/Excel/JSON]
-                        C --> D[创建DataFrame]
-                        D --> E{数据清洗}
-                        E -->|缺失值| F[填充/删除]
-                        E -->|重复| G[去重]
-                        E -->|异常值| H[过滤/替换]
-                        F --> I[数据转换]
-                        G --> I
-                        H --> I
-                        I --> J[数据分析]
-                        J --> K[统计计算]
-                        J --> L[分组聚合]
-                        J --> M[可视化]
-                        K --> N[导出结果]
-                        L --> N
-                        M --> N
-                        style E fill:#f093fb,color:#fff
-                </div>
-            </div>
-            
-            <div class="mermaid-container">
-                <h4>📋 DataFrame vs Series</h4>
-                <div class="mermaid">
-                    flowchart TB
-                        A[Pandas核心数据结构] --> B[Series]
-                        A --> C[DataFrame]
+            <h2>Pandas - 数据分析核心</h2>
+
+            <h3>安装</h3>
+            <pre><code class="bash">pip install pandas openpyxl</code></pre>
+
+            <h3>数据结构</h3>
+            <pre><code class="python">import pandas as pd
+
+# Series - 一维数组
+s = pd.Series([1, 2, 3], index=['a', 'b', 'c'])
+
+# DataFrame - 二维表格
+df = pd.DataFrame({
+    'name': ['张三', '李四', '王五'],
+    'age': [25, 30, 28],
+    'city': ['北京', '上海', '广州']
+})</code></pre>
+
+            <h3>数据读取</h3>
+            <pre><code class="python"># 读取 CSV/Excel/JSON
+df = pd.read_csv("data.csv")
+df = pd.read_excel("data.xlsx")
+df = pd.read_json("data.json")
+
+# 读取 SQL
+import sqlalchemy
+df = pd.read_sql("SELECT * FROM users", engine)</code></pre>
+
+            <h3>数据选择</h3>
+            <pre><code class="python">df.head(10)      # 前10行
+df.tail(5)       # 后5行
+df["name"]        # 列
+df[["name", "age"]]  # 多列
+df.loc[0]         # 行
+df.iloc[0:5]      # 切片
+
+# 条件筛选
+df[df["age"] > 25]</code></pre>
+
+            <h3>数据处理</h3>
+            <pre><code class="python"># 添加列
+df["score"] = [80, 90, 85]
+
+# 删除列
+df.drop("city", axis=1)
+
+# 缺失值处理
+df.fillna(0)           # 填充
+df.dropna()            # 删除
+
+# 排序
+df.sort_values("age")</code></pre>
+
+            <h3>分组聚合</h3>
+            <pre><code class="python"># 分组统计
+df.groupby("city")["age"].mean()
+
+# 透视表
+pd.pivot_table(df, values="age", index="city", aggfunc="mean")</code></pre>
+
+            <h3>数据导出</h3>
+            <pre><code class="python">df.to_csv("output.csv", index=False)
+df.to_excel("output.xlsx", index=False)</code></pre>
                         B --> B1[一维数组]
                         B --> B2[类似列表]
                         B --> B3[有索引]

@@ -231,44 +231,58 @@
 
 <main>
         <section id="intro" class="content-section">
-            <h2>🕷️ 爬虫技术概述</h2>
-            <p>网页爬虫（Web Scraping）是一种自动获取网页内容的技术。Python 提供了丰富的爬虫库和工具。</p>
-            
-            <div class="mermaid-container">
-                <h4>🔄 爬虫基本工作流程</h4>
-                <div class="mermaid">
-                    flowchart TD
-                        A[确定目标URL] --> B[发送HTTP请求]
-                        B --> C{请求成功?}
-                        C -->|是| D[获取网页内容]
-                        C -->|否| E[记录错误]
-                        E --> F[等待重试]
-                        F --> B
-                        D --> G[解析HTML/XML]
-                        G --> H[提取目标数据]
-                        H --> I{需要更多页面?}
-                        I -->|是| J[获取下一页URL]
-                        J --> B
-                        I -->|否| K[保存数据]
-                        K --> L[结束]
-                        style C fill:#f093fb,color:#fff
-                        style I fill:#f093fb,color:#fff
-                </div>
-            </div>
-            
-            <div class="mermaid-container">
-                <h4>🛠️ 爬虫工具对比</h4>
-                <div class="mermaid">
-                    flowchart TB
-                        A[Python爬虫工具] --> B[静态页面]
-                        A --> C[动态页面]
-                        A --> D[框架]
-                        B --> B1[Requests]
-                        B --> B2[BeautifulSoup]
-                        B --> B3[lxml]
-                        C --> C1[Selenium]
-                        C --> C2[Playwright]
-                        C --> C3[Pyppeteer]
+            <h2>🕷️ Python 爬虫</h2>
+            <p>爬虫是获取网页数据的技能，注意遵守 robots.txt 和相关法律。</p>
+        </section>
+
+        <section id="requests" class="content-section">
+            <h3>Requests + BeautifulSoup</h3>
+            <pre><code class="python">import requests
+from bs4 import BeautifulSoup
+
+# 获取页面
+r = requests.get(url, headers={"User-Agent": "Mozilla/5.0"})
+html = r.text
+
+# 解析
+soup = BeautifulSoup(html, "lxml")
+
+# 选择器
+soup.select("div.content")      # CSS选择器
+soup.find_all("a", class_="link")
+soup.find("title").text</code></pre>
+        </section>
+
+        <section id="selenium" class="content-section">
+            <h3>Selenium - 动态页面</h3>
+            <pre><code class="python">from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
+
+# 无头模式
+opts = Options()
+opts.add_argument("--headless")
+driver = webdriver.Chrome(options=opts)
+
+driver.get(url)
+driver.find_element(By.CSS_SELECTOR, "input[name='q']").send_keys("python")
+driver.find_element(By.CSS_SELECTOR, "button").click()
+print(driver.page_source)
+
+driver.quit()</code></pre>
+        </section>
+
+        <section id="playwright" class="content-section">
+            <h3>Playwright - 现代方案</h3>
+            <pre><code class="python">from playwright.sync_api import sync_playwright
+
+with sync_playwright() as p:
+    browser = p.chromium.launch()
+    page = browser.new_page()
+    page.goto(url)
+    content = page.content()
+    browser.close()</code></pre>
+        </section>
                         D --> D1[Scrapy]
                         D --> D2[PySpider]
                         style A fill:#667eea,color:#fff

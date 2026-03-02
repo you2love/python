@@ -236,33 +236,61 @@
         </div>
 
         <section id="fastapi" class="content-section">
-            <h2>FastAPI</h2>
-            <p>FastAPI 是一个现代、快速（高性能）的 Web 框架，用于基于标准 Python 类型提示构建 API。</p>
+            <h2>FastAPI - 现代 Web 框架</h2>
 
             <h3>安装</h3>
             <pre><code class="bash">pip install fastapi uvicorn</code></pre>
 
-            <h3>第一个 FastAPI 应用</h3>
+            <h3>快速开始</h3>
             <pre><code class="python">from fastapi import FastAPI
 
-# 创建应用实例
 app = FastAPI()
 
-# 定义路由
 @app.get("/")
-def read_root():
-    return {"message": "Hello, FastAPI!"}
+def root():
+    return {"message": "Hello!"}
 
-# 运行命令: uvicorn main:app --reload</code></pre>
+# 启动: uvicorn main:app --reload</code></pre>
 
-            <h3>路径参数</h3>
-            <pre><code class="python">from fastapi import FastAPI
+            <h3>路由参数</h3>
+            <pre><code class="python">@app.get("/items/{item_id}")
+def get_item(item_id: int):
+    return {"item_id": item_id, "name": "item"}
 
-app = FastAPI()
+# 查询参数
+@app.get("/search")
+def search(q: str, limit: int = 10):
+    return {"q": q, "limit": limit}</code></pre>
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int):
-    return {"item_id": item_id}
+            <h3>请求体 & 响应模型</h3>
+            <pre><code class="python">from pydantic import BaseModel
+
+class Item(BaseModel):
+    name: str
+    price: float
+    is_available: bool = True
+
+@app.post("/items/")
+def create_item(item: Item):
+    return item
+
+@app.get("/items/{item_id}", response_model=Item)
+def get_item(item_id: int):
+    return Item(name="Test", price=10.0)</code></pre>
+
+            <h3>依赖注入</h3>
+            <pre><code class="python">from fastapi import Depends
+
+def get_db():
+    db = connect_db()
+    try:
+        yield db
+    finally:
+        db.close()
+
+@app.get("/users/")
+def get_users(db = Depends(get_db)):
+    return db.query(User).all()</code></pre>
 
 # 带类型的路径参数
 @app.get("/users/{user_id}")

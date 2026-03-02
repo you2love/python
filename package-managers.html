@@ -449,39 +449,46 @@
         </div>
 
         <section id="intro" class="content-section">
-            <h2>📦 Python 包管理工具完整教程</h2>
-            <p>Python 拥有丰富的包管理工具，每个工具都有其特定的使用场景和优缺点。本教程将详细介绍主流的包管理工具，帮助你选择最适合的工具。</p>
-            
-            <div class="feature-box">
-                <h3>本教程涵盖：</h3>
-                <ul>
-                    <li>🐍 <strong>pip</strong> - Python 官方包管理器</li>
-                    <li>🐍 <strong>pipx</strong> - Python 应用隔离工具</li>
-                    <li>🅿️ <strong>Poetry</strong> - 现代依赖管理工具</li>
-                    <li>🅿️ <strong>Pipenv</strong> - Pip + Virtualenv 整合</li>
-                    <li>🐍 <strong>Conda</strong> - 跨语言包管理器</li>
-                    <li>⚡ <strong>uv</strong> - 新一代快速包管理器 (2026)</li>
-                    <li>🔧 <strong>pip-tools</strong> - 依赖锁定工具</li>
-                </ul>
-            </div>
+            <h2>📦 Python 包管理工具</h2>
+            <p>选择合适的包管理工具提升开发效率。</p>
         </section>
 
-        <section id="timeline" class="content-section">
-            <h2>一、包管理工具发展历史</h2>
-            
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <h4>2008 - pip 诞生</h4>
-                        <p>pip 作为 easy_install 的替代品发布，成为 Python 官方包管理器</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <h4>2012 - Conda 发布</h4>
-                        <p>Anaconda 推出 Conda，支持跨语言包管理和环境管理</p>
+        <section id="pip" class="content-section">
+            <h3>pip - 官方标配</h3>
+            <pre><code class="bash">pip install requests
+pip install requests==2.31.0
+pip install -r requirements.txt
+pip freeze > requirements.txt</code></pre>
+        </section>
+
+        <section id="uv" class="content-section">
+            <h3>uv - 2026 首选 (比 pip 快 100 倍)</h3>
+            <pre><code class="bash"># 安装
+pip install uv
+
+# 常用命令
+uv pip install requests
+uv venv .venv           # 创建虚拟环境
+uv sync                  # 同步依赖
+uv add requests          # 添加依赖</code></pre>
+        </section>
+
+        <section id="poetry" class="content-section">
+            <h3>Poetry - 项目依赖管理</h3>
+            <pre><code class="bash">pip install poetry
+poetry init
+poetry add requests
+poetry install
+poetry lock</code></pre>
+        </section>
+
+        <section id="pipenv" class="content-section">
+            <h3>Pipenv - Pip + Virtualenv</h3>
+            <pre><code class="bash">pip install pipenv
+pipenv install requests
+pipenv shell
+pipenv run python script.py</code></pre>
+        </section>
                     </div>
                 </div>
                 <div class="timeline-item">
